@@ -1,0 +1,15 @@
+# Dependencies
+node-app/node_modules/
+
+# Symfony
+app/vendor/
+app/var/
+app/.env.local
+app/.env.*.local
+
+# Docker
+.env
+
+# OS
+.DS_Store
+Thumbs.db
