@@ -1,0 +1,102 @@
+{
+  "profile": {
+    "id": 1,
+    "name": "Yan Oleksiuk",
+    "title": "Full-Stack Web Developer",
+    "bio": "I build modern websites and web applications for businesses like cafés, salons, and service companies. React • TypeScript • Symfony • MySQL • Docker",
+    "avatar": null
+  },
+  "projects": [
+    {
+      "id": 2,
+      "title": "La Bella — Restaurant Website",
+      "description": "Demo restaurant website with multilingual support (EN/DE/UK), menu, reservation form and modern dark design.",
+      "link": "https://compactmodel.github.io/demo-restaurant",
+      "image": "/portfolio/screenshots/restaurant.png"
+    },
+    {
+      "id": 3,
+      "title": "BarberKing — Barbershop Website",
+      "description": "Demo barbershop website with brutal dark design, services, team and online booking form.",
+      "link": "https://compactmodel.github.io/demo-barbershop",
+      "image": "/portfolio/screenshots/barbershop.png"
+    },
+    {
+      "id": 4,
+      "title": "AutoPro — Auto Service Website",
+      "description": "Professional auto service website with services, team, reviews, booking form and multilingual support.",
+      "link": "https://compactmodel.github.io/demo-autoservice",
+      "image": "/portfolio/screenshots/autoservice.png"
+    }
+  ],
+  "skills": [
+    {
+      "id": 11,
+      "name": "React",
+      "level": null,
+      "category": "Frontend"
+    },
+    {
+      "id": 12,
+      "name": "TypeScript",
+      "level": null,
+      "category": "Frontend"
+    },
+    {
+      "id": 13,
+      "name": "HTML",
+      "level": null,
+      "category": "Frontend"
+    },
+    {
+      "id": 14,
+      "name": "CSS",
+      "level": null,
+      "category": "Frontend"
+    },
+    {
+      "id": 15,
+      "name": "Tailwind",
+      "level": null,
+      "category": "Frontend"
+    },
+    {
+      "id": 16,
+      "name": "Symfony",
+      "level": null,
+      "category": "Backend"
+    },
+    {
+      "id": 17,
+      "name": "PHP",
+      "level": null,
+      "category": "Backend"
+    },
+    {
+      "id": 18,
+      "name": "REST API",
+      "level": null,
+      "category": "Backend"
+    },
+    {
+      "id": 19,
+      "name": "MySQL",
+      "level": null,
+      "category": "Database"
+    },
+    {
+      "id": 20,
+      "name": "Docker",
+      "level": null,
+      "category": "Tools"
+    },
+    {
+      "id": 21,
+      "name": "Git / GitHub",
+      "level": null,
+      "category": "Tools"
+    }
+  ],
+  "experience": [],
+  "education": []
+}
