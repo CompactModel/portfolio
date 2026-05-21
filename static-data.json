@@ -49,7 +49,7 @@
       "id": 7,
       "title": "VoltGarage — Auto Service",
       "description": "Tech auto service site with cyan/navy design, glitch text, scan lines, counter stats, and a bottom-sheet services modal.",
-      "link": "http://localhost:8086",
+      "link": null,
       "image": null
     }
   ],
