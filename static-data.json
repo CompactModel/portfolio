@@ -23,10 +23,31 @@
     },
     {
       "id": 4,
-      "title": "AutoPro — Auto Service Website",
-      "description": "Professional auto service website with services, team, reviews, booking form and multilingual support.",
+      "title": "APEX MOTOR — Elite Auto Service",
+      "description": "Premium auto service site with dark navy panel, fixed sidebar navigation, services list, team, reviews and booking form. EN/DE/UK.",
       "link": "https://compactmodel.github.io/demo-autoservice",
       "image": "/portfolio/screenshots/autoservice.png"
+    },
+    {
+      "id": 5,
+      "title": "Brew & Soul — Café Website",
+      "description": "Editorial café site with warm off-white design, live date/time widget, today's special dish, menu and booking. EN/DE/UK.",
+      "link": "https://compactmodel.github.io/demo-cafe",
+      "image": "/portfolio/screenshots/cafe.png"
+    },
+    {
+      "id": 6,
+      "title": "Sultan Döner — Kebab Restaurant",
+      "description": "Street food brand site with dark green & orange palette, fire particle effects, diagonal sections, and a fullscreen overlay menu modal.",
+      "link": "http://localhost:8085",
+      "image": null
+    },
+    {
+      "id": 7,
+      "title": "VoltGarage — Auto Service",
+      "description": "Tech auto service site with cyan/navy design, glitch text, scan lines, counter stats, and a bottom-sheet services modal.",
+      "link": "http://localhost:8086",
+      "image": null
     }
   ],
   "skills": [
