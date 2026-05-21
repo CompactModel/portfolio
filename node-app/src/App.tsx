@@ -165,6 +165,7 @@ function App() {
   const [form,       setForm]       = useState({ name:'', email:'', message:'' });
   const [formStatus, setFormStatus] = useState<'idle'|'sending'|'ok'|'error'>('idle');
   const [menuOpen,   setMenuOpen]   = useState(false);
+  const [tgCopied,   setTgCopied]   = useState(false);
 
   useEffect(() => {
     const staticJson = `${process.env.PUBLIC_URL}/static-data.json`;
@@ -498,9 +499,23 @@ const sectionHead = (label: string) => (
             <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(260px,1fr))', gap:40 }}>
               <Reveal>
                 <p style={{ color:'#6A6A7A', lineHeight:1.8, marginBottom:24, fontSize:14 }}>{t('contact_intro')}</p>
-                <a href="mailto:yan.oleksuyk7@gmail.com" style={{ display:'inline-flex', alignItems:'center', gap:8, background:`rgba(139,94,60,0.08)`, border:`1px solid rgba(139,94,60,0.3)`, color:GOLD, textDecoration:'none', fontSize:13, fontWeight:600, padding:'10px 18px', borderRadius:10 }}>
-                  ✉ yan.oleksuyk7@gmail.com
-                </a>
+                <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
+                  <a href="mailto:yan.oleksuyk7@gmail.com" style={{ display:'inline-flex', alignItems:'center', gap:8, background:`rgba(139,94,60,0.08)`, border:`1px solid rgba(139,94,60,0.3)`, color:GOLD, textDecoration:'none', fontSize:13, fontWeight:600, padding:'10px 18px', borderRadius:10 }}>
+                    ✉ yan.oleksuyk7@gmail.com
+                  </a>
+                  <div style={{ display:'inline-flex', alignItems:'center', gap:6 }}>
+                    <button
+                      onClick={() => { navigator.clipboard.writeText('@'); setTgCopied(true); setTimeout(()=>setTgCopied(false), 2000); }}
+                      style={{ display:'inline-flex', alignItems:'center', gap:8, background:`rgba(0,136,204,0.08)`, border:`1px solid rgba(0,136,204,0.3)`, color:'#29B6F6', cursor:'pointer', fontSize:13, fontWeight:600, padding:'10px 18px', borderRadius:10, transition:'all 0.2s', fontFamily:'inherit' }}
+                    >
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.941z"/></svg>
+                      {tgCopied ? '✓ Copied!' : 'Telegram'}
+                    </button>
+                    <a href=null target="_blank" rel="noreferrer" title="Open in Telegram" style={{ display:'inline-flex', alignItems:'center', justifyContent:'center', width:38, height:38, background:`rgba(0,136,204,0.08)`, border:`1px solid rgba(0,136,204,0.3)`, color:'#29B6F6', borderRadius:10, textDecoration:'none', flexShrink:0 }}>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                    </a>
+                  </div>
+                </div>
               </Reveal>
               <Reveal delay={120}>
                 <form onSubmit={handleContact} style={{ display:'flex', flexDirection:'column', gap:20 }}>
