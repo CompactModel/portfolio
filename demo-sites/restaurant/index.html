@@ -410,12 +410,23 @@ footer{background:var(--dark);border-top:1px solid var(--border);padding:64px 48
   .ft-top{grid-template-columns:1fr 1fr;gap:32px}
 }
 @media(max-width:480px){
-  .hero-name{font-size:clamp(64px,18vw,88px)}
-  .hero-left{padding:64px 24px 80px 24px}
+  .hero-left{
+    padding:100px 24px 80px 24px;
+    min-height:100svh;
+    background:
+      linear-gradient(rgba(6,6,6,0.78) 0%,rgba(6,6,6,0.92) 100%),
+      url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&auto=format') center/cover no-repeat;
+  }
+  .hero-right{display:none}
+  .hero-name{font-size:clamp(56px,16vw,80px)}
   .hero-nav{display:none}
-  .hero-lang{left:24px}
+  .hero-lang{left:24px;bottom:24px}
   .ft-top{grid-template-columns:1fr}
-  .hero-reserve{width:100%;text-align:center}
+  .hero-reserve{width:100%;text-align:center;padding:14px}
+  .hero-eyebrow{font-size:8px;letter-spacing:3px}
+  .chef-inner,.chef-quote{font-size:18px}
+  .events-in{gap:32px}
+  .test-card{padding:24px}
 }
 </style>
 </head>

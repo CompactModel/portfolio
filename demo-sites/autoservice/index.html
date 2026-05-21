@@ -348,9 +348,18 @@
     @media(max-width:600px) {
       .tm-grid,.f-row { grid-template-columns:1fr; }
       .ft { grid-template-columns:1fr; }
-      .sv-row { grid-template-columns:36px 1fr; }
+      .sv-row { grid-template-columns:36px 1fr; gap:10px; padding:16px 12px; margin:0; border-left:none; overflow:hidden; }
       .sv-right { display:none; }
       .rv-grid { grid-template-columns:1fr; }
+      .sv-name { font-size:14px; }
+      .sv-desc { font-size:11px; white-space:normal; overflow:hidden; }
+      .ab-stats { grid-template-columns:1fr 1fr; }
+      .stats-banner { grid-template-columns:1fr 1fr; }
+      .s-title { font-size:clamp(24px,7vw,36px); }
+      .ab-grid { gap:28px; }
+      .section { padding:48px 16px; }
+      footer { padding:40px 16px; }
+      .ab-cert h4 { font-size:12px; }
     }
   </style>
 </head>

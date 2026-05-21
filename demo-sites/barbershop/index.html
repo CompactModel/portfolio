@@ -181,11 +181,22 @@
       .team-grid,.reviews-grid { grid-template-columns:1fr; }
       .footer-top { grid-template-columns:1fr 1fr; gap:24px; }
       .form-row { grid-template-columns:1fr; }
+      .hero h1 { font-size:clamp(44px,12vw,80px); }
+      .hero-btns { flex-direction:column; gap:10px; }
+      .btn-amber,.btn-ghost { width:100%; text-align:center; padding:14px 20px; }
+      .section { padding:56px 20px; }
     }
     @media(max-width:480px) {
+      .loader-logo { font-size:36px; letter-spacing:3px; }
       .services-grid { grid-template-columns:1fr; }
       .footer-top { grid-template-columns:1fr; }
       .flip-card { height:240px; }
+      .hero { min-height:100svh; }
+      .hero-content { padding:0 20px; }
+      .hero h1 { font-size:clamp(40px,13vw,68px); }
+      .hero-eyebrow span { font-size:9px; letter-spacing:3px; }
+      .nav-inner { padding:0 16px; }
+      .hero-stats { display:none; }
     }
   </style>
 </head>
