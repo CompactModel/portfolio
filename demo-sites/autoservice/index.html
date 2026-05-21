@@ -2,592 +2,764 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>APEX MOTOR — Elite Performance Service</title>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg:#0c0c0c; --bg2:#111; --bg3:#161616;
-      --red:#e63027; --red2:#ff4438;
-      --white:#f5f5f5; --gray:#888; --light:#ccc; --border:rgba(230,48,39,0.15);
+      --blue:#2563EB; --blue2:#1D4ED8; --blue3:#1e40af;
+      --navy:#0F172A; --navy2:#1E293B; --navy3:#334155;
+      --white:#EEF2F7; --off:#F4F7FB;
+      --gray:#64748B; --light:#94A3B8; --border:#E2E8F0;
+      --gold:#F59E0B;
     }
-    * { margin:0; padding:0; box-sizing:border-box; }
-    html,body { width:100%; max-width:100%; overflow-x:hidden; }
+    *,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
     html { scroll-behavior:smooth; }
-    body { font-family:'Space Grotesk',sans-serif; background:var(--bg); color:var(--white); }
-    ::-webkit-scrollbar { width:2px; }
-    ::-webkit-scrollbar-thumb { background:var(--red); }
+    body { font-family:'Inter',sans-serif; background:var(--off); color:var(--navy); }
 
-    .loader { position:fixed; inset:0; background:var(--bg); z-index:9999; display:grid; place-items:center; transition:opacity 0.8s ease; }
-    .loader.hidden { opacity:0; pointer-events:none; }
-    .loader-inner { text-align:center; }
-    .loader-cross { width:60px; height:60px; margin:0 auto 24px; position:relative; }
-    .loader-cross::before,.loader-cross::after { content:''; position:absolute; background:var(--red); }
-    .loader-cross::before { width:2px; height:100%; left:50%; top:0; animation:crossV 1s ease forwards; }
-    .loader-cross::after { width:100%; height:2px; left:0; top:50%; animation:crossH 1s ease 0.3s forwards; transform:scaleX(0); }
-    @keyframes crossV { from{transform:scaleY(0)} to{transform:scaleY(1)} }
-    @keyframes crossH { from{transform:scaleX(0)} to{transform:scaleX(1)} }
-    .loader-word { font-family:'Bebas Neue',sans-serif; font-size:56px; letter-spacing:16px; color:var(--white); opacity:0; animation:fadeIn 0.6s ease 0.8s forwards; }
-    .loader-word span { color:var(--red); }
-    @keyframes fadeIn { to{opacity:1} }
+    .page { display:flex; min-height:100vh; }
 
-    nav { position:fixed; top:0; width:100%; z-index:100; height:64px; transition:all 0.4s; }
-    nav.scrolled { background:rgba(12,12,12,0.96); backdrop-filter:blur(12px); border-bottom:1px solid var(--border); }
-    .nav-inner { display:flex; align-items:center; justify-content:space-between; padding:0 24px; height:64px; }
-    .nav-logo { font-family:'Bebas Neue',sans-serif; font-size:20px; letter-spacing:6px; }
-    .nav-logo span { color:var(--red); }
-    .nav-links { display:flex; gap:24px; }
-    .nav-links a { font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--gray); text-decoration:none; transition:color 0.2s; font-weight:500; }
-    .nav-links a:hover { color:var(--white); }
-    .nav-right { display:flex; align-items:center; gap:6px; }
-    .lang-btn { background:none; border:1px solid #2a2a2a; color:var(--gray); padding:4px 10px; cursor:pointer; font-size:11px; font-weight:600; transition:all 0.2s; font-family:'Space Grotesk',sans-serif; }
-    .lang-btn.active,.lang-btn:hover { border-color:var(--red); color:var(--red); }
-    .btn-nav { background:var(--red); color:#fff; border:none; padding:9px 20px; font-size:11px; letter-spacing:2px; text-transform:uppercase; cursor:pointer; font-family:'Space Grotesk',sans-serif; font-weight:600; transition:all 0.2s; text-decoration:none; }
-    .btn-nav:hover { background:var(--red2); }
-    .hamburger { display:none; background:none; border:1px solid rgba(230,48,39,0.4); color:var(--red); padding:6px 10px; cursor:pointer; font-size:18px; }
-    .mobile-menu { display:none; background:rgba(12,12,12,0.98); border-top:1px solid var(--border); padding:16px 24px; }
-    .mobile-menu a { display:block; color:var(--gray); text-decoration:none; padding:12px 0; font-size:15px; border-bottom:1px solid #1a1a1a; }
-    .mobile-menu a:last-child { border-bottom:none; color:var(--red); }
-    .mobile-menu.open { display:block; }
-
-    .hero { height:100vh; display:grid; grid-template-columns:1fr 1fr; }
-    .hero-left { position:relative; display:flex; flex-direction:column; justify-content:flex-end; padding:0 40px 80px; background:var(--bg); overflow:hidden; }
-    .hero-left::before { content:''; position:absolute; top:0; right:0; width:1px; height:100%; background:linear-gradient(to bottom,transparent,var(--red),transparent); }
-    .hero-num { position:absolute; top:50%; left:24px; transform:translateY(-60%); font-family:'Bebas Neue',sans-serif; font-size:240px; color:rgba(230,48,39,0.04); line-height:1; pointer-events:none; }
-    .hero-tag { font-size:11px; letter-spacing:4px; text-transform:uppercase; color:var(--red); margin-bottom:16px; display:flex; align-items:center; gap:10px; opacity:0; animation:slideUp 0.7s ease 0.8s forwards; }
-    .hero-tag::before { content:''; width:24px; height:1px; background:var(--red); }
-    .hero h1 { font-family:'Bebas Neue',sans-serif; font-size:clamp(56px,7vw,110px); line-height:0.9; margin-bottom:24px; opacity:0; animation:slideUp 0.7s ease 1s forwards; }
-    .hero h1 em { color:var(--red); font-style:normal; }
-    .hero-desc { font-size:14px; color:var(--light); line-height:1.7; max-width:400px; margin-bottom:36px; font-weight:300; opacity:0; animation:slideUp 0.7s ease 1.2s forwards; }
-    .hero-btns { display:flex; gap:12px; flex-wrap:wrap; opacity:0; animation:slideUp 0.7s ease 1.4s forwards; }
-    .btn-red { background:var(--red); color:#fff; padding:14px 32px; font-size:12px; letter-spacing:2px; text-transform:uppercase; border:none; cursor:pointer; font-family:'Space Grotesk',sans-serif; font-weight:600; transition:all 0.2s; text-decoration:none; display:inline-block; }
-    .btn-red:hover { background:var(--red2); transform:translateY(-2px); }
-    .btn-line { background:transparent; color:var(--white); padding:14px 32px; font-size:12px; letter-spacing:2px; text-transform:uppercase; border:1px solid #333; cursor:pointer; font-family:'Space Grotesk',sans-serif; font-weight:500; transition:all 0.2s; text-decoration:none; display:inline-block; }
-    .btn-line:hover { border-color:var(--red); color:var(--red); }
-    .hero-right { position:relative; overflow:hidden; }
-    .hero-right img { width:100%; height:100%; object-fit:cover; filter:brightness(0.5) saturate(0.3); }
-    .hero-right::after { content:''; position:absolute; inset:0; background:linear-gradient(to right,var(--bg) 0%,transparent 30%); }
-    .hero-stats { position:absolute; bottom:0; left:0; right:0; display:grid; grid-template-columns:repeat(4,1fr); border-top:1px solid #1a1a1a; background:rgba(12,12,12,0.9); z-index:2; }
-    .hero-stat { padding:16px 20px; border-right:1px solid #1a1a1a; }
-    .hero-stat:last-child { border-right:none; }
-    .hero-stat .n { font-family:'Bebas Neue',sans-serif; font-size:28px; color:var(--red); line-height:1; }
-    .hero-stat .l { font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--gray); margin-top:2px; }
-    @keyframes slideUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
-
-    .ticker { background:var(--red); padding:11px 0; overflow:hidden; }
-    .ticker-inner { display:flex; gap:48px; animation:tick 25s linear infinite; white-space:nowrap; }
-    .ticker-item { font-size:12px; font-weight:600; letter-spacing:3px; text-transform:uppercase; color:#fff; }
-    @keyframes tick { from{transform:translateX(0)} to{transform:translateX(-50%)} }
-
-    .rv { opacity:0; transform:translateY(32px); transition:opacity 0.7s,transform 0.7s; }
-    .rv.on { opacity:1; transform:translateY(0); }
-    .rl { opacity:0; transform:translateX(-32px); transition:opacity 0.7s,transform 0.7s; }
-    .rl.on { opacity:1; transform:translateX(0); }
-    .rr { opacity:0; transform:translateX(32px); transition:opacity 0.7s,transform 0.7s; }
-    .rr.on { opacity:1; transform:translateX(0); }
-
-    .wrap { padding:80px 24px; max-width:1200px; margin:0 auto; }
-    .s-label { font-size:10px; letter-spacing:5px; text-transform:uppercase; color:var(--red); margin-bottom:10px; }
-    .s-head { font-family:'Bebas Neue',sans-serif; font-size:clamp(32px,5vw,60px); line-height:1; margin-bottom:12px; }
-    .s-head em { color:var(--red); font-style:normal; }
-    .s-sub { font-size:14px; color:var(--gray); line-height:1.7; max-width:520px; }
-
-    .sv-bg { background:var(--bg2); }
-    .sv-list { margin-top:48px; display:flex; flex-direction:column; }
-    .sv-row { display:grid; grid-template-columns:60px 1fr 1fr auto; align-items:center; gap:20px; padding:24px 0; border-top:1px solid #1e1e1e; transition:all 0.3s; cursor:pointer; position:relative; }
-    .sv-row::after { content:''; position:absolute; bottom:0; left:0; width:0; height:1px; background:var(--red); transition:width 0.4s; }
-    .sv-row:hover::after { width:100%; }
-    .sv-row:hover { padding-left:12px; }
-    .sv-index { font-family:'Bebas Neue',sans-serif; font-size:40px; color:#222; line-height:1; transition:color 0.3s; }
-    .sv-row:hover .sv-index { color:var(--red); }
-    .sv-name { font-family:'Bebas Neue',sans-serif; font-size:24px; letter-spacing:2px; transition:color 0.3s; }
-    .sv-row:hover .sv-name { color:var(--red); }
-    .sv-desc { font-size:13px; color:var(--gray); line-height:1.6; }
-    .sv-meta { text-align:right; }
-    .sv-price { font-family:'Bebas Neue',sans-serif; font-size:24px; color:var(--red); }
-    .sv-time { font-size:11px; color:#444; margin-top:2px; }
-
-    .ab-bg { background:var(--bg); }
-    .ab-grid { display:grid; grid-template-columns:5fr 4fr; gap:60px; align-items:start; }
-    .ab-img-stack { position:relative; height:520px; }
-    .ab-img1 { position:absolute; top:0; left:0; width:75%; height:75%; object-fit:cover; filter:brightness(0.7) saturate(0.4); }
-    .ab-img2 { position:absolute; bottom:0; right:0; width:60%; height:60%; object-fit:cover; filter:brightness(0.8) saturate(0.3); border:4px solid var(--bg); }
-    .ab-badge { position:absolute; top:40%; left:70%; transform:translate(-50%,-50%); background:var(--red); padding:16px 20px; text-align:center; z-index:2; }
-    .ab-badge .n { font-family:'Bebas Neue',sans-serif; font-size:36px; line-height:1; }
-    .ab-badge .l { font-size:9px; letter-spacing:2px; text-transform:uppercase; }
-    .ab-text { padding-top:20px; }
-    .ab-text p { font-size:14px; color:var(--light); line-height:1.9; margin-bottom:16px; font-weight:300; }
-    .red-bar { width:48px; height:3px; background:var(--red); margin:16px 0; }
-    .ab-grid-stats { display:grid; grid-template-columns:1fr 1fr; gap:1px; margin-top:32px; background:#1a1a1a; }
-    .ab-stat { background:var(--bg); padding:18px; }
-    .ab-stat .n { font-family:'Bebas Neue',sans-serif; font-size:32px; color:var(--red); }
-    .ab-stat .l { font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--gray); margin-top:2px; }
-
-    .tm-bg { background:var(--bg2); }
-    .tm-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:#1a1a1a; margin-top:48px; }
-    .tm-card { background:var(--bg2); padding:28px 20px; position:relative; overflow:hidden; transition:background 0.3s; }
-    .tm-card:hover { background:var(--bg3); }
-    .tm-num { font-family:'Bebas Neue',sans-serif; font-size:64px; color:#1a1a1a; position:absolute; top:8px; right:12px; line-height:1; transition:color 0.3s; }
-    .tm-card:hover .tm-num { color:rgba(230,48,39,0.15); }
-    .tm-icon { width:48px; height:48px; border:1px solid #2a2a2a; display:flex; align-items:center; justify-content:center; margin-bottom:16px; transition:border-color 0.3s; }
-    .tm-card:hover .tm-icon { border-color:var(--red); }
-    .tm-name { font-family:'Bebas Neue',sans-serif; font-size:20px; letter-spacing:2px; margin-bottom:4px; }
-    .tm-role { color:var(--red); font-size:11px; letter-spacing:2px; text-transform:uppercase; }
-    .tm-exp { color:var(--gray); font-size:12px; margin-top:6px; }
-
-    .rv-bg { background:var(--bg); }
-    .rv-grid { display:grid; grid-template-columns:2fr 1fr 1fr; gap:1px; background:#1a1a1a; margin-top:48px; }
-    .rv-card { background:var(--bg); padding:32px 28px; position:relative; }
-    .rv-card.featured { background:var(--bg2); }
-    .rv-quote { font-family:'Bebas Neue',sans-serif; font-size:100px; color:#1a1a1a; line-height:0.7; margin-bottom:8px; }
-    .rv-stars { color:var(--red); letter-spacing:3px; margin-bottom:14px; font-size:14px; }
-    .rv-text { font-size:14px; color:var(--light); line-height:1.8; margin-bottom:20px; font-style:italic; font-weight:300; }
-    .rv-card.featured .rv-text { font-size:16px; }
-    .rv-author { display:flex; align-items:center; gap:12px; }
-    .rv-ava { width:40px; height:40px; background:var(--red); display:flex; align-items:center; justify-content:center; font-family:'Bebas Neue',sans-serif; font-size:18px; }
-    .rv-name { font-family:'Bebas Neue',sans-serif; font-size:15px; letter-spacing:2px; }
-    .rv-car { color:var(--gray); font-size:11px; margin-top:2px; }
-
-    .fq-bg { background:var(--bg2); }
-    .fq-grid { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:#1a1a1a; margin-top:48px; }
-    .fq-item { background:var(--bg2); }
-    .fq-q { padding:20px 24px; display:flex; justify-content:space-between; align-items:center; cursor:pointer; transition:background 0.2s; }
-    .fq-q:hover { background:rgba(230,48,39,0.03); }
-    .fq-q h4 { font-size:14px; font-weight:600; padding-right:16px; }
-    .fq-plus { color:var(--red); font-size:22px; font-weight:300; transition:transform 0.3s; flex-shrink:0; }
-    .fq-item.open .fq-plus { transform:rotate(45deg); }
-    .fq-a { max-height:0; overflow:hidden; transition:max-height 0.4s; }
-    .fq-item.open .fq-a { max-height:200px; }
-    .fq-a p { padding:0 24px 20px; font-size:13px; color:var(--gray); line-height:1.8; }
-
-    .bk-bg { background:var(--bg); }
-    .bk-grid { display:grid; grid-template-columns:1fr 1fr; gap:60px; margin-top:48px; }
-    .bk-left { display:flex; flex-direction:column; gap:16px; }
-    .bk-item { display:flex; gap:16px; align-items:flex-start; padding:18px; border-left:3px solid transparent; transition:border-color 0.3s; }
-    .bk-item:hover { border-left-color:var(--red); }
-    .bk-item-icon { width:40px; height:40px; background:#161616; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-    .bk-item h4 { font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--gray); margin-bottom:4px; }
-    .bk-item p { font-size:14px; font-weight:500; }
-    .f-label { font-size:10px; letter-spacing:3px; text-transform:uppercase; color:var(--gray); display:block; margin-bottom:8px; font-weight:500; }
-    .f-input { width:100%; background:#111; border:1px solid #222; border-bottom:1px solid #333; color:var(--white); padding:12px 14px; font-size:13px; outline:none; transition:border-color 0.3s; font-family:'Space Grotesk',sans-serif; margin-bottom:12px; }
-    .f-input:focus { border-color:var(--red); }
-    .f-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-
-    footer { background:#080808; border-top:1px solid #161616; }
-    .ft { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:40px; padding:60px 24px; max-width:1200px; margin:0 auto; border-bottom:1px solid #111; }
-    .ft-logo { font-family:'Bebas Neue',sans-serif; font-size:24px; letter-spacing:6px; margin-bottom:12px; }
-    .ft-logo span { color:var(--red); }
-    .ft-brand p { color:var(--gray); font-size:13px; line-height:1.8; }
-    .ft-col h4 { font-size:10px; letter-spacing:4px; text-transform:uppercase; color:var(--red); margin-bottom:18px; font-weight:600; }
-    .ft-col a,.ft-col p { display:block; color:var(--gray); font-size:13px; margin-bottom:10px; text-decoration:none; transition:color 0.2s; }
-    .ft-col a:hover { color:var(--white); }
-    .ft-bottom { padding:18px 24px; display:flex; justify-content:space-between; align-items:center; max-width:1200px; margin:0 auto; flex-wrap:wrap; gap:8px; }
-    .ft-bottom p { color:#333; font-size:11px; letter-spacing:1px; }
-
-    @media(max-width:768px) {
-      .nav-links,.btn-nav { display:none; }
-      .hamburger { display:block; }
-      .hero { grid-template-columns:1fr; }
-      .hero-right { display:none; }
-      .hero-left { padding:80px 24px 100px; justify-content:center; }
-      .hero-num { font-size:140px; }
-      .hero-stats { grid-template-columns:1fr 1fr; }
-      .ab-grid,.bk-grid { grid-template-columns:1fr; }
-      .ab-img-stack { height:320px; }
-      .sv-row { grid-template-columns:48px 1fr; }
-      .sv-desc,.sv-meta { display:none; }
-      .tm-grid { grid-template-columns:1fr 1fr; }
-      .rv-grid { grid-template-columns:1fr; }
-      .fq-grid { grid-template-columns:1fr; }
-      .ft { grid-template-columns:1fr 1fr; gap:24px; }
-      .f-row { grid-template-columns:1fr; }
+    /* ── LEFT PANEL — dark navy ──────────────── */
+    .panel {
+      position:fixed; top:0; left:0;
+      width:320px; height:100vh;
+      background:var(--navy);
+      display:flex; flex-direction:column;
+      padding:32px 28px;
+      z-index:100; overflow:hidden;
     }
-    @media(max-width:480px) {
-      .tm-grid { grid-template-columns:1fr; }
+    .panel::before {
+      content:'';
+      position:absolute; top:0; right:0;
+      width:1px; height:100%;
+      background:linear-gradient(to bottom,transparent,var(--blue),transparent);
+    }
+    .panel::after {
+      content:'APEX';
+      position:absolute; bottom:-30px; left:-16px;
+      font-family:'Syne',sans-serif; font-size:140px; font-weight:800;
+      color:rgba(255,255,255,0.03); line-height:1;
+      letter-spacing:-6px; pointer-events:none; user-select:none;
+      white-space:nowrap;
+    }
+
+    .panel-wordmark {
+      font-size:10px; font-weight:700;
+      letter-spacing:5px; text-transform:uppercase;
+      color:var(--light); margin-bottom:44px;
+    }
+    .panel-wordmark span { color:var(--blue); }
+
+    .panel-name {
+      font-family:'Syne',sans-serif;
+      font-size:40px; font-weight:800;
+      line-height:0.95; letter-spacing:0px;
+      color:#F8FAFC; margin-bottom:18px;
+      overflow:visible;
+    }
+    .panel-name em { color:var(--blue); font-style:normal; display:block; }
+
+    .panel-tagline {
+      font-size:13px; color:var(--light);
+      line-height:1.65; max-width:220px;
+      border-left:2px solid var(--blue);
+      padding-left:12px; margin-bottom:32px;
+    }
+
+    .panel-phone {
+      display:flex; align-items:center; gap:12px;
+      text-decoration:none; color:var(--white);
+      margin-bottom:4px;
+      padding:12px 14px;
+      background:rgba(37,99,235,0.12);
+      border:1px solid rgba(37,99,235,0.25);
+      transition:background .2s;
+    }
+    .panel-phone:hover { background:rgba(37,99,235,0.22); }
+    .panel-phone-num { font-size:17px; font-weight:700; letter-spacing:-0.3px; }
+    .panel-phone-label {
+      font-size:10px; color:var(--light);
+      letter-spacing:2px; text-transform:uppercase;
+      margin-bottom:24px; padding-left:4px;
+    }
+
+    .panel-certs { display:flex; gap:5px; flex-wrap:wrap; margin-bottom:auto; }
+    .cert {
+      border:1px solid rgba(148,163,184,0.35); padding:4px 8px;
+      font-size:9px; font-weight:700; letter-spacing:1px;
+      text-transform:uppercase; color:var(--light);
+    }
+    .cert.hi { border-color:var(--blue); color:var(--blue); }
+
+    .panel-nav {
+      display:flex; flex-direction:column;
+      margin-top:32px; margin-bottom:20px;
+      border-top:1px solid var(--navy2);
+      padding-top:20px;
+    }
+    .panel-nav a {
+      font-size:11px; font-weight:500;
+      letter-spacing:2px; text-transform:uppercase;
+      color:var(--light); text-decoration:none;
+      padding:7px 0;
+      transition:color .2s, padding-left .2s;
+      display:flex; align-items:center; gap:8px;
+    }
+    .panel-nav a::before { content:''; width:0; height:1px; background:var(--blue); transition:width .2s; flex-shrink:0; }
+    .panel-nav a:hover { color:var(--white); padding-left:2px; }
+    .panel-nav a:hover::before { width:16px; }
+
+    .panel-cta {
+      display:block; background:var(--blue); color:#fff;
+      padding:14px 20px; text-align:center;
+      font-size:11px; font-weight:700;
+      letter-spacing:3px; text-transform:uppercase;
+      text-decoration:none; transition:background .2s;
+    }
+    .panel-cta:hover { background:var(--blue3); }
+
+    .panel-lang { display:flex; gap:10px; align-items:center; margin-top:16px; }
+    .panel-lang button {
+      background:none; border:none;
+      font-size:11px; font-weight:700; color:var(--light);
+      cursor:pointer; font-family:'Inter',sans-serif;
+      padding:0; transition:color .2s;
+    }
+    .panel-lang button.active,.panel-lang button:hover { color:var(--blue); }
+    .panel-lang span { color:var(--navy3); }
+
+    /* ── RIGHT CONTENT ────────────────────────── */
+    .content { margin-left:320px; flex:1; }
+
+    .section {
+      padding:64px 56px;
+      border-bottom:1px solid var(--border);
+      background:var(--white);
+      position:relative;
+    }
+    .section.alt { background:var(--off); }
+    .section.dark {
+      background:var(--navy); color:var(--white);
+    }
+    .section.blue-bg {
+      background:var(--blue2); color:var(--white);
+    }
+
+    .s-eye {
+      font-size:10px; font-weight:700;
+      letter-spacing:5px; text-transform:uppercase;
+      color:var(--blue); margin-bottom:10px;
+      display:flex; align-items:center; gap:10px;
+    }
+    .section.dark .s-eye { color:#60A5FA; }
+    .s-eye::before { content:''; width:18px; height:2px; background:currentColor; flex-shrink:0; }
+    .s-title {
+      font-family:'Syne',sans-serif;
+      font-size:clamp(28px,2.8vw,42px);
+      font-weight:800; line-height:1.02;
+      letter-spacing:-0.5px; margin-bottom:12px;
+    }
+    .s-sub { font-size:14px; color:#4A5F72; line-height:1.8; max-width:520px; }
+    .section.dark .s-sub { color:var(--light); }
+
+    /* Services */
+    .sv-list { margin-top:36px; }
+    .sv-row {
+      display:grid; grid-template-columns:52px 1fr max-content;
+      gap:20px; align-items:center;
+      padding:20px 16px; margin:0 -16px;
+      border-top:1px solid var(--border);
+      cursor:pointer;
+      transition:background .15s, border-left .15s;
+      border-left:3px solid transparent;
+    }
+    .sv-row:last-child { border-bottom:1px solid var(--border); }
+    .sv-row:hover { background:var(--off); border-left-color:var(--blue); }
+    .sv-idx {
+      font-family:'Syne',sans-serif;
+      font-size:22px; font-weight:800;
+      color:#9BAFC4; line-height:1;
+      transition:color .15s;
+    }
+    .sv-row:hover .sv-idx { color:var(--blue); }
+    .sv-name { font-size:15px; font-weight:600; margin-bottom:3px; color:#1E293B; }
+    .sv-desc { font-size:12px; color:#52687A; }
+    .sv-right { text-align:right; }
+    .sv-price { font-size:16px; font-weight:700; color:var(--blue); }
+    .sv-time { font-size:11px; color:#6B8399; margin-top:2px; }
+
+    /* Stats banner */
+    .stats-banner {
+      display:grid; grid-template-columns:repeat(4,1fr);
+      background:var(--navy); color:var(--white);
+    }
+    .stat-item {
+      padding:28px 24px;
+      border-right:1px solid var(--navy2);
+      position:relative;
+    }
+    .stat-item:last-child { border-right:none; }
+    .stat-n {
+      font-family:'Syne',sans-serif;
+      font-size:40px; font-weight:800; line-height:1;
+      color:var(--blue); margin-bottom:6px;
+    }
+    .stat-l { font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--navy3); }
+
+    /* About */
+    .ab-grid { display:grid; grid-template-columns:1fr 1fr; gap:48px; margin-top:40px; align-items:start; }
+    .ab-text p { font-size:14px; color:#4A5F72; line-height:1.9; margin-bottom:14px; }
+    .ab-stats {
+      display:grid; grid-template-columns:repeat(4,1fr);
+      margin-top:32px;
+      background:var(--navy); border-radius:2px;
+      overflow:hidden;
+    }
+    .ab-stat {
+      padding:20px 18px;
+      border-right:1px solid rgba(255,255,255,0.06);
+      position:relative;
+    }
+    .ab-stat:last-child { border-right:none; }
+    .ab-stat::before {
+      content:''; position:absolute; top:0; left:0;
+      width:3px; height:100%; background:var(--blue);
+    }
+    .ab-stat .n {
+      font-family:'Syne',sans-serif; font-size:26px; font-weight:800;
+      color:var(--blue); line-height:1; margin-bottom:5px;
+    }
+    .ab-stat .l {
+      font-size:10px; font-weight:700; letter-spacing:2px;
+      text-transform:uppercase; color:#94A3B8;
+    }
+    .ab-certs { display:flex; flex-direction:column; gap:8px; }
+    .ab-cert {
+      display:flex; align-items:center; gap:14px;
+      padding:14px 16px;
+      background:var(--navy2);
+      border-left:3px solid var(--blue);
+    }
+    .ab-cert-icon { width:36px; height:36px; background:rgba(37,99,235,.2); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .ab-cert h4 { font-size:13px; font-weight:600; color:var(--white); margin-bottom:2px; }
+    .ab-cert p { font-size:11px; color:var(--light); }
+
+    /* Team */
+    .tm-grid { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--border); margin-top:36px; }
+    .tm-card {
+      background:var(--white); padding:28px;
+      transition:background .2s;
+      border-top:3px solid transparent;
+    }
+    .tm-card:hover { background:var(--off); border-top-color:var(--blue); }
+    .tm-num { font-family:'Syne',sans-serif; font-size:36px; font-weight:800; color:#9BAFC4; margin-bottom:12px; line-height:1; }
+    .tm-card:hover .tm-num { color:var(--blue); }
+    .tm-name { font-size:17px; font-weight:700; margin-bottom:4px; color:#1E293B; }
+    .tm-role { font-size:11px; color:var(--blue); font-weight:600; letter-spacing:1.5px; text-transform:uppercase; margin-bottom:6px; }
+    .tm-exp { font-size:12px; color:#52687A; }
+
+    /* Reviews */
+    .rv-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:1px; background:var(--border); margin-top:36px; }
+    .rv-card { background:var(--white); padding:28px; }
+    .rv-card.feat { background:var(--blue2); color:#fff; }
+    .rv-stars { color:var(--gold); letter-spacing:3px; font-size:13px; margin-bottom:14px; }
+    .rv-text { font-size:13px; line-height:1.8; margin-bottom:18px; font-style:italic; color:#4A5F72; }
+    .rv-card.feat .rv-text { color:rgba(255,255,255,.85); }
+    .rv-name { font-size:13px; font-weight:700; color:#1E293B; }
+    .rv-card.feat .rv-name { color:#fff; }
+    .rv-car { font-size:11px; color:#6B8399; margin-top:2px; }
+    .rv-card.feat .rv-car { color:rgba(255,255,255,.55); }
+
+    /* FAQ */
+    .fq-list { margin-top:36px; }
+    .fq-item { border-bottom:1px solid var(--border); }
+    .fq-q { display:flex; justify-content:space-between; align-items:center; padding:18px 0; cursor:pointer; }
+    .fq-q h4 { font-size:14px; font-weight:500; }
+    .fq-plus { color:var(--blue); font-size:22px; transition:transform .3s; }
+    .fq-item.open .fq-plus { transform:rotate(45deg); }
+    .fq-a { max-height:0; overflow:hidden; transition:max-height .4s; }
+    .fq-item.open .fq-a { max-height:120px; }
+    .fq-a p { padding-bottom:16px; font-size:13px; color:var(--gray); line-height:1.8; }
+
+    /* Booking */
+    .bk-grid { display:grid; grid-template-columns:1fr 1fr; gap:48px; margin-top:36px; align-items:start; }
+    .bk-info { display:flex; flex-direction:column; gap:14px; }
+    .bk-item { display:flex; gap:14px; align-items:flex-start; }
+    .bk-icon { width:36px; height:36px; background:var(--blue-light); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .bk-lbl { font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--light); margin-bottom:3px; }
+    .bk-val { font-size:14px; font-weight:500; }
+    .f-lbl { display:block; font-size:10px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:var(--gray); margin-bottom:6px; }
+    .f-in {
+      width:100%; border:1px solid var(--border); background:var(--white);
+      padding:11px 13px; font-size:13px; font-family:'Inter',sans-serif;
+      color:var(--black); outline:none; transition:border-color .2s; margin-bottom:12px;
+    }
+    .f-in:focus { border-color:var(--blue); }
+    .f-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    .btn-book {
+      width:100%; background:var(--blue); color:#fff; border:none; cursor:pointer;
+      padding:14px 24px; font-size:11px; font-weight:700;
+      letter-spacing:3px; text-transform:uppercase;
+      font-family:'Inter',sans-serif; transition:background .2s;
+    }
+    .btn-book:hover { background:var(--blue2); }
+
+    /* Footer */
+    footer { background:var(--black); color:#fff; padding:48px 60px; margin-left:0; }
+    .ft { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:40px; margin-bottom:36px; }
+    .ft-logo { font-family:'Syne',sans-serif; font-size:20px; font-weight:800; letter-spacing:1px; margin-bottom:10px; }
+    .ft-logo span { color:var(--blue); }
+    .ft-desc { font-size:13px; color:#6B7280; line-height:1.7; }
+    .ft-col h4 { font-size:10px; letter-spacing:3px; text-transform:uppercase; color:#374151; margin-bottom:14px; }
+    .ft-col a,.ft-col p { display:block; font-size:13px; color:#9CA3AF; text-decoration:none; margin-bottom:8px; transition:color .2s; }
+    .ft-col a:hover { color:#fff; }
+    .ft-bottom { border-top:1px solid #1F2937; padding-top:20px; display:flex; justify-content:space-between; font-size:11px; color:#374151; flex-wrap:wrap; gap:8px; }
+
+    /* Reveal animation */
+    .rv { opacity:0; transform:translateY(20px); transition:opacity .6s, transform .6s; }
+    .rv.on { opacity:1; transform:none; }
+
+    /* Mobile */
+    .mob-bar { display:none; }
+    @media(max-width:900px) {
+      body { overflow-x:hidden; }
+      .panel { display:none; }
+      .content { margin-left:0; }
+      .section { padding:48px 20px; }
+      .ab-grid,.bk-grid { grid-template-columns:1fr; }
+      .rv-grid { grid-template-columns:1fr; }
+      .ft { grid-template-columns:1fr 1fr; }
+      footer { padding:48px 20px; }
+      .accent-bar { padding:10px 20px !important; }
+      .accent-bar > div:first-child > span:nth-child(n+5) { display:none; }
+      .mob-bar {
+        display:flex; position:fixed; top:0; left:0; right:0; z-index:200;
+        background:var(--navy); border-bottom:1px solid rgba(37,99,235,0.3);
+        align-items:center; justify-content:space-between;
+        padding:12px 20px; height:54px;
+      }
+      .mob-logo { font-family:'Syne',sans-serif; font-size:15px; font-weight:800; letter-spacing:2px; color:#F8FAFC; }
+      .mob-logo span { color:var(--blue); }
+      .mob-cta { background:var(--blue); color:#fff; padding:8px 16px; font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; text-decoration:none; }
+      .content { padding-top:54px; }
+      .stats-banner { grid-template-columns:1fr 1fr; }
+      .ab-stats { grid-template-columns:1fr 1fr; }
+    }
+    @media(max-width:600px) {
+      .tm-grid,.f-row { grid-template-columns:1fr; }
       .ft { grid-template-columns:1fr; }
-      .hero-stats { grid-template-columns:1fr 1fr; }
+      .sv-row { grid-template-columns:36px 1fr; }
+      .sv-right { display:none; }
+      .rv-grid { grid-template-columns:1fr; }
     }
   </style>
 </head>
 <body>
 
-<div class="loader" id="loader">
-  <div class="loader-inner">
-    <div class="loader-cross"></div>
-    <div class="loader-word">APEX <span>MOTOR</span></div>
-  </div>
+<!-- Mobile bar -->
+<div class="mob-bar">
+  <div class="mob-logo">APEX <span>MOTOR</span></div>
+  <a href="#booking" class="mob-cta" data-i18n="n_book">Book Service</a>
 </div>
 
-<nav id="nav">
-  <div class="nav-inner">
-    <div class="nav-logo">APEX <span>MOTOR</span></div>
-    <div class="nav-links">
+<div class="page">
+
+  <!-- ── LEFT PANEL ─────────────────────────────── -->
+  <aside class="panel">
+    <div class="panel-wordmark">Apex <span>Motor</span></div>
+
+    <div>
+      <div class="panel-name">APEX<em>MOTOR</em></div>
+      <p class="panel-tagline" data-i18n="h_tag">Precision automotive engineering for drivers who demand the absolute best.</p>
+    </div>
+
+    <a href="tel:+493012345678" class="panel-phone">
+      <div class="panel-phone-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1D4ED8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.77 12a19.79 19.79 0 0 1-3-8.59A2 2 0 0 1 3.77 1.18h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6.1 6.1l1.07-1.07a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      </div>
+      <span class="panel-phone-num">+49 30 123 456</span>
+    </a>
+    <div class="panel-phone-label" data-i18n="ph_label">Call to book a service</div>
+
+    <div class="panel-certs">
+      <div class="cert hi">ISO 9001</div>
+      <div class="cert">TÜV Cert.</div>
+      <div class="cert">Bosch ASC</div>
+      <div class="cert">BMW Partner</div>
+    </div>
+
+    <nav class="panel-nav">
       <a href="#services" data-i18n="n_s">Services</a>
       <a href="#about" data-i18n="n_a">About</a>
       <a href="#team" data-i18n="n_t">Team</a>
       <a href="#reviews" data-i18n="n_r">Reviews</a>
       <a href="#faq">FAQ</a>
       <a href="#booking" data-i18n="n_b">Booking</a>
-    </div>
-    <div class="nav-right">
-      <div style="display:flex;gap:4px">
-        <button class="lang-btn active" onclick="setLang('en',this)">EN</button>
-        <button class="lang-btn" onclick="setLang('de',this)">DE</button>
-        <button class="lang-btn" onclick="setLang('uk',this)">UK</button>
-      </div>
-      <a href="#booking" class="btn-nav" data-i18n="n_book">Book Now</a>
-      <button class="hamburger" onclick="toggleMenu()">☰</button>
-    </div>
-  </div>
-  <div class="mobile-menu" id="mobileMenu">
-    <a href="#services" onclick="toggleMenu()" data-i18n="n_s">Services</a>
-    <a href="#about" onclick="toggleMenu()" data-i18n="n_a">About</a>
-    <a href="#team" onclick="toggleMenu()" data-i18n="n_t">Team</a>
-    <a href="#reviews" onclick="toggleMenu()" data-i18n="n_r">Reviews</a>
-    <a href="#faq" onclick="toggleMenu()">FAQ</a>
-    <a href="#booking" onclick="toggleMenu()" data-i18n="n_b">Booking</a>
-    <a href="#booking" onclick="toggleMenu()" data-i18n="n_book">Book Now →</a>
-  </div>
-</nav>
+    </nav>
 
-<section class="hero">
-  <div class="hero-left">
-    <div class="hero-num">01</div>
-    <div class="hero-tag" data-i18n="h_tag">Elite Performance Service</div>
-    <h1 data-i18n="h_title">APEX<br>MOTOR<br><em>SERVICE</em></h1>
-    <p class="hero-desc" data-i18n="h_desc">Precision automotive engineering for drivers who demand the absolute best. Trusted by racing teams since 2009.</p>
-    <div class="hero-btns">
-      <a href="#booking" class="btn-red" data-i18n="h_btn1">Book Service</a>
-      <a href="#services" class="btn-line" data-i18n="h_btn2">View Services</a>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;padding:10px 14px;background:var(--blue-bg);border:1px solid var(--blue-light);">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <span style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--blue)">Trusted since 2009 · Berlin</span>
     </div>
-  </div>
-  <div class="hero-right">
-    <img src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=1200" alt="Performance Car">
-  </div>
-  <div class="hero-stats">
-    <div class="hero-stat"><div class="n">15+</div><div class="l" data-i18n="st_y">Years</div></div>
-    <div class="hero-stat"><div class="n">8K+</div><div class="l" data-i18n="st_c">Clients</div></div>
-    <div class="hero-stat"><div class="n">12</div><div class="l" data-i18n="st_t">Technicians</div></div>
-    <div class="hero-stat"><div class="n">99%</div><div class="l" data-i18n="st_r">Satisfaction</div></div>
-  </div>
-</section>
+    <a href="#booking" class="panel-cta" data-i18n="n_book">Book a Service</a>
 
-<div class="ticker">
-  <div class="ticker-inner">
-    <span class="ticker-item" data-i18n="tk1">Engine Diagnostics</span><span class="ticker-item">—</span>
-    <span class="ticker-item" data-i18n="tk2">Performance Tuning</span><span class="ticker-item">—</span>
-    <span class="ticker-item" data-i18n="tk3">Tire Service</span><span class="ticker-item">—</span>
-    <span class="ticker-item" data-i18n="tk4">Brake Systems</span><span class="ticker-item">—</span>
-    <span class="ticker-item" data-i18n="tk5">AC Service</span><span class="ticker-item">—</span>
-    <span class="ticker-item" data-i18n="tk6">Body & Paint</span><span class="ticker-item">—</span>
-    <span class="ticker-item" data-i18n="tk1">Engine Diagnostics</span><span class="ticker-item">—</span>
-    <span class="ticker-item" data-i18n="tk2">Performance Tuning</span><span class="ticker-item">—</span>
-    <span class="ticker-item" data-i18n="tk3">Tire Service</span><span class="ticker-item">—</span>
-    <span class="ticker-item" data-i18n="tk4">Brake Systems</span><span class="ticker-item">—</span>
-    <span class="ticker-item" data-i18n="tk5">AC Service</span><span class="ticker-item">—</span>
-    <span class="ticker-item" data-i18n="tk6">Body & Paint</span><span class="ticker-item">—</span>
-  </div>
-</div>
-
-<div class="sv-bg" id="services">
-  <div class="wrap">
-    <div class="rv">
-      <div class="s-label" data-i18n="sv_tag">What We Do</div>
-      <h2 class="s-head" data-i18n="sv_head">OUR <em>SERVICES</em></h2>
-      <p class="s-sub" data-i18n="sv_sub">Hover to explore. Click to book.</p>
+    <div class="panel-lang">
+      <button class="active" onclick="setLang('en',this)">EN</button>
+      <span>·</span>
+      <button onclick="setLang('de',this)">DE</button>
+      <span>·</span>
+      <button onclick="setLang('uk',this)">UK</button>
     </div>
-    <div class="sv-list rv">
-      <div class="sv-row" onclick="window.location='#booking'">
-        <div class="sv-index">01</div>
-        <div class="sv-name" data-i18n="sv1">Engine Diagnostics</div>
-        <div class="sv-desc" data-i18n="sv1_d">Full computer diagnostics. AI-powered fault detection.</div>
-        <div class="sv-meta"><div class="sv-price" data-i18n="sv1_p">from €49</div><div class="sv-time" data-i18n="sv1_t">1–2 hrs</div></div>
-      </div>
-      <div class="sv-row" onclick="window.location='#booking'">
-        <div class="sv-index">02</div>
-        <div class="sv-name" data-i18n="sv2">Performance Tuning</div>
-        <div class="sv-desc" data-i18n="sv2_d">ECU remapping. Up to +80hp on eligible platforms.</div>
-        <div class="sv-meta"><div class="sv-price" data-i18n="sv2_p">from €299</div><div class="sv-time" data-i18n="sv2_t">3–6 hrs</div></div>
-      </div>
-      <div class="sv-row" onclick="window.location='#booking'">
-        <div class="sv-index">03</div>
-        <div class="sv-name" data-i18n="sv3">Tire Service</div>
-        <div class="sv-desc" data-i18n="sv3_d">Precision fitting, laser balancing and alignment.</div>
-        <div class="sv-meta"><div class="sv-price" data-i18n="sv3_p">from €29</div><div class="sv-time" data-i18n="sv3_t">30–60 min</div></div>
-      </div>
-      <div class="sv-row" onclick="window.location='#booking'">
-        <div class="sv-index">04</div>
-        <div class="sv-name" data-i18n="sv4">Brake Systems</div>
-        <div class="sv-desc" data-i18n="sv4_d">Full brake overhaul and safety certification.</div>
-        <div class="sv-meta"><div class="sv-price" data-i18n="sv4_p">from €79</div><div class="sv-time" data-i18n="sv4_t">1–3 hrs</div></div>
-      </div>
-      <div class="sv-row" onclick="window.location='#booking'">
-        <div class="sv-index">05</div>
-        <div class="sv-name" data-i18n="sv5">AC Service</div>
-        <div class="sv-desc" data-i18n="sv5_d">Climate recharge, leak detection and compressor overhaul.</div>
-        <div class="sv-meta"><div class="sv-price" data-i18n="sv5_p">from €59</div><div class="sv-time" data-i18n="sv5_t">1–2 hrs</div></div>
-      </div>
-      <div class="sv-row" onclick="window.location='#booking'">
-        <div class="sv-index">06</div>
-        <div class="sv-name" data-i18n="sv6">Body & Paint</div>
-        <div class="sv-desc" data-i18n="sv6_d">Bodywork, paint correction and ceramic coating.</div>
-        <div class="sv-meta"><div class="sv-price" data-i18n="sv6_p">from €199</div><div class="sv-time" data-i18n="sv6_t">1–5 days</div></div>
-      </div>
-    </div>
-  </div>
-</div>
+  </aside>
 
-<div class="ab-bg" id="about">
-  <div class="wrap">
-    <div class="ab-grid">
-      <div class="rl">
-        <div class="ab-img-stack">
-          <img class="ab-img1" src="https://images.unsplash.com/photo-1530046339160-ce3e530c7d2f?w=800" alt="">
-          <img class="ab-img2" src="https://images.unsplash.com/photo-1625047509168-a7026f36de04?w=600" alt="">
-          <div class="ab-badge"><div class="n">2009</div><div class="l" data-i18n="ab_est">Est.</div></div>
+  <!-- ── RIGHT CONTENT ──────────────────────────── -->
+  <main class="content">
+
+    <!-- Top accent bar -->
+    <div class="accent-bar" style="background:var(--blue);padding:11px 56px;display:flex;align-items:center;justify-content:space-between;gap:24px;overflow:hidden;position:relative;">
+      <div style="display:flex;gap:24px;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.7);white-space:nowrap;overflow:hidden;">
+        <span>Engine Diagnostics</span><span style="color:rgba(255,255,255,.3)">—</span>
+        <span>Performance Tuning</span><span style="color:rgba(255,255,255,.3)">—</span>
+        <span>Tire Service</span><span style="color:rgba(255,255,255,.3)">—</span>
+        <span>Brake Systems</span><span style="color:rgba(255,255,255,.3)">—</span>
+        <span>AC Service</span><span style="color:rgba(255,255,255,.3)">—</span>
+        <span>Body &amp; Paint</span>
+      </div>
+      <div style="font-size:11px;font-weight:700;letter-spacing:1px;color:#fff;flex-shrink:0;">MON–SAT · BERLIN</div>
+    </div>
+
+    <!-- Services -->
+    <section class="section" id="services">
+      <div class="rv">
+        <div class="s-eye" data-i18n="sv_tag">What We Do</div>
+        <h2 class="s-title" data-i18n="sv_head">Our Services</h2>
+        <p class="s-sub" data-i18n="sv_sub">Click any service to book an appointment.</p>
+      </div>
+      <div class="sv-list rv">
+        <div class="sv-row" onclick="document.querySelector('#booking').scrollIntoView({behavior:'smooth'})">
+          <div class="sv-idx">01</div>
+          <div><div class="sv-name" data-i18n="sv1">Engine Diagnostics</div><div class="sv-desc" data-i18n="sv1_d">Full computer diagnostics. AI-powered fault detection.</div></div>
+          <div class="sv-right"><div class="sv-price" data-i18n="sv1_p">from €49</div><div class="sv-time" data-i18n="sv1_t">1–2 hrs</div></div>
+        </div>
+        <div class="sv-row" onclick="document.querySelector('#booking').scrollIntoView({behavior:'smooth'})">
+          <div class="sv-idx">02</div>
+          <div><div class="sv-name" data-i18n="sv2">Performance Tuning</div><div class="sv-desc" data-i18n="sv2_d">ECU remapping. Up to +80hp on eligible platforms.</div></div>
+          <div class="sv-right"><div class="sv-price" data-i18n="sv2_p">from €299</div><div class="sv-time" data-i18n="sv2_t">3–6 hrs</div></div>
+        </div>
+        <div class="sv-row" onclick="document.querySelector('#booking').scrollIntoView({behavior:'smooth'})">
+          <div class="sv-idx">03</div>
+          <div><div class="sv-name" data-i18n="sv3">Tire Service</div><div class="sv-desc" data-i18n="sv3_d">Precision fitting, laser balancing and alignment.</div></div>
+          <div class="sv-right"><div class="sv-price" data-i18n="sv3_p">from €29</div><div class="sv-time" data-i18n="sv3_t">30–60 min</div></div>
+        </div>
+        <div class="sv-row" onclick="document.querySelector('#booking').scrollIntoView({behavior:'smooth'})">
+          <div class="sv-idx">04</div>
+          <div><div class="sv-name" data-i18n="sv4">Brake Systems</div><div class="sv-desc" data-i18n="sv4_d">Full brake overhaul and safety certification.</div></div>
+          <div class="sv-right"><div class="sv-price" data-i18n="sv4_p">from €79</div><div class="sv-time" data-i18n="sv4_t">1–3 hrs</div></div>
+        </div>
+        <div class="sv-row" onclick="document.querySelector('#booking').scrollIntoView({behavior:'smooth'})">
+          <div class="sv-idx">05</div>
+          <div><div class="sv-name" data-i18n="sv5">AC Service</div><div class="sv-desc" data-i18n="sv5_d">Climate recharge, leak detection and compressor overhaul.</div></div>
+          <div class="sv-right"><div class="sv-price" data-i18n="sv5_p">from €59</div><div class="sv-time" data-i18n="sv5_t">1–2 hrs</div></div>
+        </div>
+        <div class="sv-row" onclick="document.querySelector('#booking').scrollIntoView({behavior:'smooth'})">
+          <div class="sv-idx">06</div>
+          <div><div class="sv-name" data-i18n="sv6">Body &amp; Paint</div><div class="sv-desc" data-i18n="sv6_d">Bodywork, paint correction and ceramic coating.</div></div>
+          <div class="sv-right"><div class="sv-price" data-i18n="sv6_p">from €199</div><div class="sv-time" data-i18n="sv6_t">1–5 days</div></div>
         </div>
       </div>
-      <div class="rr">
+    </section>
+
+    <!-- About -->
+    <section class="section alt" id="about">
+      <div class="rv">
+        <div class="s-eye" data-i18n="ab_tag">About Us</div>
+        <h2 class="s-title" data-i18n="ab_head">Built on Precision</h2>
+      </div>
+      <div class="ab-grid rv">
         <div class="ab-text">
-          <div class="s-label" data-i18n="ab_tag">About Us</div>
-          <h2 class="s-head" data-i18n="ab_head">BUILT ON<br><em>PRECISION</em></h2>
-          <div class="red-bar"></div>
           <p data-i18n="ab_p1">APEX MOTOR was founded by engineers who believed automotive service could be more precise, more passionate, more personal.</p>
           <p data-i18n="ab_p2">Since 2009 we have serviced over 8,000 vehicles — from daily drivers to Le Mans-spec race cars.</p>
-          <div class="ab-grid-stats">
+          <div class="ab-stats">
             <div class="ab-stat"><div class="n">15+</div><div class="l" data-i18n="st_y">Years</div></div>
             <div class="ab-stat"><div class="n">8K+</div><div class="l" data-i18n="st_c">Clients</div></div>
             <div class="ab-stat"><div class="n">12</div><div class="l" data-i18n="st_t">Engineers</div></div>
             <div class="ab-stat"><div class="n">99%</div><div class="l" data-i18n="st_r">Rating</div></div>
           </div>
         </div>
+        <div class="ab-certs">
+          <div class="ab-cert">
+            <div class="ab-cert-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1D4ED8" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+            <div><h4>ISO 9001:2015</h4><p>Quality Management System</p></div>
+          </div>
+          <div class="ab-cert">
+            <div class="ab-cert-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1D4ED8" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg></div>
+            <div><h4>TÜV Certified</h4><p>Technical Safety Inspection Partner</p></div>
+          </div>
+          <div class="ab-cert">
+            <div class="ab-cert-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1D4ED8" stroke-width="2" stroke-linecap="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+            <div><h4>Bosch Car Service</h4><p>Authorized Service Partner</p></div>
+          </div>
+          <div class="ab-cert">
+            <div class="ab-cert-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1D4ED8" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/></svg></div>
+            <div><h4>BMW Group Partner</h4><p>Authorized BMW Service Center</p></div>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-</div>
+    </section>
 
-<div class="tm-bg" id="team">
-  <div class="wrap">
-    <div class="rv">
-      <div class="s-label" data-i18n="tm_tag">The Engineers</div>
-      <h2 class="s-head" data-i18n="tm_head">OUR <em>TEAM</em></h2>
-    </div>
-    <div class="tm-grid rv">
-      <div class="tm-card"><div class="tm-num">01</div><div class="tm-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#e63027" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg></div><div class="tm-name">Michael Wagner</div><div class="tm-role" data-i18n="tm1_r">Chief Engineer</div><div class="tm-exp" data-i18n="tm1_e">18 years</div></div>
-      <div class="tm-card"><div class="tm-num">02</div><div class="tm-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#e63027" stroke-width="1.5" stroke-linecap="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div><div class="tm-name">Stefan Koch</div><div class="tm-role" data-i18n="tm2_r">Diagnostics Lead</div><div class="tm-exp" data-i18n="tm2_e">12 years</div></div>
-      <div class="tm-card"><div class="tm-num">03</div><div class="tm-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#e63027" stroke-width="1.5" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div><div class="tm-name">Hans Mueller</div><div class="tm-role" data-i18n="tm3_r">Performance</div><div class="tm-exp" data-i18n="tm3_e">10 years</div></div>
-      <div class="tm-card"><div class="tm-num">04</div><div class="tm-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#e63027" stroke-width="1.5" stroke-linecap="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></div><div class="tm-name">Klaus Bauer</div><div class="tm-role" data-i18n="tm4_r">Body & Paint</div><div class="tm-exp" data-i18n="tm4_e">15 years</div></div>
-    </div>
-  </div>
-</div>
-
-<div class="rv-bg" id="reviews">
-  <div class="wrap">
-    <div class="rv">
-      <div class="s-label" data-i18n="rv_tag">Testimonials</div>
-      <h2 class="s-head" data-i18n="rv_head">CLIENT <em>STORIES</em></h2>
-    </div>
-    <div class="rv-grid rv">
-      <div class="rv-card featured"><div class="rv-quote">"</div><div class="rv-stars">★★★★★</div><p class="rv-text" data-i18n="rv1">"APEX diagnosed a fault in 20 minutes that three dealerships missed over two months."</p><div class="rv-author"><div class="rv-ava">T</div><div><div class="rv-name">Thomas B.</div><div class="rv-car">BMW M4 Competition</div></div></div></div>
-      <div class="rv-card"><div class="rv-quote">"</div><div class="rv-stars">★★★★★</div><p class="rv-text" data-i18n="rv2">"The ECU remap gave my RS4 a completely different character."</p><div class="rv-author"><div class="rv-ava">A</div><div><div class="rv-name">Anna K.</div><div class="rv-car">Audi RS4 B9</div></div></div></div>
-      <div class="rv-card"><div class="rv-quote">"</div><div class="rv-stars">★★★★★</div><p class="rv-text" data-i18n="rv3">"Ceramic coating is flawless. My 911 looks better than the day I bought it."</p><div class="rv-author"><div class="rv-ava">M</div><div><div class="rv-name">Marco S.</div><div class="rv-car">Porsche 911 GT3</div></div></div></div>
-    </div>
-  </div>
-</div>
-
-<div class="fq-bg" id="faq">
-  <div class="wrap">
-    <div class="rv">
-      <div class="s-label" data-i18n="fq_tag">FAQ</div>
-      <h2 class="s-head" data-i18n="fq_head">COMMON <em>QUESTIONS</em></h2>
-    </div>
-    <div class="fq-grid rv">
-      <div class="fq-item"><div class="fq-q" onclick="this.parentElement.classList.toggle('open')"><h4 data-i18n="fq1_q">How long does a service take?</h4><span class="fq-plus">+</span></div><div class="fq-a"><p data-i18n="fq1_a">Standard services complete same day. Complex builds take 1–5 days.</p></div></div>
-      <div class="fq-item"><div class="fq-q" onclick="this.parentElement.classList.toggle('open')"><h4 data-i18n="fq2_q">Which brands do you service?</h4><span class="fq-plus">+</span></div><div class="fq-a"><p data-i18n="fq2_a">BMW, Mercedes-AMG, Audi RS, Porsche and all European/Japanese vehicles.</p></div></div>
-      <div class="fq-item"><div class="fq-q" onclick="this.parentElement.classList.toggle('open')"><h4 data-i18n="fq3_q">What warranty covers repairs?</h4><span class="fq-plus">+</span></div><div class="fq-a"><p data-i18n="fq3_a">12-month / 20,000km warranty on all parts and labor.</p></div></div>
-      <div class="fq-item"><div class="fq-q" onclick="this.parentElement.classList.toggle('open')"><h4 data-i18n="fq4_q">Can I get a written estimate first?</h4><span class="fq-plus">+</span></div><div class="fq-a"><p data-i18n="fq4_a">Always. No work begins without written sign-off. No hidden fees.</p></div></div>
-    </div>
-  </div>
-</div>
-
-<div class="bk-bg" id="booking">
-  <div class="wrap">
-    <div class="rv">
-      <div class="s-label" data-i18n="bk_tag">Appointment</div>
-      <h2 class="s-head" data-i18n="bk_head">BOOK YOUR <em>SERVICE</em></h2>
-    </div>
-    <div class="bk-grid">
-      <div class="bk-left rl">
-        <div class="bk-item"><div class="bk-item-icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#e63027" stroke-width="1.5" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div><div><h4 data-i18n="bk_addr">Address</h4><p data-i18n="addr">Autostraße 45, Berlin</p></div></div>
-        <div class="bk-item"><div class="bk-item-icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#e63027" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg></div><div><h4 data-i18n="bk_hrs">Hours</h4><p data-i18n="hrs">Mon–Fri: 08:00–19:00 · Sat: 09:00–16:00</p></div></div>
-        <div class="bk-item"><div class="bk-item-icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#e63027" stroke-width="1.5" stroke-linecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div><div><h4>Email</h4><p>service@apexmotor.de</p></div></div>
+    <!-- Team -->
+    <section class="section" id="team">
+      <div class="rv">
+        <div class="s-eye" data-i18n="tm_tag">The Engineers</div>
+        <h2 class="s-title" data-i18n="tm_head">Our Team</h2>
       </div>
-      <div class="rr">
+      <div class="tm-grid rv">
+        <div class="tm-card"><div class="tm-num">01 —</div><div class="tm-name">Michael Wagner</div><div class="tm-role" data-i18n="tm1_r">Chief Engineer</div><div class="tm-exp" data-i18n="tm1_e">18 years experience</div></div>
+        <div class="tm-card"><div class="tm-num">02 —</div><div class="tm-name">Stefan Koch</div><div class="tm-role" data-i18n="tm2_r">Diagnostics Lead</div><div class="tm-exp" data-i18n="tm2_e">12 years experience</div></div>
+        <div class="tm-card"><div class="tm-num">03 —</div><div class="tm-name">Hans Mueller</div><div class="tm-role" data-i18n="tm3_r">Performance Specialist</div><div class="tm-exp" data-i18n="tm3_e">10 years experience</div></div>
+        <div class="tm-card"><div class="tm-num">04 —</div><div class="tm-name">Klaus Bauer</div><div class="tm-role" data-i18n="tm4_r">Body &amp; Paint</div><div class="tm-exp" data-i18n="tm4_e">15 years experience</div></div>
+      </div>
+    </section>
+
+    <!-- Reviews -->
+    <section class="section alt" id="reviews">
+      <div class="rv">
+        <div class="s-eye" data-i18n="rv_tag">Testimonials</div>
+        <h2 class="s-title" data-i18n="rv_head">Client Stories</h2>
+      </div>
+      <div class="rv-grid rv">
+        <div class="rv-card feat">
+          <div class="rv-stars">★★★★★</div>
+          <p class="rv-text" data-i18n="rv1">"APEX diagnosed a fault in 20 minutes that three dealerships missed over two months."</p>
+          <div class="rv-name">Thomas B.</div><div class="rv-car">BMW M4 Competition</div>
+        </div>
+        <div class="rv-card">
+          <div class="rv-stars">★★★★★</div>
+          <p class="rv-text" data-i18n="rv2">"The ECU remap gave my RS4 a completely different character. Exceptional work."</p>
+          <div class="rv-name">Anna K.</div><div class="rv-car">Audi RS4 B9</div>
+        </div>
+        <div class="rv-card">
+          <div class="rv-stars">★★★★★</div>
+          <p class="rv-text" data-i18n="rv3">"Ceramic coating is flawless. My 911 looks better than the day I bought it."</p>
+          <div class="rv-name">Marco S.</div><div class="rv-car">Porsche 911 GT3</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section" id="faq">
+      <div class="rv">
+        <div class="s-eye" data-i18n="fq_tag">FAQ</div>
+        <h2 class="s-title" data-i18n="fq_head">Common Questions</h2>
+      </div>
+      <div class="fq-list rv">
+        <div class="fq-item"><div class="fq-q" onclick="this.parentElement.classList.toggle('open')"><h4 data-i18n="fq1_q">How long does a service take?</h4><span class="fq-plus">+</span></div><div class="fq-a"><p data-i18n="fq1_a">Standard services complete same day. Complex builds take 1–5 days.</p></div></div>
+        <div class="fq-item"><div class="fq-q" onclick="this.parentElement.classList.toggle('open')"><h4 data-i18n="fq2_q">Which brands do you service?</h4><span class="fq-plus">+</span></div><div class="fq-a"><p data-i18n="fq2_a">BMW, Mercedes-AMG, Audi RS, Porsche and all European/Japanese vehicles.</p></div></div>
+        <div class="fq-item"><div class="fq-q" onclick="this.parentElement.classList.toggle('open')"><h4 data-i18n="fq3_q">What warranty covers repairs?</h4><span class="fq-plus">+</span></div><div class="fq-a"><p data-i18n="fq3_a">12-month / 20,000km warranty on all parts and labor.</p></div></div>
+        <div class="fq-item"><div class="fq-q" onclick="this.parentElement.classList.toggle('open')"><h4 data-i18n="fq4_q">Can I get a written estimate first?</h4><span class="fq-plus">+</span></div><div class="fq-a"><p data-i18n="fq4_a">Always. No work begins without written sign-off. No hidden fees.</p></div></div>
+      </div>
+    </section>
+
+    <!-- Booking -->
+    <section class="section alt" id="booking">
+      <div class="rv">
+        <div class="s-eye" data-i18n="bk_tag">Appointment</div>
+        <h2 class="s-title" data-i18n="bk_head">Book Your Service</h2>
+      </div>
+      <div class="bk-grid rv">
+        <div class="bk-info">
+          <div class="bk-item">
+            <div class="bk-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1D4ED8" stroke-width="2" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+            <div><div class="bk-lbl" data-i18n="bk_addr">Address</div><div class="bk-val" data-i18n="addr">Autostraße 45, Berlin</div></div>
+          </div>
+          <div class="bk-item">
+            <div class="bk-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1D4ED8" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg></div>
+            <div><div class="bk-lbl" data-i18n="bk_hrs">Hours</div><div class="bk-val" data-i18n="hrs">Mon–Fri: 08:00–19:00 · Sat: 09:00–16:00</div></div>
+          </div>
+          <div class="bk-item">
+            <div class="bk-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1D4ED8" stroke-width="2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.77 12a19.79 19.79 0 0 1-3-8.59A2 2 0 0 1 3.77 1.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6.1 6.1l1.07-1.07a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+            <div><div class="bk-lbl">Phone</div><div class="bk-val">+49 30 123 456</div></div>
+          </div>
+          <div class="bk-item">
+            <div class="bk-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1D4ED8" stroke-width="2" stroke-linecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+            <div><div class="bk-lbl">Email</div><div class="bk-val">service@apexmotor.de</div></div>
+          </div>
+        </div>
         <form>
           <div class="f-row">
-            <div><label class="f-label" data-i18n="f_name">Your Name</label><input class="f-input" type="text" placeholder="Full Name"></div>
-            <div><label class="f-label" data-i18n="f_email">Email</label><input class="f-input" type="email" placeholder="email@domain.com"></div>
+            <div><label class="f-lbl" data-i18n="f_name">Name</label><input class="f-in" type="text" placeholder="Full Name"></div>
+            <div><label class="f-lbl" data-i18n="f_email">Email</label><input class="f-in" type="email" placeholder="email@domain.com"></div>
           </div>
-          <label class="f-label" data-i18n="f_car">Vehicle</label>
-          <input class="f-input" type="text" placeholder="Make · Model · Year">
+          <label class="f-lbl" data-i18n="f_car">Vehicle</label>
+          <input class="f-in" type="text" placeholder="Make · Model · Year">
           <div class="f-row">
-            <div><label class="f-label" data-i18n="f_date">Date</label><input class="f-input" type="date"></div>
-            <div><label class="f-label" data-i18n="f_svc">Service</label>
-              <select class="f-input">
+            <div><label class="f-lbl" data-i18n="f_date">Date</label><input class="f-in" type="date"></div>
+            <div><label class="f-lbl" data-i18n="f_svc">Service</label>
+              <select class="f-in">
                 <option data-i18n="sv1">Engine Diagnostics</option>
                 <option data-i18n="sv2">Performance Tuning</option>
                 <option data-i18n="sv3">Tire Service</option>
                 <option data-i18n="sv4">Brake Systems</option>
                 <option data-i18n="sv5">AC Service</option>
-                <option data-i18n="sv6">Body & Paint</option>
+                <option data-i18n="sv6">Body &amp; Paint</option>
               </select>
             </div>
           </div>
-          <textarea class="f-input" rows="3" placeholder="Describe the issue..." style="resize:vertical"></textarea>
-          <button type="submit" class="btn-red" style="width:100%;padding:16px;font-size:12px;letter-spacing:3px;" data-i18n="btn_confirm">CONFIRM BOOKING</button>
+          <textarea class="f-in" rows="3" placeholder="Describe the issue..." style="resize:vertical"></textarea>
+          <button type="submit" class="btn-book" data-i18n="btn_confirm">Confirm Booking</button>
         </form>
       </div>
-    </div>
-  </div>
+    </section>
+
+    <footer>
+      <div class="ft">
+        <div>
+          <div class="ft-logo">APEX <span>MOTOR</span></div>
+          <p class="ft-desc" data-i18n="ft_desc">Elite performance automotive service. Trusted since 2009.</p>
+        </div>
+        <div class="ft-col">
+          <h4 data-i18n="ft_sv">Services</h4>
+          <a href="#services" data-i18n="sv1">Engine Diagnostics</a>
+          <a href="#services" data-i18n="sv2">Performance Tuning</a>
+          <a href="#services" data-i18n="sv4">Brake Systems</a>
+          <a href="#services" data-i18n="sv6">Body &amp; Paint</a>
+        </div>
+        <div class="ft-col">
+          <h4 data-i18n="ft_co">Company</h4>
+          <a href="#about" data-i18n="n_a">About</a>
+          <a href="#team" data-i18n="n_t">Team</a>
+          <a href="#reviews" data-i18n="n_r">Reviews</a>
+          <a href="#faq">FAQ</a>
+        </div>
+        <div class="ft-col">
+          <h4 data-i18n="ft_ct">Contact</h4>
+          <p>+49 30 123 456</p>
+          <p>service@apexmotor.de</p>
+          <p data-i18n="addr">Autostraße 45, Berlin</p>
+        </div>
+      </div>
+      <div class="ft-bottom">
+        <p>© 2025 APEX MOTOR. <span data-i18n="ft_r">All rights reserved.</span></p>
+        <p data-i18n="ft_m">Built for drivers who demand more</p>
+      </div>
+    </footer>
+
+  </main>
 </div>
 
-<footer>
-  <div class="ft">
-    <div class="ft-brand"><div class="ft-logo">APEX <span>MOTOR</span></div><p data-i18n="ft_desc">Elite performance automotive service. Trusted since 2009.</p></div>
-    <div class="ft-col"><h4 data-i18n="ft_sv">Services</h4><a href="#" data-i18n="sv1">Engine Diagnostics</a><a href="#" data-i18n="sv2">Performance Tuning</a><a href="#" data-i18n="sv4">Brake Systems</a><a href="#" data-i18n="sv6">Body & Paint</a></div>
-    <div class="ft-col"><h4 data-i18n="ft_co">Company</h4><a href="#about" data-i18n="n_a">About</a><a href="#team" data-i18n="n_t">Team</a><a href="#reviews" data-i18n="n_r">Reviews</a><a href="#faq">FAQ</a></div>
-    <div class="ft-col"><h4 data-i18n="ft_ct">Contact</h4><p>service@apexmotor.de</p><p data-i18n="addr">Autostraße 45, Berlin</p><p data-i18n="hrs">Mon–Fri: 08:00–19:00</p></div>
-  </div>
-  <div class="ft-bottom"><p>© 2025 APEX MOTOR. <span data-i18n="ft_r">All rights reserved.</span></p><p data-i18n="ft_m">Built for drivers who demand more</p></div>
-</footer>
-
 <script>
-window.addEventListener('load',()=>setTimeout(()=>document.getElementById('loader').classList.add('hidden'),2000));
-window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('scrolled',window.scrollY>50));
+const obs = new IntersectionObserver(entries=>{
+  entries.forEach((e,i)=>{if(e.isIntersecting)setTimeout(()=>e.target.classList.add('on'),i*60);});
+},{threshold:0.05});
+document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
 
-function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('open'); }
-
-const obs = new IntersectionObserver((entries)=>{
-  entries.forEach((e,i)=>{ if(e.isIntersecting) setTimeout(()=>e.target.classList.add('on'),i*60); });
-},{threshold:0.08});
-document.querySelectorAll('.rv,.rl,.rr').forEach(el=>obs.observe(el));
-
-const i18n = {
-  en: {
-    n_s:"Services", n_a:"About", n_t:"Team", n_r:"Reviews", n_b:"Booking", n_book:"Book Now",
-    h_tag:"Elite Performance Service", h_title:"APEX MOTOR SERVICE",
-    h_desc:"Precision automotive engineering for drivers who demand the absolute best.",
-    h_btn1:"Book Service", h_btn2:"View Services",
-    st_y:"Years", st_c:"Clients", st_t:"Technicians", st_r:"Satisfaction",
-    tk1:"Engine Diagnostics", tk2:"Performance Tuning", tk3:"Tire Service", tk4:"Brake Systems", tk5:"AC Service", tk6:"Body & Paint",
-    sv_tag:"What We Do", sv_head:"OUR SERVICES", sv_sub:"Hover to explore. Click to book.",
-    sv1:"Engine Diagnostics", sv1_d:"Full computer diagnostics.", sv1_p:"from €49", sv1_t:"1–2 hrs",
-    sv2:"Performance Tuning", sv2_d:"ECU remapping. Up to +80hp.", sv2_p:"from €299", sv2_t:"3–6 hrs",
-    sv3:"Tire Service", sv3_d:"Precision fitting and alignment.", sv3_p:"from €29", sv3_t:"30–60 min",
-    sv4:"Brake Systems", sv4_d:"Full brake overhaul.", sv4_p:"from €79", sv4_t:"1–3 hrs",
-    sv5:"AC Service", sv5_d:"Climate recharge and repair.", sv5_p:"from €59", sv5_t:"1–2 hrs",
-    sv6:"Body & Paint", sv6_d:"Bodywork and ceramic coating.", sv6_p:"from €199", sv6_t:"1–5 days",
-    ab_tag:"About Us", ab_head:"BUILT ON PRECISION", ab_est:"Est.",
-    ab_p1:"APEX MOTOR was founded by engineers who believed automotive service could be more precise and personal.",
-    ab_p2:"Since 2009 we have serviced over 8,000 vehicles — from daily drivers to Le Mans race cars.",
-    tm_tag:"The Engineers", tm_head:"OUR TEAM",
-    tm1_r:"Chief Engineer", tm1_e:"18 years", tm2_r:"Diagnostics Lead", tm2_e:"12 years",
-    tm3_r:"Performance", tm3_e:"10 years", tm4_r:"Body & Paint", tm4_e:"15 years",
-    rv_tag:"Testimonials", rv_head:"CLIENT STORIES",
-    rv1:'"APEX diagnosed a fault in 20 minutes that three dealerships missed."',
-    rv2:'"The ECU remap gave my RS4 a completely different character."',
-    rv3:'"Ceramic coating is flawless. My 911 looks better than ever."',
-    fq_tag:"FAQ", fq_head:"COMMON QUESTIONS",
-    fq1_q:"How long does a service take?", fq1_a:"Standard services complete same day. Complex builds take 1–5 days.",
-    fq2_q:"Which brands do you service?", fq2_a:"BMW, Mercedes-AMG, Audi RS, Porsche and all European/Japanese vehicles.",
-    fq3_q:"What warranty covers repairs?", fq3_a:"12-month / 20,000km warranty on all parts and labor.",
-    fq4_q:"Can I get a written estimate first?", fq4_a:"Always. No work begins without written sign-off. No hidden fees.",
-    bk_tag:"Appointment", bk_head:"BOOK YOUR SERVICE",
-    bk_addr:"Address", bk_hrs:"Hours",
-    addr:"Autostraße 45, Berlin", hrs:"Mon–Fri: 08:00–19:00 · Sat: 09:00–16:00",
-    f_name:"Your Name", f_email:"Email", f_car:"Vehicle", f_date:"Date", f_svc:"Service",
-    btn_confirm:"CONFIRM BOOKING",
+const i18n={
+  en:{
+    h_tag:"Precision automotive engineering for drivers who demand the absolute best.",
+    ph_label:"Call to book a service",
+    n_s:"Services",n_a:"About",n_t:"Team",n_r:"Reviews",n_b:"Booking",n_book:"Book a Service",
+    sv_tag:"What We Do",sv_head:"Our Services",sv_sub:"Click any service to book an appointment.",
+    sv1:"Engine Diagnostics",sv1_d:"Full computer diagnostics. AI-powered fault detection.",sv1_p:"from €49",sv1_t:"1–2 hrs",
+    sv2:"Performance Tuning",sv2_d:"ECU remapping. Up to +80hp on eligible platforms.",sv2_p:"from €299",sv2_t:"3–6 hrs",
+    sv3:"Tire Service",sv3_d:"Precision fitting, laser balancing and alignment.",sv3_p:"from €29",sv3_t:"30–60 min",
+    sv4:"Brake Systems",sv4_d:"Full brake overhaul and safety certification.",sv4_p:"from €79",sv4_t:"1–3 hrs",
+    sv5:"AC Service",sv5_d:"Climate recharge, leak detection and compressor overhaul.",sv5_p:"from €59",sv5_t:"1–2 hrs",
+    sv6:"Body & Paint",sv6_d:"Bodywork, paint correction and ceramic coating.",sv6_p:"from €199",sv6_t:"1–5 days",
+    ab_tag:"About Us",ab_head:"Built on Precision",
+    ab_p1:"APEX MOTOR was founded by engineers who believed automotive service could be more precise, more passionate, more personal.",
+    ab_p2:"Since 2009 we have serviced over 8,000 vehicles — from daily drivers to Le Mans-spec race cars.",
+    st_y:"Years",st_c:"Clients",st_t:"Engineers",st_r:"Rating",
+    tm_tag:"The Engineers",tm_head:"Our Team",
+    tm1_r:"Chief Engineer",tm1_e:"18 years experience",tm2_r:"Diagnostics Lead",tm2_e:"12 years experience",
+    tm3_r:"Performance Specialist",tm3_e:"10 years experience",tm4_r:"Body & Paint",tm4_e:"15 years experience",
+    rv_tag:"Testimonials",rv_head:"Client Stories",
+    rv1:'"APEX diagnosed a fault in 20 minutes that three dealerships missed over two months."',
+    rv2:'"The ECU remap gave my RS4 a completely different character. Exceptional work."',
+    rv3:'"Ceramic coating is flawless. My 911 looks better than the day I bought it."',
+    fq_tag:"FAQ",fq_head:"Common Questions",
+    fq1_q:"How long does a service take?",fq1_a:"Standard services complete same day. Complex builds take 1–5 days.",
+    fq2_q:"Which brands do you service?",fq2_a:"BMW, Mercedes-AMG, Audi RS, Porsche and all European/Japanese vehicles.",
+    fq3_q:"What warranty covers repairs?",fq3_a:"12-month / 20,000km warranty on all parts and labor.",
+    fq4_q:"Can I get a written estimate first?",fq4_a:"Always. No work begins without written sign-off. No hidden fees.",
+    bk_tag:"Appointment",bk_head:"Book Your Service",bk_addr:"Address",bk_hrs:"Hours",
+    addr:"Autostraße 45, Berlin",hrs:"Mon–Fri: 08:00–19:00 · Sat: 09:00–16:00",
+    f_name:"Name",f_email:"Email",f_car:"Vehicle",f_date:"Date",f_svc:"Service",
+    btn_confirm:"Confirm Booking",
     ft_desc:"Elite performance automotive service. Trusted since 2009.",
-    ft_sv:"Services", ft_co:"Company", ft_ct:"Contact", ft_r:"All rights reserved.", ft_m:"Built for drivers who demand more"
+    ft_sv:"Services",ft_co:"Company",ft_ct:"Contact",ft_r:"All rights reserved.",ft_m:"Built for drivers who demand more"
   },
-  de: {
-    n_s:"Leistungen", n_a:"Über uns", n_t:"Team", n_r:"Bewertungen", n_b:"Buchung", n_book:"Jetzt buchen",
-    h_tag:"Elite Performance Service", h_title:"APEX MOTOR SERVICE",
-    h_desc:"Präzise Automobiltechnik für Fahrer die das Absolute verlangen.",
-    h_btn1:"Service buchen", h_btn2:"Leistungen",
-    st_y:"Jahre", st_c:"Kunden", st_t:"Techniker", st_r:"Zufriedenheit",
-    tk1:"Motordiagnose", tk2:"Performance-Tuning", tk3:"Reifenservice", tk4:"Bremssysteme", tk5:"Klimaservice", tk6:"Karosserie & Lack",
-    sv_tag:"Was wir tun", sv_head:"UNSERE LEISTUNGEN", sv_sub:"Hover erkunden. Klicken buchen.",
-    sv1:"Motordiagnose", sv1_d:"Vollständige Computerdiagnose.", sv1_p:"ab €49", sv1_t:"1–2 Std",
-    sv2:"Performance-Tuning", sv2_d:"ECU-Remapping. Bis +80 PS.", sv2_p:"ab €299", sv2_t:"3–6 Std",
-    sv3:"Reifenservice", sv3_d:"Präzisionsmontage und Ausrichtung.", sv3_p:"ab €29", sv3_t:"30–60 Min",
-    sv4:"Bremssysteme", sv4_d:"Vollständige Bremsrevision.", sv4_p:"ab €79", sv4_t:"1–3 Std",
-    sv5:"Klimaservice", sv5_d:"Klimaanlage befüllen und reparieren.", sv5_p:"ab €59", sv5_t:"1–2 Std",
-    sv6:"Karosserie & Lack", sv6_d:"Karosseriearbeiten und Keramik.", sv6_p:"ab €199", sv6_t:"1–5 Tage",
-    ab_tag:"Über uns", ab_head:"GEBAUT AUF PRÄZISION", ab_est:"Gegr.",
+  de:{
+    h_tag:"Präzise Automobiltechnik für Fahrer die das Absolute verlangen.",
+    ph_label:"Anrufen um einen Service zu buchen",
+    n_s:"Leistungen",n_a:"Über uns",n_t:"Team",n_r:"Bewertungen",n_b:"Buchung",n_book:"Service buchen",
+    sv_tag:"Was wir tun",sv_head:"Unsere Leistungen",sv_sub:"Klicken um einen Termin zu buchen.",
+    sv1:"Motordiagnose",sv1_d:"Vollständige Computerdiagnose.",sv1_p:"ab €49",sv1_t:"1–2 Std",
+    sv2:"Performance-Tuning",sv2_d:"ECU-Remapping. Bis +80 PS.",sv2_p:"ab €299",sv2_t:"3–6 Std",
+    sv3:"Reifenservice",sv3_d:"Präzisionsmontage und Ausrichtung.",sv3_p:"ab €29",sv3_t:"30–60 Min",
+    sv4:"Bremssysteme",sv4_d:"Vollständige Bremsrevision.",sv4_p:"ab €79",sv4_t:"1–3 Std",
+    sv5:"Klimaservice",sv5_d:"Klimaanlage befüllen und reparieren.",sv5_p:"ab €59",sv5_t:"1–2 Std",
+    sv6:"Karosserie & Lack",sv6_d:"Karosseriearbeiten und Keramik.",sv6_p:"ab €199",sv6_t:"1–5 Tage",
+    ab_tag:"Über uns",ab_head:"Gebaut auf Präzision",
     ab_p1:"APEX MOTOR wurde von Ingenieuren gegründet die glaubten Autoservice kann präziser sein.",
     ab_p2:"Seit 2009 haben wir über 8.000 Fahrzeuge gewartet.",
-    tm_tag:"Die Ingenieure", tm_head:"UNSER TEAM",
-    tm1_r:"Chefingenieur", tm1_e:"18 Jahre", tm2_r:"Diagnose-Lead", tm2_e:"12 Jahre",
-    tm3_r:"Performance", tm3_e:"10 Jahre", tm4_r:"Karosserie & Lack", tm4_e:"15 Jahre",
-    rv_tag:"Kundenstimmen", rv_head:"KUNDENERFAHRUNGEN",
+    st_y:"Jahre",st_c:"Kunden",st_t:"Ingenieure",st_r:"Bewertung",
+    tm_tag:"Die Ingenieure",tm_head:"Unser Team",
+    tm1_r:"Chefingenieur",tm1_e:"18 Jahre Erfahrung",tm2_r:"Diagnose-Lead",tm2_e:"12 Jahre Erfahrung",
+    tm3_r:"Performance Spezialist",tm3_e:"10 Jahre Erfahrung",tm4_r:"Karosserie & Lack",tm4_e:"15 Jahre Erfahrung",
+    rv_tag:"Kundenstimmen",rv_head:"Kundenerfahrungen",
     rv1:'"APEX diagnostizierte in 20 Minuten einen Fehler den drei Händler übersahen."',
     rv2:'"Das ECU-Remap hat meinem RS4 einen völlig anderen Charakter gegeben."',
     rv3:'"Die Keramikversiegelung ist makellos."',
-    fq_tag:"FAQ", fq_head:"HÄUFIGE FRAGEN",
-    fq1_q:"Wie lange dauert ein Service?", fq1_a:"Standardservices am selben Tag. Komplexe Arbeiten 1–5 Tage.",
-    fq2_q:"Welche Marken bearbeiten Sie?", fq2_a:"BMW, Mercedes-AMG, Audi RS, Porsche und alle europäischen Fahrzeuge.",
-    fq3_q:"Welche Garantie gilt?", fq3_a:"12 Monate / 20.000 km auf alle Teile und Arbeit.",
-    fq4_q:"Kann ich einen Kostenvoranschlag erhalten?", fq4_a:"Immer. Keine Arbeiten ohne schriftliche Freigabe.",
-    bk_tag:"Termin", bk_head:"SERVICE BUCHEN",
-    bk_addr:"Adresse", bk_hrs:"Öffnungszeiten",
-    addr:"Autostraße 45, Berlin", hrs:"Mo–Fr: 08:00–19:00 · Sa: 09:00–16:00",
-    f_name:"Ihr Name", f_email:"E-Mail", f_car:"Fahrzeug", f_date:"Datum", f_svc:"Leistung",
-    btn_confirm:"BUCHUNG BESTÄTIGEN",
+    fq_tag:"FAQ",fq_head:"Häufige Fragen",
+    fq1_q:"Wie lange dauert ein Service?",fq1_a:"Standardservices am selben Tag. Komplexe Arbeiten 1–5 Tage.",
+    fq2_q:"Welche Marken bearbeiten Sie?",fq2_a:"BMW, Mercedes-AMG, Audi RS, Porsche und alle europäischen Fahrzeuge.",
+    fq3_q:"Welche Garantie gilt?",fq3_a:"12 Monate / 20.000 km auf alle Teile und Arbeit.",
+    fq4_q:"Kann ich einen Kostenvoranschlag erhalten?",fq4_a:"Immer. Keine Arbeiten ohne schriftliche Freigabe.",
+    bk_tag:"Termin",bk_head:"Service buchen",bk_addr:"Adresse",bk_hrs:"Öffnungszeiten",
+    addr:"Autostraße 45, Berlin",hrs:"Mo–Fr: 08:00–19:00 · Sa: 09:00–16:00",
+    f_name:"Ihr Name",f_email:"E-Mail",f_car:"Fahrzeug",f_date:"Datum",f_svc:"Leistung",
+    btn_confirm:"Buchung bestätigen",
     ft_desc:"Elite-Autoservice. Vertraut seit 2009.",
-    ft_sv:"Leistungen", ft_co:"Unternehmen", ft_ct:"Kontakt", ft_r:"Alle Rechte vorbehalten.", ft_m:"Für Fahrer die mehr verlangen"
+    ft_sv:"Leistungen",ft_co:"Unternehmen",ft_ct:"Kontakt",ft_r:"Alle Rechte vorbehalten.",ft_m:"Für Fahrer die mehr verlangen"
   },
-  uk: {
-    n_s:"Послуги", n_a:"Про нас", n_t:"Команда", n_r:"Відгуки", n_b:"Запис", n_book:"Записатись",
-    h_tag:"Елітний Performance сервіс", h_title:"APEX MOTOR СЕРВІС",
-    h_desc:"Точна автомобільна інженерія для водіїв які вимагають найкращого.",
-    h_btn1:"Записати авто", h_btn2:"Послуги",
-    st_y:"Років", st_c:"Клієнтів", st_t:"Техніків", st_r:"Задоволеність",
-    tk1:"Діагностика двигуна", tk2:"Performance тюнінг", tk3:"Шиномонтаж", tk4:"Гальмівні системи", tk5:"Кондиціонер", tk6:"Кузов і фарба",
-    sv_tag:"Що ми робимо", sv_head:"НАШІ ПОСЛУГИ", sv_sub:"Наведіть для перегляду. Натисніть для запису.",
-    sv1:"Діагностика двигуна", sv1_d:"Повна комп'ютерна діагностика.", sv1_p:"від €49", sv1_t:"1–2 год",
-    sv2:"Performance тюнінг", sv2_d:"ECU ремапінг. До +80 к.с.", sv2_p:"від €299", sv2_t:"3–6 год",
-    sv3:"Шиномонтаж", sv3_d:"Точний монтаж та розвал-сход.", sv3_p:"від €29", sv3_t:"30–60 хв",
-    sv4:"Гальмівні системи", sv4_d:"Повна ревізія гальм.", sv4_p:"від €79", sv4_t:"1–3 год",
-    sv5:"Кондиціонер", sv5_d:"Заправка та ремонт кондиціонера.", sv5_p:"від €59", sv5_t:"1–2 год",
-    sv6:"Кузов і фарба", sv6_d:"Кузовні роботи та кераміка.", sv6_p:"від €199", sv6_t:"1–5 днів",
-    ab_tag:"Про нас", ab_head:"ПОБУДОВАНО НА ТОЧНОСТІ", ab_est:"Засн.",
+  uk:{
+    h_tag:"Точна автомобільна інженерія для водіїв які вимагають найкращого.",
+    ph_label:"Зателефонуйте щоб записатися",
+    n_s:"Послуги",n_a:"Про нас",n_t:"Команда",n_r:"Відгуки",n_b:"Запис",n_book:"Записатись",
+    sv_tag:"Що ми робимо",sv_head:"Наші послуги",sv_sub:"Натисніть на послугу щоб записатися.",
+    sv1:"Діагностика двигуна",sv1_d:"Повна комп'ютерна діагностика.",sv1_p:"від €49",sv1_t:"1–2 год",
+    sv2:"Performance тюнінг",sv2_d:"ECU ремапінг. До +80 к.с.",sv2_p:"від €299",sv2_t:"3–6 год",
+    sv3:"Шиномонтаж",sv3_d:"Точний монтаж та розвал-сход.",sv3_p:"від €29",sv3_t:"30–60 хв",
+    sv4:"Гальмівні системи",sv4_d:"Повна ревізія гальм.",sv4_p:"від €79",sv4_t:"1–3 год",
+    sv5:"Кондиціонер",sv5_d:"Заправка та ремонт кондиціонера.",sv5_p:"від €59",sv5_t:"1–2 год",
+    sv6:"Кузов і фарба",sv6_d:"Кузовні роботи та кераміка.",sv6_p:"від €199",sv6_t:"1–5 днів",
+    ab_tag:"Про нас",ab_head:"Побудовано на точності",
     ab_p1:"APEX MOTOR заснований інженерами які вірили що автосервіс може бути точнішим.",
     ab_p2:"З 2009 року ми обслугували понад 8 000 автомобілів.",
-    tm_tag:"Інженери", tm_head:"НАША КОМАНДА",
-    tm1_r:"Головний інженер", tm1_e:"18 років", tm2_r:"Діагностика", tm2_e:"12 років",
-    tm3_r:"Performance", tm3_e:"10 років", tm4_r:"Кузов і фарба", tm4_e:"15 років",
-    rv_tag:"Відгуки", rv_head:"ІСТОРІЇ КЛІЄНТІВ",
+    st_y:"Років",st_c:"Клієнтів",st_t:"Інженерів",st_r:"Рейтинг",
+    tm_tag:"Інженери",tm_head:"Наша команда",
+    tm1_r:"Головний інженер",tm1_e:"18 років досвіду",tm2_r:"Діагностика",tm2_e:"12 років досвіду",
+    tm3_r:"Performance спеціаліст",tm3_e:"10 років досвіду",tm4_r:"Кузов і фарба",tm4_e:"15 років досвіду",
+    rv_tag:"Відгуки",rv_head:"Історії клієнтів",
     rv1:'"APEX виявив несправність за 20 хвилин яку три дилери пропустили."',
     rv2:'"ECU ремап дав моєму RS4 абсолютно інший характер."',
     rv3:'"Керамічне покриття бездоганне."',
-    fq_tag:"FAQ", fq_head:"ЧАСТІ ПИТАННЯ",
-    fq1_q:"Скільки займає сервіс?", fq1_a:"Стандартний сервіс того ж дня. Складні роботи 1–5 днів.",
-    fq2_q:"Які марки ви обслуговуєте?", fq2_a:"BMW, Mercedes-AMG, Audi RS, Porsche та всі європейські авто.",
-    fq3_q:"Яка гарантія на ремонт?", fq3_a:"12 місяців / 20 000 км на всі деталі та роботу.",
-    fq4_q:"Чи можна отримати кошторис?", fq4_a:"Завжди. Жодних робіт без письмової згоди.",
-    bk_tag:"Запис", bk_head:"ЗАПИСАТИ АВТО",
-    bk_addr:"Адреса", bk_hrs:"Години роботи",
-    addr:"Autostraße 45, Берлін", hrs:"Пн–Пт: 08:00–19:00 · Сб: 09:00–16:00",
-    f_name:"Ваше ім'я", f_email:"Пошта", f_car:"Автомобіль", f_date:"Дата", f_svc:"Послуга",
-    btn_confirm:"ПІДТВЕРДИТИ ЗАПИС",
+    fq_tag:"FAQ",fq_head:"Часті питання",
+    fq1_q:"Скільки займає сервіс?",fq1_a:"Стандартний сервіс того ж дня. Складні роботи 1–5 днів.",
+    fq2_q:"Які марки ви обслуговуєте?",fq2_a:"BMW, Mercedes-AMG, Audi RS, Porsche та всі європейські авто.",
+    fq3_q:"Яка гарантія на ремонт?",fq3_a:"12 місяців / 20 000 км на всі деталі та роботу.",
+    fq4_q:"Чи можна отримати кошторис?",fq4_a:"Завжди. Жодних робіт без письмової згоди.",
+    bk_tag:"Запис",bk_head:"Записати авто",bk_addr:"Адреса",bk_hrs:"Години роботи",
+    addr:"Autostraße 45, Берлін",hrs:"Пн–Пт: 08:00–19:00 · Сб: 09:00–16:00",
+    f_name:"Ваше ім'я",f_email:"Пошта",f_car:"Автомобіль",f_date:"Дата",f_svc:"Послуга",
+    btn_confirm:"Підтвердити запис",
     ft_desc:"Елітний автосервіс. Довіряють з 2009 року.",
-    ft_sv:"Послуги", ft_co:"Компанія", ft_ct:"Контакти", ft_r:"Всі права захищені.", ft_m:"Для водіїв які вимагають більше"
+    ft_sv:"Послуги",ft_co:"Компанія",ft_ct:"Контакти",ft_r:"Всі права захищені.",ft_m:"Для водіїв які вимагають більше"
   }
 };
 
-function setLang(lang,btn) {
-  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+function setLang(lang,btn){
+  document.querySelectorAll('.panel-lang button').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   document.querySelectorAll('[data-i18n]').forEach(el=>{
     const k=el.getAttribute('data-i18n');
