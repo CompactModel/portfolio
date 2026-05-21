@@ -4,7 +4,10 @@
     "name": "Yan Oleksiuk",
     "title": "Full-Stack Web Developer",
     "bio": "I am a full stack developer focused on modern web applications. I work with React, TypeScript, Symfony and MySQL. I create portfolio websites and business websites with admin panels and multilingual support.",
-    "avatar": null
+    "avatar": null,
+    "email": "yan.oleksuyk7@gmail.com",
+    "telegram": "https://t.me/xxccwwee",
+    "github": "https://github.com/CompactModel"
   },
   "projects": [
     {
