@@ -8,7 +8,7 @@ const resources = {
       hero_title:     "Hi, I'm",
       hero_highlight: 'Yan',
       hero_subtitle:  '— Full Stack Developer',
-      hero_description: 'Building modern web applications with PHP, Symfony, React and Docker.',
+      hero_description: 'I build modern websites and web applications for businesses like cafés, salons, and service companies.',
       view_projects:  'View Projects',
       contact_me:     'Contact Me',
 
@@ -44,7 +44,7 @@ const resources = {
       hero_title:     'Hallo, ich bin',
       hero_highlight: 'Yan',
       hero_subtitle:  '— Full Stack Entwickler',
-      hero_description: 'Entwicklung moderner Webanwendungen mit PHP, Symfony, React und Docker.',
+      hero_description: 'Ich erstelle moderne Websites und Webanwendungen für Unternehmen wie Cafés, Salons und Dienstleister.',
       view_projects:  'Projekte ansehen',
       contact_me:     'Kontakt',
 
@@ -80,7 +80,7 @@ const resources = {
       hero_title:     'Привіт, я',
       hero_highlight: 'Ян',
       hero_subtitle:  '— Full Stack Розробник',
-      hero_description: 'Створюю сучасні веб-додатки з PHP, Symfony, React та Docker.',
+      hero_description: 'Я створюю сучасні веб-сайти та додатки для бізнесу — кафе, салонів, сервісних компаній.',
       view_projects:  'Переглянути проекти',
       contact_me:     "Зв'язатися",
 
