@@ -6,7 +6,7 @@ echo "=== Startup BEGIN ==="
 {
     echo "APP_ENV=${APP_ENV:-prod}"
     [ -n "$APP_SECRET" ]   && echo "APP_SECRET=$APP_SECRET"
-    [ -n "$DATABASE_URL" ] && echo "DATABASE_URL=$DATABASE_URL"
+    [ -n "$DATABASE_URL" ] && echo "DATABASE_URL=$(echo "$DATABASE_URL" | xargs)"
     echo "DEFAULT_URI=https://${RAILWAY_PUBLIC_DOMAIN:-localhost}"
 } > /app/.env
 
