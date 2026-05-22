@@ -11,10 +11,8 @@ WORKDIR /app
 
 COPY . .
 
-# Shim for symfony-cmd (Symfony CLI) used in composer auto-scripts.
-# Errors suppressed — real cache:clear runs in startup.sh with actual env vars.
-RUN printf '#!/bin/sh\nexit 0\n' > /usr/local/bin/symfony-cmd \
-    && chmod +x /usr/local/bin/symfony-cmd
+# Create a minimal .env for build-time composer scripts (Railway injects real values at runtime)
+RUN printf 'APP_ENV=prod\nAPP_SECRET=build-placeholder-not-a-real-secret\nDATABASE_URL="mysql://root:root@127.0.0.1:3306/app"\n' > .env
 
 RUN COMPOSER_ALLOW_SUPERUSER=1 composer install --no-dev --optimize-autoloader \
     && mkdir -p var/cache var/log \
