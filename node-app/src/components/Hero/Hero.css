@@ -1,0 +1,3 @@
+.hero-visual-card {
+  animation: floatCard 4s ease-in-out infinite alternate;
+}

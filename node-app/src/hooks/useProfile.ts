@@ -1,0 +1,1 @@
+export { useProfileContext as useProfile } from '../context/ProfileContext';
