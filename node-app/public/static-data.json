@@ -45,13 +45,6 @@
       "link": "https://compactmodel.github.io/demo-kebab",
       "image": "/portfolio/screenshots/kebab.png"
     },
-    {
-      "id": 7,
-      "title": "VoltGarage — Auto Service",
-      "description": "Tech auto service site with cyan/navy design, glitch text, scan lines, counter stats, and a bottom-sheet services modal.",
-      "link": null,
-      "image": null
-    }
   ],
   "skills": [
     {

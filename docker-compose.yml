@@ -18,6 +18,8 @@ services:
       - "8081:8081"
       - "8082:8082"
       - "8083:8083"
+      - "8084:8084"
+      - "8085:8085"
     volumes:
       - ./app:/var/www/html
       - ./demo-sites:/var/www/demo-sites

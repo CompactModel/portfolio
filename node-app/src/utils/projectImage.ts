@@ -2,7 +2,6 @@ const BASE = process.env.PUBLIC_URL || '';
 
 export function projectImage(title: string, fallback: string): string {
   const t = title.toLowerCase();
-  if (t.includes('volt') || t.includes('garage'))                                                                              return `${BASE}/screenshots/voltgarage.png`;
   if (t.includes('auto') || t.includes('apex') || t.includes('motor') || t.includes('car'))                                  return `${BASE}/screenshots/autoservice.png`;
   if (t.includes('barber') || t.includes('hair') || t.includes('cut'))                                                        return `${BASE}/screenshots/barbershop.png`;
   if (t.includes('restaurant') || t.includes('bella'))                                                                        return `${BASE}/screenshots/restaurant.png`;
