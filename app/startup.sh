@@ -1,6 +1,9 @@
 #!/bin/bash
 set -e
 
+# Symfony requires .env to exist; Railway injects real values via environment variables
+touch /app/.env
+
 php bin/console cache:clear --env=prod --no-debug
 php bin/console assets:install --env=prod
 php bin/console doctrine:migrations:migrate --no-interaction --env=prod
