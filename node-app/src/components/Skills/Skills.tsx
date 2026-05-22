@@ -4,6 +4,7 @@ import { useLanguage } from '../../hooks/useLanguage';
 import { Reveal } from '../Reveal';
 import { techColor } from '../../utils/techColor';
 import { DARK, SUBTLE } from '../../data/config';
+import { LiquidButton } from '../ui/liquid-glass-button';
 import './Skills.css';
 
 export default function Skills() {
@@ -49,10 +50,9 @@ export default function Skills() {
           <div className="services-grid">
             {serviceKeys.map((key, i) => (
               <Reveal key={key} delay={i * 60}>
-                <div style={{ background: 'rgba(255,255,255,0.55)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', border: '1px solid rgba(255,255,255,0.8)', borderRadius: 12, boxShadow: '0 4px 16px rgba(0,0,0,0.06)', padding: '14px 20px', display: 'flex', alignItems: 'center', gap: 12 }}>
-                  <span style={{ color: '#22c55e', fontSize: 16, fontWeight: 700, flexShrink: 0 }}>✓</span>
-                  <span style={{ fontSize: 14, fontWeight: 500, color: DARK }}>{t(key)}</span>
-                </div>
+                <LiquidButton size="lg" style={{ width: '100%', color: DARK, fontWeight: 600, fontSize: 14 }}>
+                  {t(key)}
+                </LiquidButton>
               </Reveal>
             ))}
           </div>

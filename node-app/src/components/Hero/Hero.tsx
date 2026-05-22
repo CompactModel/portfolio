@@ -2,33 +2,8 @@ import { useProfile } from '../../hooks/useProfile';
 import { useLanguage } from '../../hooks/useLanguage';
 import { Reveal } from '../Reveal';
 import { DARK, MID } from '../../data/config';
+import { HeroCard } from './HeroCard';
 import './Hero.css';
-
-function HeroVisual() {
-  return (
-    <div className="hero-visual-card" style={{
-      background: 'rgba(255,255,255,0.45)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
-      border: '1px solid rgba(255,255,255,0.7)', borderRadius: 20, boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
-      padding: '28px 32px', width: 320, flexShrink: 0,
-      fontFamily: '"Fira Code","Courier New",monospace', fontSize: 13, lineHeight: 1.9,
-    }}>
-      <div style={{ color: '#7B8794', marginBottom: 14, fontSize: 11, letterSpacing: 0.5 }}>{'// tech stack'}</div>
-      <div><span style={{ color: '#8B5CF6' }}>const</span> <span style={{ color: '#1F2937' }}>stack</span> <span style={{ color: '#6B7280' }}>=</span> {'{'}</div>
-      <div style={{ paddingLeft: 20 }}><span style={{ color: '#10B981' }}>frontend</span><span style={{ color: '#6B7280' }}>:</span> <span style={{ color: '#F59E0B' }}>'React + TypeScript'</span><span style={{ color: '#6B7280' }}>,</span></div>
-      <div style={{ paddingLeft: 20 }}><span style={{ color: '#10B981' }}>backend</span><span style={{ color: '#6B7280' }}>:</span> <span style={{ color: '#F59E0B' }}>'PHP + Symfony'</span><span style={{ color: '#6B7280' }}>,</span></div>
-      <div style={{ paddingLeft: 20 }}><span style={{ color: '#10B981' }}>database</span><span style={{ color: '#6B7280' }}>:</span> <span style={{ color: '#F59E0B' }}>'MySQL'</span><span style={{ color: '#6B7280' }}>,</span></div>
-      <div style={{ paddingLeft: 20 }}><span style={{ color: '#10B981' }}>infra</span><span style={{ color: '#6B7280' }}>:</span> <span style={{ color: '#F59E0B' }}>'Docker + Nginx'</span><span style={{ color: '#6B7280' }}>,</span></div>
-      <div style={{ color: '#6B7280' }}>{'}'}</div>
-      <div style={{ marginTop: 14, display: 'flex', alignItems: 'center', gap: 8 }}>
-        <span style={{ color: '#8B5CF6' }}>const</span>
-        <span style={{ color: '#1F2937' }}>available</span>
-        <span style={{ color: '#6B7280' }}>=</span>
-        <span style={{ color: '#10B981' }}>true</span>
-        <span style={{ width: 8, height: 8, background: '#4ade80', borderRadius: '50%', display: 'inline-block', animation: 'pulse 2s ease-in-out infinite' }} />
-      </div>
-    </div>
-  );
-}
 
 function Ticker() {
   const items = ['• FULL STACK DEVELOPER', '• PHP & SYMFONY', '• REACT & TYPESCRIPT', '• DOCKER & DEVOPS', '• REST API'];
@@ -94,7 +69,7 @@ export default function Hero() {
               </div>
             </Reveal>
           </div>
-          <div className="hero-visual"><HeroVisual /></div>
+          <div className="hero-visual"><HeroCard /></div>
         </div>
       </header>
       <Ticker />
