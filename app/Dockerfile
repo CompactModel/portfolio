@@ -11,8 +11,17 @@ WORKDIR /app
 
 COPY . .
 
-RUN composer install --no-dev --no-scripts \
-    && composer dump-autoload --optimize \
+# Shim for symfony-cmd (Symfony CLI) used in composer auto-scripts.
+# Errors suppressed — real cache:clear runs in startup.sh with actual env vars.
+RUN printf '#!/bin/sh\nphp /app/bin/console "$@" 2>/dev/null; exit 0\n' \
+      > /usr/local/bin/symfony-cmd \
+    && chmod +x /usr/local/bin/symfony-cmd
+
+ENV APP_ENV=prod
+ENV APP_SECRET=buildtime-placeholder
+ENV DATABASE_URL="mysql://root:root@127.0.0.1:3306/placeholder"
+
+RUN COMPOSER_ALLOW_SUPERUSER=1 composer install --no-dev --optimize-autoloader \
     && mkdir -p var/cache var/log \
     && chmod -R 777 var/ \
     && chmod +x startup.sh
