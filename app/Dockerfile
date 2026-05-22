@@ -11,7 +11,8 @@ WORKDIR /app
 
 COPY . .
 
-RUN composer install --no-dev --optimize-autoloader --no-scripts \
+RUN composer install --no-dev --no-scripts \
+    && composer dump-autoload --optimize \
     && mkdir -p var/cache var/log \
     && chmod -R 777 var/ \
     && chmod +x startup.sh
