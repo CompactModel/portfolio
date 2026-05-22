@@ -18,10 +18,13 @@ class ProfileCrudController extends AbstractCrudController
     {
         return [
             IdField::new('id')->hideOnForm(),
-            TextField::new('name'),
-            TextField::new('title'),
-            TextareaField::new('bio'),
-            TextField::new('avatar')->setRequired(false),
+            TextField::new('name', 'Name'),
+            TextField::new('title', 'Title / Position'),
+            TextareaField::new('bio', 'Bio'),
+            TextField::new('avatar', 'Avatar URL')->setRequired(false),
+            TextField::new('email', 'Email')->setRequired(false),
+            TextField::new('telegram', 'Telegram URL')->setRequired(false)->setHelp('e.g. https://t.me/username'),
+            TextField::new('github', 'GitHub URL')->setRequired(false)->setHelp('e.g. https://github.com/username'),
         ];
     }
 }

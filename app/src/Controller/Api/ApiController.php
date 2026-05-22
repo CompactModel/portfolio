@@ -26,11 +26,14 @@ class ApiController extends AbstractController
         }
 
         return $this->json([
-            'id'     => $profile->getId(),
-            'name'   => $profile->getName(),
-            'title'  => $profile->getTitle(),
-            'bio'    => $profile->getBio(),
-            'avatar' => $profile->getAvatar(),
+            'id'       => $profile->getId(),
+            'name'     => $profile->getName(),
+            'title'    => $profile->getTitle(),
+            'bio'      => $profile->getBio(),
+            'avatar'   => $profile->getAvatar(),
+            'email'    => $profile->getEmail(),
+            'telegram' => $profile->getTelegram(),
+            'github'   => $profile->getGithub(),
         ]);
     }
 
