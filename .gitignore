@@ -4,6 +4,7 @@ node-app/node_modules/
 # Symfony
 app/vendor/
 app/var/
+app/.env
 app/.env.local
 app/.env.*.local
 

@@ -20,6 +20,7 @@ services:
       - "8083:8083"
       - "8084:8084"
       - "8085:8085"
+      - "3001:3001"
     volumes:
       - ./app:/var/www/html
       - ./demo-sites:/var/www/demo-sites
@@ -51,8 +52,6 @@ services:
     working_dir: /app
     volumes:
       - ./node-app:/app
-    ports:
-      - "3001:3000"
     environment:
       - CHOKIDAR_USEPOLLING=true
       - WDS_SOCKET_PORT=3001
