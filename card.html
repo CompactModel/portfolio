@@ -1,0 +1,903 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>порт · code card</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  html,body{margin:0;height:100%;background:#f5efe5;color:#29261b;overflow:hidden;font-family:Inter,system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased}
+  #root{height:100vh;width:100vw;overflow:hidden;position:relative}
+  ::selection{background:rgba(192,134,100,.35);color:#29261b}
+  canvas.wp{position:fixed;inset:0;width:100%;height:100%;display:block;z-index:0}
+  .stage{position:relative;z-index:1;width:100%;height:100%;display:grid;place-items:center;perspective:none}
+  .hud{position:fixed;left:20px;top:18px;z-index:3;font:11px/1.4 'JetBrains Mono',monospace;color:rgba(41,38,27,.55);letter-spacing:.04em;text-transform:uppercase;pointer-events:none}
+  .hud b{color:rgba(41,38,27,.85);font-weight:500;display:block;margin-bottom:3px}
+  .hud i{font-style:normal;color:rgba(41,38,27,.40)}
+  .hud-r{position:fixed;right:20px;top:18px;z-index:3;font:11px/1.4 'JetBrains Mono',monospace;color:rgba(41,38,27,.55);letter-spacing:.04em;pointer-events:none;text-align:right}
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<!-- ── 1. Tweaks panel ── -->
+<script type="text/babel">
+const __TWEAKS_STYLE = `
+  .twk-panel{position:fixed;right:16px;bottom:16px;z-index:2147483646;width:280px;
+    max-height:calc(100vh - 32px);display:flex;flex-direction:column;
+    transform:scale(var(--dc-inv-zoom,1));transform-origin:bottom right;
+    background:rgba(250,249,247,.78);color:#29261b;
+    -webkit-backdrop-filter:blur(24px) saturate(160%);backdrop-filter:blur(24px) saturate(160%);
+    border:.5px solid rgba(255,255,255,.6);border-radius:14px;
+    box-shadow:0 1px 0 rgba(255,255,255,.5) inset,0 12px 40px rgba(0,0,0,.18);
+    font:11.5px/1.4 ui-sans-serif,system-ui,-apple-system,sans-serif;overflow:hidden}
+  .twk-hd{display:flex;align-items:center;justify-content:space-between;
+    padding:10px 8px 10px 14px;cursor:move;user-select:none}
+  .twk-hd b{font-size:12px;font-weight:600;letter-spacing:.01em}
+  .twk-x{appearance:none;border:0;background:transparent;color:rgba(41,38,27,.55);
+    width:22px;height:22px;border-radius:6px;cursor:default;font-size:13px;line-height:1}
+  .twk-x:hover{background:rgba(0,0,0,.06);color:#29261b}
+  .twk-body{padding:2px 14px 14px;display:flex;flex-direction:column;gap:10px;
+    overflow-y:auto;overflow-x:hidden;min-height:0;
+    scrollbar-width:thin;scrollbar-color:rgba(0,0,0,.15) transparent}
+  .twk-body::-webkit-scrollbar{width:8px}
+  .twk-body::-webkit-scrollbar-track{background:transparent;margin:2px}
+  .twk-body::-webkit-scrollbar-thumb{background:rgba(0,0,0,.15);border-radius:4px;
+    border:2px solid transparent;background-clip:content-box}
+  .twk-body::-webkit-scrollbar-thumb:hover{background:rgba(0,0,0,.25);
+    border:2px solid transparent;background-clip:content-box}
+  .twk-row{display:flex;flex-direction:column;gap:5px}
+  .twk-row-h{flex-direction:row;align-items:center;justify-content:space-between;gap:10px}
+  .twk-lbl{display:flex;justify-content:space-between;align-items:baseline;color:rgba(41,38,27,.72)}
+  .twk-lbl>span:first-child{font-weight:500}
+  .twk-val{color:rgba(41,38,27,.5);font-variant-numeric:tabular-nums}
+  .twk-sect{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+    color:rgba(41,38,27,.45);padding:10px 0 0}
+  .twk-sect:first-child{padding-top:0}
+  .twk-field{appearance:none;box-sizing:border-box;width:100%;min-width:0;height:26px;padding:0 8px;
+    border:.5px solid rgba(0,0,0,.1);border-radius:7px;
+    background:rgba(255,255,255,.6);color:inherit;font:inherit;outline:none}
+  .twk-field:focus{border-color:rgba(0,0,0,.25);background:rgba(255,255,255,.85)}
+  select.twk-field{padding-right:22px;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path fill='rgba(0,0,0,.5)' d='M0 0h10L5 6z'/></svg>");
+    background-repeat:no-repeat;background-position:right 8px center}
+  .twk-slider{appearance:none;-webkit-appearance:none;width:100%;height:4px;margin:6px 0;
+    border-radius:999px;background:rgba(0,0,0,.12);outline:none}
+  .twk-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
+    width:14px;height:14px;border-radius:50%;background:#fff;
+    border:.5px solid rgba(0,0,0,.12);box-shadow:0 1px 3px rgba(0,0,0,.2);cursor:default}
+  .twk-slider::-moz-range-thumb{width:14px;height:14px;border-radius:50%;
+    background:#fff;border:.5px solid rgba(0,0,0,.12);box-shadow:0 1px 3px rgba(0,0,0,.2);cursor:default}
+  .twk-seg{position:relative;display:flex;padding:2px;border-radius:8px;
+    background:rgba(0,0,0,.06);user-select:none}
+  .twk-seg-thumb{position:absolute;top:2px;bottom:2px;border-radius:6px;
+    background:rgba(255,255,255,.9);box-shadow:0 1px 2px rgba(0,0,0,.12);
+    transition:left .15s cubic-bezier(.3,.7,.4,1),width .15s}
+  .twk-seg.dragging .twk-seg-thumb{transition:none}
+  .twk-seg button{appearance:none;position:relative;z-index:1;flex:1;border:0;
+    background:transparent;color:inherit;font:inherit;font-weight:500;min-height:22px;
+    border-radius:6px;cursor:default;padding:4px 6px;line-height:1.2;overflow-wrap:anywhere}
+  .twk-toggle{position:relative;width:32px;height:18px;border:0;border-radius:999px;
+    background:rgba(0,0,0,.15);transition:background .15s;cursor:default;padding:0}
+  .twk-toggle[data-on="1"]{background:#34c759}
+  .twk-toggle i{position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;
+    background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.25);transition:transform .15s}
+  .twk-toggle[data-on="1"] i{transform:translateX(14px)}
+  .twk-btn{appearance:none;height:26px;padding:0 12px;border:0;border-radius:7px;
+    background:rgba(0,0,0,.78);color:#fff;font:inherit;font-weight:500;cursor:default}
+  .twk-btn:hover{background:rgba(0,0,0,.88)}
+  .twk-btn.secondary{background:rgba(0,0,0,.06);color:inherit}
+  .twk-btn.secondary:hover{background:rgba(0,0,0,.1)}
+`;
+
+function useTweaks(defaults) {
+  const [values, setValues] = React.useState(defaults);
+  const setTweak = React.useCallback((keyOrEdits, val) => {
+    const edits = typeof keyOrEdits === 'object' && keyOrEdits !== null
+      ? keyOrEdits : { [keyOrEdits]: val };
+    setValues((prev) => ({ ...prev, ...edits }));
+    window.parent.postMessage({ type: '__edit_mode_set_keys', edits }, '*');
+    window.dispatchEvent(new CustomEvent('tweakchange', { detail: edits }));
+  }, []);
+  return [values, setTweak];
+}
+
+function TweaksPanel({ title = 'Tweaks', children }) {
+  const [open, setOpen] = React.useState(false);
+  const dragRef = React.useRef(null);
+  const offsetRef = React.useRef({ x: 16, y: 16 });
+  const PAD = 16;
+  const clampToViewport = React.useCallback(() => {
+    const panel = dragRef.current;
+    if (!panel) return;
+    const w = panel.offsetWidth, h = panel.offsetHeight;
+    const maxRight  = Math.max(PAD, window.innerWidth  - w - PAD);
+    const maxBottom = Math.max(PAD, window.innerHeight - h - PAD);
+    offsetRef.current = {
+      x: Math.min(maxRight,  Math.max(PAD, offsetRef.current.x)),
+      y: Math.min(maxBottom, Math.max(PAD, offsetRef.current.y)),
+    };
+    panel.style.right  = offsetRef.current.x + 'px';
+    panel.style.bottom = offsetRef.current.y + 'px';
+  }, []);
+  React.useEffect(() => {
+    if (!open) return;
+    clampToViewport();
+    const ro = new ResizeObserver(clampToViewport);
+    ro.observe(document.documentElement);
+    return () => ro.disconnect();
+  }, [open, clampToViewport]);
+  React.useEffect(() => {
+    const onMsg = (e) => {
+      const t = e?.data?.type;
+      if (t === '__activate_edit_mode')   setOpen(true);
+      else if (t === '__deactivate_edit_mode') setOpen(false);
+    };
+    window.addEventListener('message', onMsg);
+    window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+    return () => window.removeEventListener('message', onMsg);
+  }, []);
+  const dismiss = () => {
+    setOpen(false);
+    window.parent.postMessage({ type: '__edit_mode_dismissed' }, '*');
+  };
+  const onDragStart = (e) => {
+    const panel = dragRef.current;
+    if (!panel) return;
+    const r = panel.getBoundingClientRect();
+    const sx = e.clientX, sy = e.clientY;
+    const startRight  = window.innerWidth  - r.right;
+    const startBottom = window.innerHeight - r.bottom;
+    const move = (ev) => {
+      offsetRef.current = { x: startRight - (ev.clientX - sx), y: startBottom - (ev.clientY - sy) };
+      clampToViewport();
+    };
+    const up = () => { window.removeEventListener('mousemove', move); window.removeEventListener('mouseup', up); };
+    window.addEventListener('mousemove', move);
+    window.addEventListener('mouseup', up);
+  };
+  if (!open) return null;
+  return (
+    <>
+      <style>{__TWEAKS_STYLE}</style>
+      <div ref={dragRef} className="twk-panel" style={{ right: offsetRef.current.x, bottom: offsetRef.current.y }}>
+        <div className="twk-hd" onMouseDown={onDragStart}>
+          <b>{title}</b>
+          <button className="twk-x" onMouseDown={(e) => e.stopPropagation()} onClick={dismiss}>✕</button>
+        </div>
+        <div className="twk-body">{children}</div>
+      </div>
+    </>
+  );
+}
+
+function TweakSection({ label }) { return <div className="twk-sect">{label}</div>; }
+function TweakRow({ label, value, children, inline = false }) {
+  return (
+    <div className={inline ? 'twk-row twk-row-h' : 'twk-row'}>
+      <div className="twk-lbl">
+        <span>{label}</span>
+        {value != null && <span className="twk-val">{value}</span>}
+      </div>
+      {children}
+    </div>
+  );
+}
+function TweakSlider({ label, value, min = 0, max = 100, step = 1, unit = '', onChange }) {
+  return (
+    <TweakRow label={label} value={`${value}${unit}`}>
+      <input type="range" className="twk-slider" min={min} max={max} step={step}
+             value={value} onChange={(e) => onChange(Number(e.target.value))} />
+    </TweakRow>
+  );
+}
+function TweakToggle({ label, value, onChange }) {
+  return (
+    <div className="twk-row twk-row-h">
+      <div className="twk-lbl"><span>{label}</span></div>
+      <button type="button" className="twk-toggle" data-on={value ? '1' : '0'}
+              role="switch" aria-checked={!!value} onClick={() => onChange(!value)}><i /></button>
+    </div>
+  );
+}
+function TweakSelect({ label, value, options, onChange }) {
+  return (
+    <TweakRow label={label}>
+      <select className="twk-field" value={value} onChange={(e) => onChange(e.target.value)}>
+        {options.map((o) => {
+          const v = typeof o === 'object' ? o.value : o;
+          const l = typeof o === 'object' ? o.label  : o;
+          return <option key={v} value={v}>{l}</option>;
+        })}
+      </select>
+    </TweakRow>
+  );
+}
+
+Object.assign(window, { useTweaks, TweaksPanel, TweakSection, TweakRow, TweakSlider, TweakToggle, TweakSelect });
+</script>
+
+<!-- ── 2. Shaders ── -->
+<script type="text/babel">
+const VERT = `
+attribute vec2 a_pos;
+void main(){ gl_Position = vec4(a_pos, 0.0, 1.0); }
+`;
+
+const FRAG_HEAD = `
+precision highp float;
+uniform vec2  u_res;
+uniform float u_time;
+uniform vec2  u_mouse;
+uniform vec2  u_mvel;
+uniform vec3  u_clicks[8];
+uniform float u_speed;
+uniform float u_intensity;
+uniform float u_mstrength;
+uniform float u_hue;
+uniform float u_grain;
+
+float hash(vec2 p){ p=fract(p*vec2(123.34,456.21)); p+=dot(p,p+45.32); return fract(p.x*p.y); }
+float noise(vec2 p){
+  vec2 i=floor(p), f=fract(p);
+  float a=hash(i), b=hash(i+vec2(1.,0.)), c=hash(i+vec2(0.,1.)), d=hash(i+vec2(1.,1.));
+  vec2 u=f*f*(3.-2.*f);
+  return mix(a,b,u.x)+(c-a)*u.y*(1.-u.x)+(d-b)*u.x*u.y;
+}
+float fbm(vec2 p){
+  float v=0., a=0.5;
+  for(int i=0;i<5;i++){ v+=a*noise(p); p*=2.03; a*=0.5; }
+  return v;
+}
+vec3 pal(float t){
+  t = fract(t + u_hue*0.5);
+  vec3 a = vec3(0.42, 0.34, 0.30);
+  vec3 b = vec3(0.55, 0.42, 0.35);
+  vec3 c = vec3(1.0, 1.0, 1.0);
+  vec3 d = vec3(0.00, 0.18, 0.42);
+  return clamp(a + b*cos(6.28318*(c*t + d)), 0.0, 1.0);
+}
+vec3 bg(vec2 uv){
+  float v = 1.0 - 1.15*pow(length(uv-0.5)*1.4, 2.0);
+  return mix(vec3(0.04,0.03,0.025), vec3(0.10,0.075,0.055), v);
+}
+vec3 grain(vec3 col, vec2 uv){
+  float g = hash(uv*u_res + u_time*60.0);
+  return col + (g-0.5) * u_grain * 0.18;
+}
+`;
+
+const FRAG_GRADIENT = FRAG_HEAD + `
+void main(){
+  vec2 uv = gl_FragCoord.xy / u_res.xy;
+  float t = u_time * 0.03 * u_speed;
+  vec2 m = (u_mouse - 0.5) * 0.14 * u_mstrength;
+  vec2 p = uv;
+  vec3 white  = vec3(0.975, 0.955, 0.918);
+  vec3 cream  = vec3(0.955, 0.925, 0.872);
+  vec3 peach  = vec3(0.928, 0.788, 0.728);
+  vec3 brown  = vec3(0.355, 0.235, 0.175);
+  vec3 copper = vec3(0.700, 0.498, 0.395);
+  vec3 col = mix(white*0.985, white, smoothstep(0.0, 1.0, p.y));
+  col = mix(col, cream, smoothstep(0.2, 1.0, p.x) * 0.35);
+  float n1 = fbm(p*1.4 + vec2(t, -t*0.6) + m*1.6);
+  float n2 = fbm(p*1.0 + vec2(-t*0.4, t*1.1) + m);
+  vec2 q   = p + (vec2(n1, n2) - 0.5) * 0.22 + m;
+  float rGlow  = exp(-length((q - vec2(0.88, 0.55))*vec2(1.45, 1.55))*2.0);
+  col = mix(col, peach, rGlow * 0.60);
+  float rGlow2 = exp(-length((q - vec2(0.78, 0.40))*vec2(2.6, 2.6))*2.4);
+  col = mix(col, peach*0.95, rGlow2 * 0.30);
+  float blSmudge = exp(-length((q - vec2(0.08, 0.22))*vec2(1.35, 1.55))*2.4);
+  col = mix(col, brown, blSmudge * 0.62);
+  float midHaze = exp(-length((q - vec2(0.40, 0.10))*vec2(1.9, 2.6))*2.0);
+  col = mix(col, copper, midHaze * 0.18);
+  vec2 ar = vec2(u_res.x / u_res.y, 1.0);
+  float mDist = length((p - u_mouse) * ar);
+  col = mix(col, brown, exp(-mDist * 3.2) * 0.65 * u_mstrength);
+  col = mix(col, brown * 0.85, exp(-mDist * 1.5) * 0.18 * u_mstrength);
+  col *= 1.0 - 0.18*pow(length(uv-0.5)*1.2, 2.0);
+  col = mix(vec3(dot(col, vec3(0.33))), col, u_intensity);
+  col.r += u_hue * 0.04; col.b -= u_hue * 0.04;
+  col = grain(col, uv);
+  gl_FragColor = vec4(col, 1.0);
+}
+`;
+
+const FRAG_METAL = FRAG_HEAD + `
+float blob(vec2 uv, vec2 c, float r){ float d=length(uv-c); return r*r/(d*d+0.0001); }
+void main(){
+  vec2 uv = gl_FragCoord.xy / u_res.xy;
+  vec2 p  = uv; p.x *= u_res.x / u_res.y;
+  float t = u_time * 0.25 * u_speed;
+  vec2 ar = vec2(u_res.x / u_res.y, 1.0);
+  vec2 m  = u_mouse * ar;
+  float f = 0.0;
+  f += blob(p, vec2(0.30,0.55) + 0.18*vec2(cos(t*1.1), sin(t*0.9))*ar, 0.16);
+  f += blob(p, vec2(0.80,0.40) + 0.20*vec2(sin(t*0.7), cos(t*1.3))*ar, 0.18);
+  f += blob(p, vec2(0.55,0.78) + 0.14*vec2(cos(t*1.5+1.3), sin(t*0.6))*ar, 0.14);
+  f += blob(p, vec2(0.20,0.20) + 0.10*vec2(sin(t*0.5+2.1), cos(t*1.1))*ar, 0.12);
+  f += blob(p, m, 0.18 + 0.10*u_mstrength) * (0.7 + 0.6*u_mstrength);
+  for(int i=0;i<8;i++){
+    vec3 ck = u_clicks[i];
+    if(ck.z < 2.0){ float life=max(0.0,1.0-ck.z*0.5); vec2 cp=vec2(ck.x,ck.y)*ar; f+=blob(p,cp,0.10+ck.z*0.18)*life*2.0; }
+  }
+  float field = smoothstep(0.6, 3.5, f);
+  float band  = field + 0.15*sin(field*9.0 + t*2.0);
+  vec3 col = bg(uv);
+  col = mix(col, pal(band*0.55 + 0.05 + t*0.04), smoothstep(0.05, 0.9, field) * u_intensity);
+  float rim = smoothstep(0.4, 0.55, field) - smoothstep(0.55, 0.72, field);
+  col += vec3(0.55,0.50,0.42) * rim * 0.6 * u_intensity;
+  col = grain(col, uv); gl_FragColor = vec4(col, 1.0);
+}
+`;
+
+const FRAG_AURORA = FRAG_HEAD + `
+void main(){
+  vec2 uv = gl_FragCoord.xy / u_res.xy;
+  float t = u_time * 0.3 * u_speed;
+  float cy = mix(0.5, u_mouse.y, 0.85);
+  float dy = uv.y - cy;
+  float warpY = (fbm(vec2(uv.x*3.0, t*0.5)) - 0.5) * 0.18;
+  float band = exp(-pow((dy + warpY)*2.6, 2.0));
+  float dx = uv.x - u_mouse.x;
+  float energy = (exp(-pow(dx*1.4, 2.0)) * 0.7 + 0.3) * (1.0 + 0.6*u_mstrength);
+  float core = pow(band, 1.4) * energy;
+  float wisp = fbm(vec2(uv.x*4.0 - t*0.6, uv.y*8.0 + t*0.2));
+  core *= 0.6 + 0.8*wisp;
+  for(int i=0;i<8;i++){
+    vec3 ck=u_clicks[i];
+    if(ck.z<1.6){ float life=max(0.0,1.0-ck.z*0.6); float d=distance(uv,vec2(ck.x,ck.y)); core+=life*exp(-d*4.0)*1.5; }
+  }
+  vec3 col = bg(uv);
+  col = mix(col, pal(uv.x*0.5 + dy*0.6 + t*0.1), clamp(core, 0.0, 1.0) * u_intensity);
+  col += vec3(0.95,0.88,0.78) * pow(core, 3.5) * 0.9;
+  col = grain(col, uv); gl_FragColor = vec4(col, 1.0);
+}
+`;
+
+const FRAG_PLASMA = FRAG_HEAD + `
+void main(){
+  vec2 uv = gl_FragCoord.xy / u_res.xy;
+  float t = u_time * 0.15 * u_speed;
+  vec2 p = uv * 2.4;
+  vec2 toM = (u_mouse - uv) * u_mstrength;
+  p += toM * 1.2;
+  for(int i=0;i<8;i++){
+    vec3 ck=u_clicks[i];
+    if(ck.z<2.5){ float life=max(0.0,1.0-ck.z*0.4); vec2 d=uv-vec2(ck.x,ck.y); float r=length(d); p+=normalize(d+1e-4)*sin(r*16.0-ck.z*8.0)*life*0.25; }
+  }
+  vec2 q = vec2(fbm(p + t), fbm(p + vec2(5.2,1.3) - t*0.7));
+  vec2 r = vec2(fbm(p + 4.0*q + vec2(1.7,9.2) + t*0.5), fbm(p + 4.0*q + vec2(8.3,2.8) - t*0.3));
+  float f = fbm(p + 4.0*r);
+  vec3 col = bg(uv);
+  col = mix(col, pal(f*1.1 + length(r)*0.2 + t*0.08), smoothstep(0.25, 0.85, f) * u_intensity);
+  col += vec3(0.9,0.82,0.7) * smoothstep(0.7, 1.0, length(r)) * 0.35;
+  col = grain(col, uv); gl_FragColor = vec4(col, 1.0);
+}
+`;
+
+const FRAG_CAUSTIC = FRAG_HEAD + `
+void main(){
+  vec2 uv = gl_FragCoord.xy / u_res.xy;
+  vec2 ar = vec2(u_res.x/u_res.y, 1.0);
+  vec2 p  = uv * ar;
+  float t = u_time * 0.6 * u_speed;
+  float h = 0.0;
+  for(int i=0;i<4;i++){
+    float fi=float(i);
+    vec2 src=vec2(0.5+0.3*sin(t*0.4+fi*1.7), 0.5+0.3*cos(t*0.5+fi*2.3))*ar;
+    float d=distance(p,src);
+    h+=sin(d*22.0-t*2.0-fi)/(1.0+d*4.0);
+  }
+  { vec2 src=u_mouse*ar; float d=distance(p,src); h+=sin(d*30.0-t*3.0)/(1.0+d*3.0)*(0.4+u_mstrength); }
+  for(int i=0;i<8;i++){
+    vec3 ck=u_clicks[i];
+    if(ck.z<3.0){ vec2 src=vec2(ck.x,ck.y)*ar; float d=distance(p,src); float age=ck.z; h+=sin(d*28.0-age*9.0)*exp(-max(d-age*0.45,0.0)*10.0)*max(0.0,1.0-age*0.33)*1.8; }
+  }
+  h *= 0.25;
+  float c = pow(max(0.0, h+0.3), 2.0);
+  vec3 col = bg(uv);
+  col = mix(col, pal(c*0.7 + h*0.4 + t*0.05), smoothstep(0.0, 0.9, c) * u_intensity);
+  col += vec3(0.95,0.85,0.72) * pow(c, 3.0) * 0.6;
+  col = grain(col, uv); gl_FragColor = vec4(col, 1.0);
+}
+`;
+
+const FRAG_VORONOI = FRAG_HEAD + `
+vec2 hash2(vec2 p){ return fract(sin(vec2(dot(p,vec2(127.1,311.7)),dot(p,vec2(269.5,183.3))))*43758.5453); }
+void main(){
+  vec2 uv = gl_FragCoord.xy / u_res.xy;
+  vec2 ar = vec2(u_res.x/u_res.y, 1.0);
+  vec2 p = uv * ar * 5.5;
+  float t = u_time * 0.4 * u_speed;
+  vec2 ip=floor(p), fp=fract(p);
+  float d1=8.0, d2=8.0;
+  vec2 best=vec2(0.0);
+  for(int j=-1;j<=1;j++){ for(int i=-1;i<=1;i++){
+    vec2 g=vec2(float(i),float(j));
+    vec2 o=hash2(ip+g); o=0.5+0.5*sin(t+6.2831*o);
+    vec2 r=g+o-fp;
+    vec2 mP=u_mouse*ar*5.5; vec2 toM=(ip+g+o)-mP;
+    r+=normalize(toM+1e-4)*exp(-length(toM)*0.5)*u_mstrength*0.6;
+    float d=dot(r,r);
+    if(d<d1){d2=d1;d1=d;best=ip+g;}else if(d<d2){d2=d;}
+  }}
+  float edge=sqrt(d2)-sqrt(d1);
+  float cellId=hash(best);
+  float shift=0.0;
+  for(int i=0;i<8;i++){
+    vec3 ck=u_clicks[i];
+    if(ck.z<1.8){ shift+=max(0.0,1.0-ck.z*0.55)*exp(-distance(uv,vec2(ck.x,ck.y))*3.0); }
+  }
+  vec3 col=bg(uv);
+  col=mix(col, pal(cellId+shift*0.5+t*0.03), 0.55*u_intensity);
+  float border=smoothstep(0.06,0.0,edge);
+  col+=pal(cellId+0.25+t*0.07)*border*1.2;
+  col+=vec3(0.95,0.88,0.78)*border*exp(-distance(uv,u_mouse)*4.0)*1.4*u_mstrength;
+  col=grain(col,uv); gl_FragColor=vec4(col,1.0);
+}
+`;
+
+window.WP_SHADERS = {
+  VERT,
+  list: [
+    { id: 'gradient', label: 'Iridescent Haze', frag: FRAG_GRADIENT, hint: 'soft mouse drift' },
+    { id: 'metal',    label: 'Liquid Metal',    frag: FRAG_METAL,    hint: 'click → spawn blob' },
+    { id: 'aurora',   label: 'Aurora Smear',    frag: FRAG_AURORA,   hint: 'move → reshape streak' },
+    { id: 'plasma',   label: 'Plasma Flow',     frag: FRAG_PLASMA,   hint: 'click → pulse warp' },
+    { id: 'caustic',  label: 'Caustic Pond',    frag: FRAG_CAUSTIC,  hint: 'click → drop stone' },
+    { id: 'voronoi',  label: 'Voronoi Shards',  frag: FRAG_VORONOI,  hint: 'click → shatter hue' },
+  ],
+};
+</script>
+
+<!-- ── 3. Wallpaper WebGL engine ── -->
+<script type="text/babel">
+const { useEffect: _wUE, useRef: _wUR } = React;
+
+function Wallpaper({ shaderId, speed, intensity, mstrength, hue, grain, paused }) {
+  const canvasRef = _wUR(null);
+  const stateRef  = _wUR({
+    mouse: [0.5,0.5], targetMouse: [0.5,0.5], mvel: [0,0],
+    clicks: Array.from({length:8}, () => [0,0,99]),
+    clickIdx: 0, t0: performance.now()/1000,
+  });
+  _wUE(() => { window.__wp_state = stateRef.current; }, []);
+  _wUE(() => {
+    const onMove  = (e) => { stateRef.current.targetMouse = [e.clientX/window.innerWidth, 1.0-e.clientY/window.innerHeight]; };
+    const onClick = (e) => {
+      const s = stateRef.current;
+      s.clicks[s.clickIdx] = [e.clientX/window.innerWidth, 1.0-e.clientY/window.innerHeight, 0];
+      s.clickIdx = (s.clickIdx+1) % 8;
+    };
+    window.addEventListener('pointermove', onMove);
+    window.addEventListener('pointerdown', onClick);
+    return () => { window.removeEventListener('pointermove', onMove); window.removeEventListener('pointerdown', onClick); };
+  }, []);
+
+  const glRef   = _wUR(null);
+  const progRef = _wUR(null);
+  const locsRef = _wUR(null);
+
+  _wUE(() => {
+    const canvas = canvasRef.current;
+    const gl = canvas.getContext('webgl', {antialias:false,alpha:false,premultipliedAlpha:false})
+             || canvas.getContext('experimental-webgl');
+    if (!gl) return;
+    glRef.current = gl;
+    const buf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,1,-1,-1,1,1,1]), gl.STATIC_DRAW);
+    const shader = (window.WP_SHADERS.list.find(s => s.id === shaderId) || window.WP_SHADERS.list[0]);
+    const compile = (type, src) => {
+      const sh = gl.createShader(type); gl.shaderSource(sh, src); gl.compileShader(sh);
+      if (!gl.getShaderParameter(sh, gl.COMPILE_STATUS)){ console.error(gl.getShaderInfoLog(sh)); return null; }
+      return sh;
+    };
+    const vs = compile(gl.VERTEX_SHADER,   window.WP_SHADERS.VERT);
+    const fs = compile(gl.FRAGMENT_SHADER, shader.frag);
+    if (!vs||!fs) return;
+    const prog = gl.createProgram();
+    gl.attachShader(prog,vs); gl.attachShader(prog,fs); gl.linkProgram(prog);
+    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)){ console.error(gl.getProgramInfoLog(prog)); return; }
+    progRef.current = prog;
+    gl.useProgram(prog);
+    const aPos = gl.getAttribLocation(prog,'a_pos');
+    gl.enableVertexAttribArray(aPos); gl.vertexAttribPointer(aPos,2,gl.FLOAT,false,0,0);
+    const loc = (n) => gl.getUniformLocation(prog,n);
+    locsRef.current = {
+      u_res:loc('u_res'), u_time:loc('u_time'), u_mouse:loc('u_mouse'), u_mvel:loc('u_mvel'),
+      u_clicks:loc('u_clicks[0]'), u_speed:loc('u_speed'), u_intensity:loc('u_intensity'),
+      u_mstrength:loc('u_mstrength'), u_hue:loc('u_hue'), u_grain:loc('u_grain'),
+    };
+  }, [shaderId]);
+
+  _wUE(() => {
+    const canvas = canvasRef.current;
+    const onResize = () => {
+      const dpr = Math.min(window.devicePixelRatio||1, 1.75);
+      canvas.width  = Math.floor(window.innerWidth  * dpr);
+      canvas.height = Math.floor(window.innerHeight * dpr);
+      if (glRef.current) glRef.current.viewport(0, 0, canvas.width, canvas.height);
+    };
+    onResize();
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
+
+  _wUE(() => {
+    let raf, last = performance.now();
+    const tick = (now) => {
+      const dt = Math.min(0.05,(now-last)/1000); last = now;
+      const s  = stateRef.current;
+      const k  = 1 - Math.pow(0.001, dt);
+      const nx = s.mouse[0]+(s.targetMouse[0]-s.mouse[0])*k;
+      const ny = s.mouse[1]+(s.targetMouse[1]-s.mouse[1])*k;
+      s.mvel = [(nx-s.mouse[0])/dt, (ny-s.mouse[1])/dt];
+      s.mouse = [nx, ny];
+      for (const c of s.clicks) c[2] += dt;
+      const gl = glRef.current, prog = progRef.current, locs = locsRef.current;
+      if (gl && prog && locs && !paused) {
+        gl.useProgram(prog);
+        gl.uniform2f(locs.u_res, gl.canvas.width, gl.canvas.height);
+        gl.uniform1f(locs.u_time, performance.now()/1000 - s.t0);
+        gl.uniform2f(locs.u_mouse, s.mouse[0], s.mouse[1]);
+        gl.uniform2f(locs.u_mvel,  s.mvel[0],  s.mvel[1]);
+        const arr = new Float32Array(24);
+        for (let i=0;i<8;i++){ const c=s.clicks[i]; arr[i*3]=c[0]; arr[i*3+1]=c[1]; arr[i*3+2]=c[2]; }
+        gl.uniform3fv(locs.u_clicks, arr);
+        gl.uniform1f(locs.u_speed,      speed);
+        gl.uniform1f(locs.u_intensity,  intensity);
+        gl.uniform1f(locs.u_mstrength,  mstrength);
+        gl.uniform1f(locs.u_hue,        hue);
+        gl.uniform1f(locs.u_grain,      grain);
+        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [speed, intensity, mstrength, hue, grain, paused, shaderId]);
+
+  return <canvas ref={canvasRef} className="wp" />;
+}
+
+window.Wallpaper = Wallpaper;
+</script>
+
+<!-- ── 4. Card ── -->
+<script type="text/babel">
+const { useEffect: _cUE, useRef: _cUR, useState: _cUS } = React;
+
+function CodeBodyLight() {
+  const C = {
+    com:  { color: 'rgba(41,38,27,.42)' },
+    kw:   { color: '#6f5fa0' },
+    str:  { color: '#c47842' },
+    num:  { color: '#b88a4a' },
+    pun:  { color: 'rgba(41,38,27,.55)' },
+    base: { color: 'rgba(41,38,27,.92)' },
+    bool: { color: '#5a7fa0' },
+  };
+  return (
+    <pre style={{margin:0, font:"500 12.5px/1.65 'JetBrains Mono',monospace", letterSpacing:'-0.005em', ...C.base}}>
+<span style={C.com}>{`// tech stack`}</span>{"\n"}
+<span style={C.kw}>const</span> stack <span style={C.pun}>=</span> <span style={C.pun}>{`{`}</span>{"\n"}
+{"  "}frontend<span style={C.pun}>:</span> <span style={C.str}>'React + TypeScript'</span><span style={C.pun}>,</span>{"\n"}
+{"  "}backend<span style={C.pun}>:</span>  <span style={C.str}>'PHP + Symfony'</span><span style={C.pun}>,</span>{"\n"}
+{"  "}database<span style={C.pun}>:</span> <span style={C.str}>'MySQL'</span><span style={C.pun}>,</span>{"\n"}
+{"  "}infra<span style={C.pun}>:</span>    <span style={C.str}>'Docker + Nginx'</span><span style={C.pun}>,</span>{"\n"}
+<span style={C.pun}>{`}`}</span>{"\n"}
+{"\n"}
+<span style={C.kw}>const</span> available <span style={C.pun}>=</span> <span style={C.bool}>true</span> <span style={{
+  display:'inline-block', width:8, height:8, borderRadius:99,
+  background:'#4dbb73', boxShadow:'0 0 8px #4dbb73', verticalAlign:'middle',
+  marginLeft:4, marginBottom:2,
+}}></span>
+    </pre>
+  );
+}
+
+function ErrorBody() {
+  const E = {
+    base: { color: 'rgba(245,210,200,.90)' },
+    dim:  { color: 'rgba(245,210,200,.45)' },
+    red:  { color: '#ff8a6c' },
+    soft: { color: '#e8a48c' },
+    fn:   { color: '#dfb472' },
+  };
+  return (
+    <pre style={{margin:0, font:"500 12px/1.7 'JetBrains Mono',monospace", letterSpacing:'.005em', ...E.base}}>
+<span style={E.red}>[FATAL]</span> <span style={E.dim}>uncaught exception</span>{"\n"}
+{"\n"}
+<span style={E.red}>×</span> <span style={E.soft}>cannot</span> <span style={E.fn}>serialize</span><span style={E.dim}>(</span>profile<span style={E.dim}>)</span>{"\n"}
+{"    "}<span style={E.dim}>at</span> <span style={E.fn}>runtime</span><span style={E.dim}>.js:</span>42{"\n"}
+{"    "}<span style={E.dim}>at</span> <span style={E.fn}>iridescent</span><span style={E.dim}>(</span>0.84<span style={E.dim}>)</span>{"\n"}
+{"    "}<span style={E.dim}>at</span> stack<span style={E.dim}>.</span>frontend{"\n"}
+{"    "}<span style={E.dim}>at</span> Vibe<span style={E.dim}>.</span><span style={E.fn}>focused</span>
+    </pre>
+  );
+}
+
+const dot = (c, glow) => ({
+  width:10, height:10, borderRadius:99, background:c, opacity:.85,
+  boxShadow: glow ? `inset 0 0 0 .5px rgba(0,0,0,.35), 0 0 8px ${c}aa` : `inset 0 0 0 .5px rgba(0,0,0,.20)`,
+});
+
+function Card({ t }) {
+  const cardRef      = _cUR(null);
+  const specRef      = _cUR(null);
+  const iridRef      = _cUR(null);
+  const rimRef       = _cUR(null);
+  const innerRef     = _cUR(null);
+  const backInnerRef = _cUR(null);
+  const stateRef     = _cUR({ rx:0, ry:0, sx:0.5, sy:0.5, hov:0, flip:0 });
+  const [flipped, setFlipped] = _cUS(false);
+  const flippedRef = _cUR(flipped);
+  flippedRef.current = flipped;
+
+  _cUE(() => {
+    let raf;
+    const tick = () => {
+      const card = cardRef.current;
+      if (!card){ raf = requestAnimationFrame(tick); return; }
+      const r  = card.getBoundingClientRect();
+      const mx = (window.__wp_state ? window.__wp_state.targetMouse[0] : 0.5) * window.innerWidth;
+      const my = (1 - (window.__wp_state ? window.__wp_state.targetMouse[1] : 0.5)) * window.innerHeight;
+      const lx = (mx - r.left) / r.width;
+      const ly = (my - r.top)  / r.height;
+      const isHover = lx > -0.1 && lx < 1.1 && ly > -0.1 && ly < 1.1;
+      const now = performance.now() / 1000;
+      let targetRY, targetRX, targetSX, targetSY, targetH;
+      if (isHover) {
+        targetRY = (lx - 0.5) * 2 * t.tiltMax;
+        targetRX = -(ly - 0.5) * 2 * t.tiltMax;
+        targetSX = Math.min(1, Math.max(0, lx));
+        targetSY = Math.min(1, Math.max(0, ly));
+        targetH  = 1;
+      } else if (t.idleOrbit) {
+        targetRY = Math.sin(now * 0.6) * t.tiltMax * 0.35;
+        targetRX = Math.cos(now * 0.5) * t.tiltMax * 0.25;
+        targetSX = 0.5 + 0.35 * Math.sin(now * 0.8);
+        targetSY = 0.5 + 0.35 * Math.cos(now * 0.7);
+        targetH  = 0.35;
+      } else {
+        targetRY = 0; targetRX = 0; targetSX = 0.5; targetSY = 0.5; targetH = 0;
+      }
+      const k = t.smoothing, s = stateRef.current;
+      s.rx  += (targetRX - s.rx)  * k;
+      s.ry  += (targetRY - s.ry)  * k;
+      s.sx  += (targetSX - s.sx)  * k;
+      s.sy  += (targetSY - s.sy)  * k;
+      s.hov += (targetH  - s.hov) * k;
+      s.flip += ((flippedRef.current ? 180 : 0) - s.flip) * 0.08;
+
+      const scale = 1 + s.hov * (t.hoverScale - 1);
+      card.style.transform = `rotateY(${s.flip + s.ry}deg) rotateX(${s.rx}deg) scale(${scale})`;
+
+      const fx = Math.sin(now * 0.7)  * 2.6;
+      const fy = Math.cos(now * 0.95) * 2.0;
+      if (innerRef.current) {
+        const px = -s.ry * t.parallax * 0.6 + fx;
+        const py =  s.rx * t.parallax * 0.6 + fy;
+        innerRef.current.style.transform = `translate3d(${px}px, ${py}px, 16px)`;
+      }
+      if (backInnerRef.current)
+        backInnerRef.current.style.transform = `translate3d(${fx*0.6}px, ${fy*0.6}px, 16px)`;
+
+      if (specRef.current) {
+        const sx = s.sx*100, sy = s.sy*100;
+        specRef.current.style.background =
+          `radial-gradient(circle ${t.specSize}% at ${sx}% ${sy}%, rgba(255,247,232,${0.45*t.specInt*Math.max(s.hov,0.25)}), rgba(255,247,232,0) 60%)`;
+      }
+      if (iridRef.current) {
+        const ang = Math.atan2(s.sy-0.5, s.sx-0.5)*180/Math.PI + t.iridAngle;
+        const sx = s.sx*100, sy = s.sy*100;
+        iridRef.current.style.background =
+          `conic-gradient(from ${ang}deg at ${sx}% ${sy}%, #c08664, #efe6d6, #a890b8, #7a8aa8, #dfb472, #c08664)`;
+        iridRef.current.style.opacity = (t.iridInt * (0.30 + 0.70 * s.hov)).toString();
+        iridRef.current.style.maskImage =
+          `radial-gradient(circle ${Math.max(40, t.specSize*1.8)}% at ${sx}% ${sy}%, #000, transparent 70%)`;
+        iridRef.current.style.webkitMaskImage = iridRef.current.style.maskImage;
+      }
+      if (rimRef.current) {
+        const hueT = (s.sx + s.sy) * 180 + t.iridAngle;
+        const glow  = `hsla(${(hueT+25)%360},60%,70%,${0.32*t.glowInt*Math.max(0.4,s.hov)})`;
+        const glow2 = `hsla(${(hueT+200)%360},50%,60%,${0.22*t.glowInt*Math.max(0.4,s.hov)})`;
+        card.style.boxShadow =
+          `0 ${14+22*s.hov}px ${t.glowRadius}px -14px ${glow},` +
+          `0 ${8+16*s.hov}px ${t.glowRadius*0.7}px -22px ${glow2},` +
+          `0 12px 36px rgba(80,50,30,.10),` +
+          `0 1px 0 rgba(255,255,255,.7) inset,` +
+          `0 0 0 .5px rgba(120,90,60,.10) inset`;
+        rimRef.current.style.opacity = t.rim ? (0.45 + 0.55*s.hov) : 0;
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [t]);
+
+  const noiseSvg = `<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'>
+    <filter id='n'><feTurbulence type='fractalNoise' baseFrequency='${t.noiseScale}' numOctaves='2' stitchTiles='stitch'/></filter>
+    <rect width='100%' height='100%' filter='url(#n)' opacity='1'/></svg>`;
+  const noiseUrl = `url("data:image/svg+xml;utf8,${encodeURIComponent(noiseSvg)}")`;
+
+  return (
+    <div style={{ perspective:`${t.perspective}px`, transformStyle:'preserve-3d', width:t.cardWidth, maxWidth:'92vw' }}>
+      <div ref={cardRef} onClick={() => setFlipped(f => !f)}
+        style={{ position:'relative', width:'100%', aspectRatio:'1 / 0.92', borderRadius:18,
+                 transformStyle:'preserve-3d', willChange:'transform, box-shadow', cursor:'pointer' }}>
+
+        {/* FRONT */}
+        <div style={{ position:'absolute', inset:0, borderRadius:18,
+          background:'linear-gradient(180deg, #fcf7ef 0%, #f4ead9 100%)',
+          border:'.5px solid rgba(120,90,60,.14)',
+          backfaceVisibility:'hidden', WebkitBackfaceVisibility:'hidden', overflow:'hidden' }}>
+          <div ref={iridRef} style={{ position:'absolute', inset:0, pointerEvents:'none',
+            mixBlendMode:'overlay', filter:`blur(${t.iridBlur}px) saturate(150%)` }} />
+          <div style={{ position:'absolute', inset:0, pointerEvents:'none',
+            backgroundImage:noiseUrl, backgroundSize:'160px 160px',
+            opacity:t.noiseOpacity, mixBlendMode:'multiply' }} />
+          <div ref={specRef} style={{ position:'absolute', inset:0, pointerEvents:'none', mixBlendMode:'screen' }} />
+          <div ref={rimRef} style={{ position:'absolute', inset:0, pointerEvents:'none', borderRadius:18,
+            padding:'.5px',
+            background:'linear-gradient(135deg, #c08664, #efe6d6 30%, #a890b8 55%, #7a8aa8 80%, #c08664)',
+            WebkitMask:'linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)',
+            WebkitMaskComposite:'xor', maskComposite:'exclude', opacity:0.5, transition:'opacity 200ms' }} />
+          <div ref={innerRef} style={{ position:'relative', padding:'22px 24px',
+            transformStyle:'preserve-3d', willChange:'transform' }}>
+            <CodeBodyLight />
+          </div>
+        </div>
+
+        {/* BACK */}
+        <div style={{ position:'absolute', inset:0, borderRadius:18,
+          background:'linear-gradient(160deg, #2a1410 0%, #160a07 100%)',
+          border:'.5px solid rgba(255,100,80,.22)',
+          backfaceVisibility:'hidden', WebkitBackfaceVisibility:'hidden',
+          transform:'rotateY(180deg)', overflow:'hidden',
+          boxShadow:'0 0 70px rgba(226,90,70,.18) inset' }}>
+          <div style={{ position:'absolute', inset:0, pointerEvents:'none',
+            backgroundImage:'repeating-linear-gradient(0deg, rgba(226,90,70,.06) 0, rgba(226,90,70,.06) 1px, transparent 1px, transparent 3px)',
+            mixBlendMode:'screen', opacity:0.6 }} />
+          <div style={{ position:'absolute', inset:0, pointerEvents:'none',
+            backgroundImage:noiseUrl, backgroundSize:'160px 160px',
+            opacity:t.noiseOpacity*1.2, mixBlendMode:'overlay' }} />
+          <div style={{ position:'absolute', inset:'-30%', pointerEvents:'none',
+            background:'radial-gradient(circle at 50% 50%, rgba(226,90,70,.35), transparent 55%)',
+            animation:'errPulse 2.8s ease-in-out infinite' }} />
+          <div ref={backInnerRef} style={{ position:'relative', padding:'22px 24px',
+            height:'100%', boxSizing:'border-box',
+            display:'flex', flexDirection:'column', justifyContent:'space-between',
+            transformStyle:'preserve-3d', willChange:'transform' }}>
+            <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between' }}>
+              <div style={{ display:'flex', gap:7 }}>
+                <span style={dot('#ff8a6c', true)} />
+                <span style={dot('#dfb472', true)} />
+                <span style={dot('#9cc7a4', true)} />
+              </div>
+              <span style={{ font:"600 9.5px/1 'JetBrains Mono',monospace",
+                letterSpacing:'.18em', textTransform:'uppercase', color:'rgba(255,138,108,.85)' }}>
+                ERROR · 0xDEADBEEF
+              </span>
+            </div>
+            <div style={{ margin:'4px 0' }}>
+              <div style={{ font:"700 38px/1 'JetBrains Mono',monospace",
+                letterSpacing:'-.02em', color:'#ff8a6c',
+                textShadow:'0 0 24px rgba(255,138,108,.4)', marginBottom:12 }}>ERROR</div>
+              <ErrorBody />
+            </div>
+            <div style={{ font:"500 9.5px/1 'JetBrains Mono',monospace",
+              letterSpacing:'.14em', textTransform:'uppercase',
+              color:'rgba(255,180,160,.55)', display:'flex', justifyContent:'space-between' }}>
+              <span>↻ click to retry</span>
+              <span>· v 2.026</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <style>{`@keyframes errPulse{0%,100%{opacity:.55;transform:scale(1)}50%{opacity:.85;transform:scale(1.06)}}`}</style>
+    </div>
+  );
+}
+
+window.Card = Card;
+</script>
+
+<!-- ── 5. App ── -->
+<script type="text/babel">
+const { useState: _aUS } = React;
+
+const TWEAK_DEFAULTS = {
+  wallpaper: 'gradient', wpSpeed: 0, wpIntensity: 1.0, wpMouse: 0.6,
+  wpHue: 0.0, wpGrain: 0, wpPaused: false,
+  tiltMax: 0, perspective: 1100, hoverScale: 1.0, smoothing: 0.12,
+  parallax: 0, idleOrbit: false,
+  specSize: 60, specInt: 0.85,
+  iridInt: 0.30, iridAngle: 90, iridBlur: 20,
+  glowInt: 0.75, glowRadius: 80, rim: true,
+  noiseOpacity: 0.10, noiseScale: 0.85,
+  cardWidth: 320,
+};
+
+function App() {
+  const [t, setTweak] = window.useTweaks(TWEAK_DEFAULTS);
+  const shaderInfo = window.WP_SHADERS.list.find(s => s.id === t.wallpaper) || window.WP_SHADERS.list[0];
+
+  return (
+    <>
+      <window.Wallpaper
+        shaderId={t.wallpaper} speed={t.wpSpeed} intensity={t.wpIntensity}
+        mstrength={t.wpMouse} hue={t.wpHue} grain={t.wpGrain} paused={t.wpPaused}
+      />
+
+      <div className="hud">
+        <b>порт · 2026</b>
+        <span>code card lab</span>
+        <i> · futurist OS wallpaper</i>
+      </div>
+      <div className="hud-r">
+        <b style={{color:'rgba(41,38,27,.85)',fontWeight:500,marginBottom:3,display:'block'}}>
+          {shaderInfo.label.toUpperCase()}
+        </b>
+        <span style={{color:'rgba(41,38,27,.45)'}}>{shaderInfo.hint}</span>
+      </div>
+
+      <div className="stage">
+        <window.Card t={t} />
+      </div>
+
+      <window.TweaksPanel title="Tweaks">
+        <window.TweakSection label="Wallpaper" />
+        <window.TweakSelect label="Shader" value={t.wallpaper}
+          options={window.WP_SHADERS.list.map(s => ({ value: s.id, label: s.label }))}
+          onChange={(v) => setTweak('wallpaper', v)} />
+        <window.TweakSlider label="Speed"          value={t.wpSpeed}     min={0} max={3}    step={0.05} onChange={(v) => setTweak('wpSpeed',    v)} />
+        <window.TweakSlider label="Intensity"      value={t.wpIntensity} min={0} max={1.6}  step={0.02} onChange={(v) => setTweak('wpIntensity',v)} />
+        <window.TweakSlider label="Mouse strength" value={t.wpMouse}     min={0} max={2}    step={0.02} onChange={(v) => setTweak('wpMouse',    v)} />
+        <window.TweakSlider label="Hue shift"      value={t.wpHue}       min={-1} max={1}   step={0.02} onChange={(v) => setTweak('wpHue',      v)} />
+        <window.TweakSlider label="Grain"          value={t.wpGrain}     min={0} max={1.5}  step={0.02} onChange={(v) => setTweak('wpGrain',    v)} />
+        <window.TweakToggle label="Paused"         value={t.wpPaused}    onChange={(v) => setTweak('wpPaused', v)} />
+
+        <window.TweakSection label="Card · motion" />
+        <window.TweakSlider label="Tilt max"      value={t.tiltMax}    min={0}   max={30}   step={0.5}  unit="°"  onChange={(v) => setTweak('tiltMax',    v)} />
+        <window.TweakSlider label="Perspective"   value={t.perspective} min={400} max={2400} step={20}  unit="px" onChange={(v) => setTweak('perspective',v)} />
+        <window.TweakSlider label="Hover scale"   value={t.hoverScale} min={1}   max={1.15} step={0.005}          onChange={(v) => setTweak('hoverScale', v)} />
+        <window.TweakSlider label="Smoothing"     value={t.smoothing}  min={0.03} max={0.45} step={0.01}          onChange={(v) => setTweak('smoothing',  v)} />
+        <window.TweakSlider label="Parallax depth" value={t.parallax}  min={0}   max={50}   step={1}   unit="px" onChange={(v) => setTweak('parallax',   v)} />
+        <window.TweakToggle label="Idle orbit"    value={t.idleOrbit}  onChange={(v) => setTweak('idleOrbit',v)} />
+
+        <window.TweakSection label="Card · light" />
+        <window.TweakSlider label="Specular size"      value={t.specSize}   min={15} max={120} step={1}    unit="%" onChange={(v) => setTweak('specSize',   v)} />
+        <window.TweakSlider label="Specular intensity" value={t.specInt}    min={0}  max={2}   step={0.05}          onChange={(v) => setTweak('specInt',    v)} />
+        <window.TweakSlider label="Glow intensity"     value={t.glowInt}    min={0}  max={2.5} step={0.05}          onChange={(v) => setTweak('glowInt',    v)} />
+        <window.TweakSlider label="Glow radius"        value={t.glowRadius} min={20} max={200} step={2}   unit="px" onChange={(v) => setTweak('glowRadius', v)} />
+        <window.TweakToggle label="Rim edge"           value={t.rim}        onChange={(v) => setTweak('rim',      v)} />
+
+        <window.TweakSection label="Card · iridescence" />
+        <window.TweakSlider label="Iridescence"  value={t.iridInt}   min={0} max={1.4} step={0.02}          onChange={(v) => setTweak('iridInt',   v)} />
+        <window.TweakSlider label="Angle offset" value={t.iridAngle} min={0} max={360} step={5}   unit="°"  onChange={(v) => setTweak('iridAngle', v)} />
+        <window.TweakSlider label="Blur"         value={t.iridBlur}  min={0} max={60}  step={1}   unit="px" onChange={(v) => setTweak('iridBlur',  v)} />
+
+        <window.TweakSection label="Card · grain" />
+        <window.TweakSlider label="Noise opacity" value={t.noiseOpacity} min={0}   max={0.6} step={0.01} onChange={(v) => setTweak('noiseOpacity',v)} />
+        <window.TweakSlider label="Noise scale"   value={t.noiseScale}   min={0.2} max={2.5} step={0.05} onChange={(v) => setTweak('noiseScale',  v)} />
+
+        <window.TweakSection label="Card · size" />
+        <window.TweakSlider label="Width" value={t.cardWidth} min={320} max={680} step={5} unit="px" onChange={(v) => setTweak('cardWidth', v)} />
+      </window.TweaksPanel>
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
