@@ -37,7 +37,8 @@
     "eject": "react-scripts eject",
     "update-static": "node scripts/generate-static-data.js",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build",
+    "deploy:all": "bash scripts/deploy-all.sh"
   },
   "eslintConfig": {
     "extends": [
