@@ -10,7 +10,7 @@
 .cp-image-container {
   position: relative;
   width: 100%;
-  height: 26rem;
+  aspect-ratio: 16 / 10;
   perspective: 1000px;
 }
 .cp-image {
@@ -18,7 +18,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: top;
+  object-position: top center;
   border-radius: 1.25rem;
   box-shadow: 0 12px 36px rgba(0, 0, 0, 0.18);
 }
