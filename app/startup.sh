@@ -24,5 +24,8 @@ if [ -n "$DATABASE_URL" ]; then
     php bin/console doctrine:migrations:migrate --no-interaction --env=prod && echo "=== migrations OK ===" || echo "=== migrations FAILED ==="
 fi
 
+# Create admin user if ADMIN_EMAIL + ADMIN_PASSWORD are set and no users exist
+php bin/console app:create-admin --env=prod && echo "=== create-admin OK ===" || echo "=== create-admin FAILED ==="
+
 echo "=== Starting PHP server on port ${PORT:-8080} ==="
 exec php -S "0.0.0.0:${PORT:-8080}" -t public/ public/router.php
