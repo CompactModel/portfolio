@@ -24,7 +24,6 @@ export function CircularProjects({ projects, autoplay = true, t }: CircularProje
   const [activeIndex,    setActiveIndex]    = useState(0);
   const [hoverPrev,      setHoverPrev]      = useState(false);
   const [hoverNext,      setHoverNext]      = useState(false);
-  const [hoverLink,      setHoverLink]      = useState(false);
   const [containerWidth, setContainerWidth] = useState(1200);
 
   const containerRef       = useRef<HTMLDivElement>(null);
@@ -133,8 +132,6 @@ export function CircularProjects({ projects, autoplay = true, t }: CircularProje
                   rel="noreferrer"
                   className="cp-link"
                   style={{ background: DARK, color: "#fff" }}
-                  onMouseEnter={() => setHoverLink(true)}
-                  onMouseLeave={() => setHoverLink(false)}
                 >
                   {t("view_project")} →
                 </a>
