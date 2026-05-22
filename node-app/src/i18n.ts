@@ -8,7 +8,15 @@ const resources = {
       hero_title:     "Hi, I'm",
       hero_highlight: 'Yan',
       hero_subtitle:  '— Full Stack Developer',
-      hero_description: 'I build modern websites and web applications for businesses like cafés, salons, and service companies.',
+      tab_services: 'What I Build',
+      tab_skills: 'Skills',
+      services_title: 'What I Build',
+      service_1: 'Business websites',
+      service_2: 'Landing pages',
+      service_3: 'Portfolio websites',
+      service_4: 'Responsive design',
+      service_5: 'Admin panel integration',
+      service_6: 'Multilingual websites',
       view_projects:  'View Projects',
       contact_me:     'Contact Me',
 
@@ -24,7 +32,7 @@ const resources = {
       no_projects:    'No projects yet. Add them in the admin panel.',
       present:        'Present',
 
-      view_project:   'View Project →',
+      view_project:   'View Project',
 
       contact_intro:  "Feel free to reach out — I'm open to new projects and opportunities.",
       form_name:      'Your name',
@@ -44,7 +52,15 @@ const resources = {
       hero_title:     'Hallo, ich bin',
       hero_highlight: 'Yan',
       hero_subtitle:  '— Full Stack Entwickler',
-      hero_description: 'Ich erstelle moderne Websites und Webanwendungen für Unternehmen wie Cafés, Salons und Dienstleister.',
+      tab_services: 'Was ich baue',
+      tab_skills: 'Fähigkeiten',
+      services_title: 'Was ich baue',
+      service_1: 'Unternehmenswebsites',
+      service_2: 'Landing Pages',
+      service_3: 'Portfolio-Websites',
+      service_4: 'Responsives Design',
+      service_5: 'Admin-Panel-Integration',
+      service_6: 'Mehrsprachige Websites',
       view_projects:  'Projekte ansehen',
       contact_me:     'Kontakt',
 
@@ -60,7 +76,7 @@ const resources = {
       no_projects:    'Noch keine Projekte. Im Admin-Panel hinzufügen.',
       present:        'Heute',
 
-      view_project:   'Projekt ansehen →',
+      view_project:   'Projekt ansehen',
 
       contact_intro:  'Schreib mir gerne — ich bin offen für neue Projekte und Möglichkeiten.',
       form_name:      'Dein Name',
@@ -80,7 +96,15 @@ const resources = {
       hero_title:     'Привіт, я',
       hero_highlight: 'Ян',
       hero_subtitle:  '— Full Stack Розробник',
-      hero_description: 'Я створюю сучасні веб-сайти та додатки для бізнесу — кафе, салонів, сервісних компаній.',
+      tab_services: 'Що я створюю',
+      tab_skills: 'Навички',
+      services_title: 'Що я створюю',
+      service_1: 'Бізнес-сайти',
+      service_2: 'Лендінги',
+      service_3: 'Сайти-портфоліо',
+      service_4: 'Адаптивний дизайн',
+      service_5: 'Інтеграція адмін-панелі',
+      service_6: 'Багатомовні сайти',
       view_projects:  'Переглянути проекти',
       contact_me:     "Зв'язатися",
 
@@ -96,7 +120,7 @@ const resources = {
       no_projects:    'Проектів ще немає. Додай їх в адмін панелі.',
       present:        'Сьогодні',
 
-      view_project:   'Переглянути проект →',
+      view_project:   'Переглянути проект',
 
       contact_intro:  'Пиши — я відкритий до нових проектів і можливостей.',
       form_name:      "Твоє ім'я",
