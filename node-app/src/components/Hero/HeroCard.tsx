@@ -5,7 +5,7 @@ const CFG = {
   perspective:  1100,
   hoverScale:   1.03,
   smoothing:    0.10,
-  parallax:     10,
+  parallax:     1.5,
   specSize:     60,
   specInt:      0.85,
   iridInt:      0.30,
@@ -153,11 +153,13 @@ export function HeroCard() {
   const noiseUrl = `url("data:image/svg+xml;utf8,${encodeURIComponent(noiseSvg)}")`;
 
   return (
-    <div style={{ perspective: `${CFG.perspective}px`, transformStyle: 'preserve-3d', width: 320, maxWidth: '92vw', flexShrink: 0 }}>
+    <div
+      onClick={() => setFlipped(f => !f)}
+      style={{ perspective: `${CFG.perspective}px`, transformStyle: 'preserve-3d', width: 320, maxWidth: '92vw', flexShrink: 0, cursor: 'pointer' }}
+    >
       <div
         ref={cardRef}
-        onClick={() => setFlipped(f => !f)}
-        style={{ position: 'relative', width: '100%', aspectRatio: '1 / 0.92', borderRadius: 18, transformStyle: 'preserve-3d', willChange: 'transform, box-shadow', cursor: 'pointer' }}
+        style={{ position: 'relative', width: '100%', aspectRatio: '1 / 0.92', borderRadius: 18, transformStyle: 'preserve-3d', willChange: 'transform, box-shadow' }}
       >
         {/* ── FRONT ── */}
         <div style={{ position: 'absolute', inset: 0, borderRadius: 18, background: 'linear-gradient(180deg,#fcf7ef 0%,#f4ead9 100%)', border: '.5px solid rgba(120,90,60,.14)', backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden', overflow: 'hidden' }}>

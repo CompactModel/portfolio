@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useProfile } from '../../hooks/useProfile';
 import { useLanguage } from '../../hooks/useLanguage';
 import { DARK, MID, SUBTLE } from '../../data/config';
@@ -8,6 +8,16 @@ export default function Navbar() {
   const { profile } = useProfile();
   const { t, currentLang, changeLanguage } = useLanguage();
   const [menuOpen, setMenuOpen] = useState(false);
+  const navRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const onMove = (e: PointerEvent) => {
+      navRef.current?.style.setProperty('--x', String(e.clientX));
+      navRef.current?.style.setProperty('--y', String(e.clientY));
+    };
+    window.addEventListener('pointermove', onMove);
+    return () => window.removeEventListener('pointermove', onMove);
+  }, []);
 
   const navLinks = [
     { href: '#skills',   label: t('nav_skills')   },
@@ -30,7 +40,7 @@ export default function Navbar() {
   });
 
   return (
-    <nav className="navbar">
+    <nav className="navbar" ref={navRef}>
       <div className="nav-inner" style={{ display: 'flex', alignItems: 'center', padding: '0 32px', height: 60, maxWidth: 1200, margin: '0 auto' }}>
         <span className="nav-logo" style={{ fontWeight: 800, fontSize: 17, color: DARK, flex: 1 }}>
           {profile?.name ?? 'Yan Oleksiuk'}
@@ -38,11 +48,7 @@ export default function Navbar() {
 
         <div className="nav-links" style={{ display: 'flex', gap: 4 }}>
           {navLinks.map(l => (
-            <a key={l.href} href={l.href}
-              style={{ color: SUBTLE, textDecoration: 'none', padding: '6px 14px', borderRadius: 8, fontSize: 12, fontWeight: 500, transition: 'color 0.2s' }}
-              onMouseEnter={e => { e.currentTarget.style.color = DARK; }}
-              onMouseLeave={e => { e.currentTarget.style.color = SUBTLE; }}
-            >{l.label}</a>
+            <a key={l.href} href={l.href} className="nav-glow-link">{l.label}</a>
           ))}
         </div>
 

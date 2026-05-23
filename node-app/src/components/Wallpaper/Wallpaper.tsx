@@ -49,11 +49,11 @@ void main(){
   float t  = u_time * 0.03 * u_speed;
   vec2  m  = (u_mouse - 0.5) * 0.14 * u_mstrength;
 
-  vec3 white  = vec3(0.975, 0.955, 0.918);
-  vec3 cream  = vec3(0.955, 0.925, 0.872);
-  vec3 peach  = vec3(0.928, 0.788, 0.728);
-  vec3 brown  = vec3(0.355, 0.235, 0.175);
-  vec3 copper = vec3(0.700, 0.498, 0.395);
+  vec3 white  = vec3(0.930, 0.975, 0.965);
+  vec3 cream  = vec3(0.860, 0.945, 0.925);
+  vec3 peach  = vec3(0.078, 0.722, 0.651);
+  vec3 brown  = vec3(0.030, 0.190, 0.175);
+  vec3 copper = vec3(0.220, 0.620, 0.580);
 
   vec3 col = mix(white * 0.985, white, smoothstep(0.0, 1.0, uv.y));
   col = mix(col, cream, smoothstep(0.2, 1.0, uv.x) * 0.35);

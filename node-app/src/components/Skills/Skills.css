@@ -9,3 +9,32 @@
   flex-wrap: wrap;
   gap: 10px;
 }
+
+.skill-name,
+.skill-icon {
+  transition: text-shadow 0.25s ease;
+  text-shadow:
+    -1px -1px 0 rgba(255,255,255,0),
+     0   -1px 0 rgba(255,255,255,0),
+     1px -1px 0 rgba(255,255,255,0),
+     1px  0   0 rgba(255,255,255,0),
+     1px  1px 0 rgba(255,255,255,0),
+     0    1px 0 rgba(255,255,255,0),
+    -1px  1px 0 rgba(255,255,255,0),
+    -1px  0   0 rgba(255,255,255,0),
+     0    0   8px rgba(255,255,255,0);
+}
+
+.skill-card:hover .skill-name,
+.skill-card:hover .skill-icon {
+  text-shadow:
+    -1px -1px 0 rgba(255,255,255,0.80),
+     0   -1px 0 rgba(255,255,255,0.80),
+     1px -1px 0 rgba(255,255,255,0.80),
+     1px  0   0 rgba(255,255,255,0.80),
+     1px  1px 0 rgba(255,255,255,0.80),
+     0    1px 0 rgba(255,255,255,0.80),
+    -1px  1px 0 rgba(255,255,255,0.80),
+    -1px  0   0 rgba(255,255,255,0.80),
+     0    0   8px rgba(255,255,255,0.45);
+}

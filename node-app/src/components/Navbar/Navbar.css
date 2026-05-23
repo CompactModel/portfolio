@@ -2,8 +2,49 @@
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(235, 235, 235, 0.75);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  background: transparent;
+}
+
+/* GlowCard-style white spotlight for nav links */
+.nav-glow-link {
+  position: relative;
+  color: #0A0A0A;
+  text-decoration: none;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 800;
+  /* white spotlight background that follows cursor (fixed = viewport coords) */
+  background-image: radial-gradient(
+    80px 80px at calc(var(--x, -9999) * 1px) calc(var(--y, -9999) * 1px),
+    rgba(255,255,255,0.22),
+    transparent
+  );
+  background-attachment: fixed;
+  border: 1px solid transparent;
+}
+
+/* White border glow where cursor is near */
+.nav-glow-link::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 8px;
+  border: 1.5px solid transparent;
+  background-attachment: fixed;
+  background-image: radial-gradient(
+    60px 60px at calc(var(--x, -9999) * 1px) calc(var(--y, -9999) * 1px),
+    rgba(255,255,255,0.85),
+    transparent
+  );
+  /* clip to border area only */
+  -webkit-mask: linear-gradient(transparent, transparent),
+                linear-gradient(white, white);
+  -webkit-mask-clip: padding-box, border-box;
+  -webkit-mask-composite: destination-in;
+  mask: linear-gradient(transparent, transparent),
+        linear-gradient(white, white);
+  mask-clip: padding-box, border-box;
+  mask-composite: intersect;
+  pointer-events: none;
 }
