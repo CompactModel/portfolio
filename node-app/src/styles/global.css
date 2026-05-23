@@ -30,7 +30,7 @@ html, body { overflow-x: hidden; }
   /* HERO */
   .hero-pad      { padding: 36px 20px 20px !important; }
   .hero-layout   { flex-direction: column !important; gap: 0 !important; align-items: center !important; }
-  .hero-visual   { display: flex !important; justify-content: center !important; margin-top: 36px !important; width: 100% !important; }
+  .hero-visual   { display: none !important; }
   .hero-h1       { font-size: clamp(2rem, 8vw, 2.8rem) !important; }
   .hero-subtitle { font-size: 17px !important; font-weight: 500 !important; }
   .hero-bio      { font-size: 14px !important; line-height: 1.65 !important; }
@@ -48,8 +48,10 @@ html, body { overflow-x: hidden; }
   .skill-name  { font-size: 11px !important; }
 
   /* PROJECTS */
-  .proj-grid { grid-template-columns: 1fr !important; }
-  .proj-card { padding: 0 !important; touch-action: manipulation; }
+  .proj-grid   { grid-template-columns: 1fr !important; }
+  .proj-card   { padding: 0 !important; touch-action: manipulation; }
+  #projects > div  { padding-left: 20px !important; padding-right: 20px !important; }
+  .cp-container    { padding: 1rem 0 !important; }
 
   /* SERVICES — 1 col so LiquidButton text doesn't overflow */
   .services-grid { grid-template-columns: 1fr !important; gap: 8px !important; }
