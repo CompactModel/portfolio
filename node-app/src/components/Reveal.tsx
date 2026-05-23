@@ -20,7 +20,7 @@ export function Reveal({ children, delay = 0 }: RevealProps) {
         el.style.transform = 'translateY(0)';
         obs.disconnect();
       }
-    }, { threshold: 0.08 });
+    }, { threshold: 0, rootMargin: '0px 0px 120px 0px' });
     obs.observe(el);
     return () => obs.disconnect();
   }, [delay]);
