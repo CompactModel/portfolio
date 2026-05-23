@@ -61,7 +61,8 @@ export function CircularProjects({ projects, autoplay = true, t }: CircularProje
   }, [total]);
 
   function getImageStyle(index: number): React.CSSProperties {
-    const isMobile = containerWidth < 700;
+    // Use window width (not container width) to reliably detect mobile vs desktop
+    const isMobile = window.innerWidth < 768;
     const isActive = index === activeIndex;
     const isLeft   = (activeIndex - 1 + total) % total === index;
     const isRight  = (activeIndex + 1) % total === index;
