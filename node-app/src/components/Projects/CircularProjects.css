@@ -121,8 +121,8 @@
 @media (max-width: 767px) {
   .cp-container       { padding: 1rem 0; }
   .cp-grid            { gap: 1.5rem; }
-  .cp-image-container { aspect-ratio: unset; overflow: hidden; }
-  .cp-image           { position: relative; width: 100%; height: auto; object-fit: unset; }
+  .cp-image-container { aspect-ratio: 4 / 3; overflow: hidden; }
+  .cp-image           { object-fit: contain; object-position: center center; }
   .cp-content         { min-height: unset; }
   .cp-title           { font-size: 1.3rem !important; margin-bottom: 0.5rem; }
   .cp-tags            { margin-bottom: 0.75rem; }
