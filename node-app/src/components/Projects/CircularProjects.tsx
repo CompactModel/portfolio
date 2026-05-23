@@ -62,14 +62,18 @@ export function CircularProjects({ projects, autoplay = true, t }: CircularProje
 
   function getImageStyle(index: number): React.CSSProperties {
     const isMobile   = containerWidth < 700;
-    const gap        = calculateGap(containerWidth);
-    const maxStickUp = gap * 0.8;
+    const gap        = isMobile ? containerWidth * 0.87 : calculateGap(containerWidth);
+    const maxStickUp = isMobile ? 0 : gap * 0.8;
     const isActive   = index === activeIndex;
     const isLeft     = (activeIndex - 1 + total) % total === index;
     const isRight    = (activeIndex + 1) % total === index;
 
     if (isActive) return { zIndex: 3, opacity: 1, pointerEvents: "auto", transform: "translateX(0) translateY(0) scale(1) rotateY(0deg)", transition: "all 0.8s cubic-bezier(.4,2,.3,1)" };
-    if (isMobile) return { zIndex: 1, opacity: 0, pointerEvents: "none", transition: "all 0.8s cubic-bezier(.4,2,.3,1)" };
+    if (isMobile) {
+      if (isLeft)  return { zIndex: 2, opacity: 0.75, pointerEvents: "auto", transform: `translateX(-${gap}px) scale(0.85)`, transition: "all 0.8s cubic-bezier(.4,2,.3,1)", cursor: "pointer" };
+      if (isRight) return { zIndex: 2, opacity: 0.75, pointerEvents: "auto", transform: `translateX(${gap}px) scale(0.85)`,  transition: "all 0.8s cubic-bezier(.4,2,.3,1)", cursor: "pointer" };
+      return { zIndex: 1, opacity: 0, pointerEvents: "none", transition: "all 0.8s cubic-bezier(.4,2,.3,1)" };
+    }
     if (isLeft)   return { zIndex: 2, opacity: 1, pointerEvents: "auto", transform: `translateX(-${gap}px) translateY(-${maxStickUp}px) scale(0.85) rotateY(15deg)`,  transition: "all 0.8s cubic-bezier(.4,2,.3,1)" };
     if (isRight)  return { zIndex: 2, opacity: 1, pointerEvents: "auto", transform: `translateX(${gap}px) translateY(-${maxStickUp}px) scale(0.85) rotateY(-15deg)`, transition: "all 0.8s cubic-bezier(.4,2,.3,1)" };
     return { zIndex: 1, opacity: 0, pointerEvents: "none", transition: "all 0.8s cubic-bezier(.4,2,.3,1)" };
@@ -85,9 +89,13 @@ export function CircularProjects({ projects, autoplay = true, t }: CircularProje
         <div className="cp-image-container" ref={containerRef}>
           {projects.map((p, index) => {
             const src = p.image ?? projectImage(p.title, "");
+            const isNeighbour = index === (activeIndex - 1 + total) % total || index === (activeIndex + 1) % total;
+            const handleClick = isNeighbour
+              ? () => goNext(index === (activeIndex - 1 + total) % total ? -1 : 1)
+              : undefined;
             return src
-              ? <img key={p.id} src={src} alt={p.title} className="cp-image" style={getImageStyle(index)} />
-              : <div key={p.id} className="cp-placeholder" style={getImageStyle(index)}>PREVIEW</div>;
+              ? <img key={p.id} src={src} alt={p.title} className="cp-image" style={getImageStyle(index)} onClick={handleClick} />
+              : <div key={p.id} className="cp-placeholder" style={getImageStyle(index)} onClick={handleClick}>PREVIEW</div>;
           })}
         </div>
 

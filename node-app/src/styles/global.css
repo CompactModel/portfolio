@@ -67,7 +67,7 @@ html, body { overflow-x: hidden; }
 
 @media (max-width: 480px) {
   /* Circular carousel — stack image above, content below */
-  .cp-image-container { aspect-ratio: 16 / 10 !important; border-radius: 1.25rem !important; overflow: hidden !important; }
+  .cp-image-container { aspect-ratio: 16 / 10 !important; overflow: visible !important; }
   .cp-content         { min-height: unset !important; padding-top: 1rem; }
   .cp-title           { font-size: 1.25rem !important; }
   .cp-description     { font-size: 0.9rem !important; }
