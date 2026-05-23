@@ -61,23 +61,12 @@ export function CircularProjects({ projects, autoplay = true, t }: CircularProje
   }, [total]);
 
   function getImageStyle(index: number): React.CSSProperties {
-    // Use window width (not container width) to reliably detect mobile vs desktop
-    const isMobile = window.innerWidth < 768;
-    const isActive = index === activeIndex;
-    const isLeft   = (activeIndex - 1 + total) % total === index;
-    const isRight  = (activeIndex + 1) % total === index;
-
-    if (isMobile) {
-      const mGap     = containerWidth * 0.78;
-      const mStickUp = 14;
-      if (isActive) return { zIndex: 3, opacity: 1, pointerEvents: "auto", transform: "scale(0.78)",                                                                    transition: "all 0.8s cubic-bezier(.4,2,.3,1)" };
-      if (isLeft)   return { zIndex: 2, opacity: 0.85, pointerEvents: "auto", transform: `translateX(-${mGap}px) translateY(-${mStickUp}px) scale(0.82) rotateY(8deg)`,  transition: "all 0.8s cubic-bezier(.4,2,.3,1)", cursor: "pointer" };
-      if (isRight)  return { zIndex: 2, opacity: 0.85, pointerEvents: "auto", transform: `translateX(${mGap}px) translateY(-${mStickUp}px) scale(0.82) rotateY(-8deg)`,  transition: "all 0.8s cubic-bezier(.4,2,.3,1)", cursor: "pointer" };
-      return { zIndex: 1, opacity: 0, pointerEvents: "none", transition: "all 0.8s cubic-bezier(.4,2,.3,1)" };
-    }
-
+    const isActive   = index === activeIndex;
+    const isLeft     = (activeIndex - 1 + total) % total === index;
+    const isRight    = (activeIndex + 1) % total === index;
     const gap        = calculateGap(containerWidth);
     const maxStickUp = gap * 0.8;
+
     if (isActive) return { zIndex: 3, opacity: 1, pointerEvents: "auto", transform: "translateX(0) translateY(0) scale(1) rotateY(0deg)", transition: "all 0.8s cubic-bezier(.4,2,.3,1)" };
     if (isLeft)   return { zIndex: 2, opacity: 1, pointerEvents: "auto", transform: `translateX(-${gap}px) translateY(-${maxStickUp}px) scale(0.85) rotateY(15deg)`,  transition: "all 0.8s cubic-bezier(.4,2,.3,1)" };
     if (isRight)  return { zIndex: 2, opacity: 1, pointerEvents: "auto", transform: `translateX(${gap}px) translateY(-${maxStickUp}px) scale(0.85) rotateY(-15deg)`, transition: "all 0.8s cubic-bezier(.4,2,.3,1)" };

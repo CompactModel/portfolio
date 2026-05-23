@@ -51,10 +51,8 @@ html, body { overflow-x: hidden; }
   .proj-grid   { grid-template-columns: 1fr !important; }
   .proj-card   { padding: 0 !important; touch-action: manipulation; }
   #projects > div  { padding-left: 20px !important; padding-right: 20px !important; }
-  /* carousel breaks out of section padding to go edge-to-edge */
-  .cp-container    { padding: 1rem 0 !important; margin-left: -20px !important; margin-right: -20px !important; width: auto !important; }
-  /* keep text content indented */
-  .cp-content      { padding-left: 20px !important; padding-right: 20px !important; }
+  /* narrow container so side cards peek from edges, same effect as desktop */
+  .cp-container    { padding: 1rem 0 !important; width: 78% !important; margin: 0 auto !important; }
 
   /* SERVICES — 1 col so LiquidButton text doesn't overflow */
   .services-grid { grid-template-columns: 1fr !important; gap: 8px !important; }
