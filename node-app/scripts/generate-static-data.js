@@ -23,9 +23,11 @@ function get(url) {
 
 function demoSlug(title) {
   const t = title.toLowerCase();
-  if (/auto|apex|motor|car/.test(t))         return 'autoservice';
-  if (/barber|hair|cut/.test(t))             return 'barbershop';
-  if (/restaurant|food|cafe|dining/.test(t)) return 'restaurant';
+  if (/auto|apex|motor|car/.test(t))             return 'autoservice';
+  if (/barber|hair|cut/.test(t))                 return 'barbershop';
+  if (/sultan|döner|doner|kebab/.test(t))        return 'kebab';
+  if (/brew|soul|coffee|café|cafe/.test(t))      return 'cafe';
+  if (/restaurant|bella|food|dining/.test(t))    return 'restaurant';
   return null;
 }
 
