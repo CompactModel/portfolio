@@ -53,8 +53,8 @@ async function main() {
     const s = demoSlug(p.title);
     return {
       ...p,
-      link:  p.link  ?? (s ? `${BASE}/demo-sites/${s}/`     : null),
-      image: p.image ?? (s ? `${BASE}/screenshots/${s}.png` : null),
+      link:  p.link ?? (s ? `${BASE}/demo-sites/${s}/` : null),
+      image: null,
     };
   });
 
