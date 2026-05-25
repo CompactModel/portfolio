@@ -15,35 +15,35 @@
       "title": "La Bella — Restaurant Website",
       "description": "Demo restaurant website with multilingual support (EN/DE/UK), menu, reservation form and modern dark design.",
       "link": "https://compactmodel.github.io/demo-restaurant",
-      "image": "/portfolio/screenshots/restaurant.png"
+      "image": null
     },
     {
       "id": 3,
       "title": "BarberKing — Barbershop Website",
       "description": "Demo barbershop website with brutal dark design, services, team and online booking form.",
       "link": "https://compactmodel.github.io/demo-barbershop",
-      "image": "/portfolio/screenshots/barbershop.png"
+      "image": null
     },
     {
       "id": 4,
       "title": "APEX MOTOR — Elite Auto Service",
       "description": "Premium auto service site with dark navy panel, fixed sidebar navigation, services list, team, reviews and booking form. EN/DE/UK.",
       "link": "https://compactmodel.github.io/demo-autoservice",
-      "image": "/portfolio/screenshots/autoservice.png"
+      "image": null
     },
     {
       "id": 5,
       "title": "Brew & Soul — Café Website",
       "description": "Editorial café site with warm off-white design, live date/time widget, today's special dish, menu and booking. EN/DE/UK.",
       "link": "https://compactmodel.github.io/demo-cafe",
-      "image": "/portfolio/screenshots/cafe.png"
+      "image": null
     },
     {
       "id": 6,
       "title": "Sultan Döner — Kebab Restaurant",
       "description": "Street food brand site with dark green & orange palette, fire particle effects, diagonal sections, and a fullscreen overlay menu modal.",
       "link": "https://compactmodel.github.io/demo-kebab",
-      "image": "/portfolio/screenshots/kebab.png"
+      "image": null
     }
   ],
   "skills": [
