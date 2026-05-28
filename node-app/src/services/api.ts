@@ -1,5 +1,5 @@
 const API_URL = process.env.REACT_APP_API_URL || `http://${window.location.hostname}:8080/api`;
-const BASE    = process.env.PUBLIC_URL || '';
+const BASE    = (process.env.PUBLIC_URL || '').replace(/\/$/, '');
 
 export async function getProfile() {
   return fetch(`${API_URL}/profile`).then(r => r.json());
