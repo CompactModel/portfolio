@@ -44,6 +44,13 @@
       "description": "Street food brand site with dark green & orange palette, fire particle effects, diagonal sections, and a fullscreen overlay menu modal.",
       "link": "https://compactmodel.github.io/demo-kebab",
       "image": null
+    },
+    {
+      "id": 7,
+      "title": "Hotel Dolgow — Hotel Website",
+      "description": "Demo hotel website with elegant wine & cream design, room booking modal, restaurant section, photo gallery and DE/EN multilingual support.",
+      "link": "https://compactmodel.github.io/demo-hotel",
+      "image": null
     }
   ],
   "skills": [

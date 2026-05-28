@@ -1,0 +1,1920 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>Hotel Dolgow — Erholung im Herzen des Wendlands</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============== Hotel Dolgow — design tokens ============== */
+:root {
+  --wine: #9E2A2B;
+  --wine-deep: #7A1F20;
+  --wine-ink: #5B1718;
+  --cream: #F4EDE0;
+  --cream-soft: #FBF6EB;
+  --cream-hi: #FFFCF5;
+  --ink: #1F1614;
+  --ink-soft: #3A2C26;
+  --sand: #C8A879;
+  --sand-deep: #8B6B43;
+  --moss: #4A6741;
+  --moss-deep: #364E2F;
+  --line: rgba(31,22,20,0.12);
+  --line-strong: rgba(31,22,20,0.22);
+
+  --display: "Cormorant Garamond", "Cormorant", Georgia, serif;
+  --body: "Manrope", "Inter", system-ui, sans-serif;
+
+  --shadow-soft: 0 1px 2px rgba(31,22,20,.04), 0 8px 24px rgba(31,22,20,.06);
+  --shadow-card: 0 1px 2px rgba(31,22,20,.05), 0 20px 50px -20px rgba(31,22,20,.25);
+  --shadow-lift: 0 30px 60px -25px rgba(31,22,20,.5);
+
+  --r-sm: 6px;
+  --r-md: 12px;
+  --r-lg: 20px;
+  --r-xl: 32px;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--ink);
+  background: var(--cream-soft);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+img { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+
+h1, h2, h3, h4 {
+  font-family: var(--display);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.05;
+  margin: 0;
+  text-wrap: balance;
+}
+h1 { font-size: clamp(48px, 7vw, 104px); font-weight: 400; }
+h2 { font-size: clamp(36px, 4.5vw, 64px); font-weight: 400; }
+h3 { font-size: clamp(24px, 2.2vw, 32px); }
+p { margin: 0; text-wrap: pretty; }
+
+.eyebrow {
+  font-family: var(--body);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--wine);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.eyebrow::before {
+  content: "";
+  display: inline-block;
+  width: 28px; height: 1px;
+  background: currentColor;
+}
+
+/* ============== layout ============== */
+.wrap { max-width: 1320px; margin: 0 auto; padding: 0 32px; }
+section { padding: 120px 0; position: relative; }
+.section-head {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
+  align-items: end; margin-bottom: 64px;
+}
+.section-head h2 { max-width: 16ch; }
+.section-head .lead { font-size: 18px; color: var(--ink-soft); max-width: 50ch; }
+
+/* ============== nav ============== */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+  padding: 18px 32px;
+  display: flex; align-items: center; justify-content: space-between;
+  transition: background .35s ease, padding .35s ease, color .35s ease;
+  color: var(--cream);
+}
+.nav.scrolled {
+  background: rgba(248, 244, 235, 0.85);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  border-bottom: 1px solid var(--line);
+  color: var(--ink);
+  padding: 12px 32px;
+}
+.nav-brand {
+  display: flex; align-items: center; gap: 14px;
+  font-family: var(--display);
+}
+.brand-mark {
+  width: 42px; height: 42px; border-radius: 50%;
+  display: grid; place-items: center;
+  border: 1.5px solid currentColor;
+  font-size: 18px; letter-spacing: 0.04em;
+  font-family: var(--display); font-weight: 500;
+}
+.brand-text { display: flex; flex-direction: column; line-height: 1; }
+.brand-text .name { font-size: 22px; letter-spacing: 0.02em; }
+.brand-text .sub { font-size: 10px; letter-spacing: 0.32em; text-transform: uppercase; font-family: var(--body); opacity: .75; margin-top: 4px; }
+.nav-links { display: flex; gap: 32px; font-size: 14px; letter-spacing: 0.04em; }
+.nav-links a { position: relative; padding: 6px 0; opacity: .85; transition: opacity .2s; }
+.nav-links a:hover { opacity: 1; }
+.nav-links a::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -2px;
+  height: 1px; background: currentColor; transform: scaleX(0); transform-origin: left;
+  transition: transform .25s;
+}
+.nav-links a:hover::after { transform: scaleX(1); }
+.nav-cta {
+  padding: 12px 22px;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  font-size: 13px; letter-spacing: 0.08em;
+  transition: background .2s, color .2s;
+}
+.nav.scrolled .nav-cta { background: var(--wine); color: var(--cream-hi); border-color: var(--wine); }
+.nav.scrolled .nav-cta:hover { background: var(--wine-deep); }
+.nav:not(.scrolled) .nav-cta:hover { background: var(--cream); color: var(--ink); }
+
+/* ============== hero ============== */
+.hero {
+  position: relative; height: 100vh; min-height: 720px;
+  padding: 0; color: var(--cream-hi);
+  overflow: hidden;
+}
+.hero-bg {
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, #3a4a3e 0%, #5a6b54 30%, #8a7a5a 60%, #6a5a3e 100%);
+}
+.hero-bg::before {
+  content: ""; position: absolute; inset: 0; z-index: 2;
+  background:
+    radial-gradient(ellipse 60% 40% at 30% 70%, rgba(105,135,110,.4), transparent 60%),
+    radial-gradient(ellipse 80% 50% at 70% 30%, rgba(180,165,130,.25), transparent 70%);
+  pointer-events: none;
+}
+.hero-bg::after {
+  content: ""; position: absolute; inset: 0; z-index: 3;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .18 0'/></filter><rect width='200' height='200' filter='url(%23n)'/></svg>");
+  opacity: .35; mix-blend-mode: overlay; pointer-events: none;
+}
+/* dark gradient overlay on top of photo */
+.hero-overlay {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: linear-gradient(180deg, rgba(31,22,20,.45) 0%, rgba(31,22,20,.12) 40%, rgba(31,22,20,.82) 100%);
+}
+
+.hero-content {
+  position: relative; z-index: 4;
+  height: 100%;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  padding: 140px 32px 60px;
+  max-width: 1320px; margin: 0 auto;
+}
+.hero-eyebrow {
+  font-family: var(--body); font-size: 12px;
+  letter-spacing: 0.32em; text-transform: uppercase;
+  display: inline-flex; align-items: center; gap: 14px;
+  opacity: .9;
+}
+.hero-eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--cream-hi); }
+.hero h1 { margin-top: 24px; max-width: 14ch; font-style: italic; font-weight: 400; }
+.hero h1 .accent { color: #e8c98b; font-style: italic; }
+.hero-sub {
+  margin-top: 24px;
+  font-size: 19px; max-width: 52ch;
+  color: rgba(255,255,255,.85);
+  line-height: 1.55;
+}
+.hero-actions { margin-top: 40px; display: flex; gap: 14px; flex-wrap: wrap; }
+
+.btn {
+  display: inline-flex; align-items: center; gap: 12px;
+  padding: 16px 28px; border-radius: 999px;
+  font-size: 14px; letter-spacing: 0.06em;
+  font-weight: 500;
+  transition: transform .2s ease, background .2s, color .2s, border-color .2s, box-shadow .2s;
+}
+.btn:hover { transform: translateY(-1px); }
+.btn-primary { background: var(--wine); color: var(--cream-hi); box-shadow: 0 8px 24px -8px rgba(158,42,43,.6); }
+.btn-primary:hover { background: var(--wine-deep); box-shadow: 0 12px 30px -8px rgba(158,42,43,.7); }
+.btn-ghost { border: 1px solid rgba(255,255,255,.4); color: var(--cream-hi); }
+.btn-ghost:hover { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.7); }
+.btn-dark { background: var(--ink); color: var(--cream-hi); }
+.btn-dark:hover { background: var(--ink-soft); }
+.btn-outline { border: 1px solid var(--ink); color: var(--ink); }
+.btn-outline:hover { background: var(--ink); color: var(--cream-hi); }
+.btn-arrow::after { content: "→"; font-family: var(--body); transition: transform .25s; }
+.btn-arrow:hover::after { transform: translateX(4px); }
+
+.hero-bottom {
+  display: grid; grid-template-columns: 1fr auto; gap: 40px;
+  align-items: end;
+  padding-top: 40px;
+  border-top: 1px solid rgba(255,255,255,.18);
+}
+.hero-perks {
+  display: flex; gap: 36px; flex-wrap: wrap;
+  font-size: 13px; letter-spacing: 0.04em;
+  color: rgba(255,255,255,.88);
+}
+.hero-perks .perk { display: flex; align-items: center; gap: 10px; }
+.hero-perks .perk::before { content: ""; width: 6px; height: 6px; background: #e8c98b; border-radius: 50%; }
+.hero-meta { text-align: right; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; opacity: .8; }
+.hero-meta strong { display: block; font-family: var(--display); font-size: 22px; font-style: italic; font-weight: 400; letter-spacing: 0.02em; text-transform: none; margin-top: 6px; }
+
+/* ============== booking bar ============== */
+.booking-bar {
+  position: relative; z-index: 5;
+  margin: -50px auto 0;
+  max-width: 1180px;
+  background: var(--cream-hi);
+  border-radius: 20px;
+  box-shadow: var(--shadow-lift);
+  padding: 18px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr) auto;
+  gap: 8px;
+  border: 1px solid var(--line);
+}
+.booking-field {
+  padding: 10px 18px;
+  border-right: 1px solid var(--line);
+  display: flex; flex-direction: column; gap: 4px;
+}
+.booking-field:last-of-type { border-right: none; }
+.booking-field label { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-soft); }
+.booking-field input, .booking-field select {
+  border: none; background: transparent;
+  font: inherit; color: var(--ink);
+  font-weight: 500; font-size: 15px;
+  padding: 0; outline: none;
+  font-family: var(--body);
+}
+.booking-bar .btn-primary { padding: 18px 32px; }
+
+/* ============== rooms ============== */
+.rooms-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.room-card {
+  background: var(--cream-hi);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  border: 1px solid var(--line);
+  display: flex; flex-direction: column;
+  transition: transform .35s ease, box-shadow .35s ease;
+}
+.room-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lift); }
+.room-img {
+  aspect-ratio: 16/10;
+  background: linear-gradient(135deg, #b9a48a, #8a7a5a 60%, #5a4a36);
+  position: relative;
+  overflow: hidden;
+}
+.room-tag {
+  position: absolute; top: 16px; left: 16px;
+  background: var(--cream-hi); color: var(--ink);
+  font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+  padding: 8px 14px; border-radius: 999px; font-weight: 600;
+  z-index: 2;
+}
+.room-body { padding: 28px 32px 32px; flex: 1; display: flex; flex-direction: column; gap: 18px; }
+.room-head { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; }
+.room-name { font-family: var(--display); font-size: 32px; }
+.room-price { text-align: right; line-height: 1.1; }
+.room-price .from { font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--ink-soft); }
+.room-price .val { font-family: var(--display); font-size: 30px; color: var(--wine); display: block; margin-top: 2px; }
+.room-price .per { font-size: 11px; letter-spacing: 0.12em; color: var(--ink-soft); text-transform: uppercase; }
+.room-desc { color: var(--ink-soft); font-size: 15px; }
+.room-feats { display: flex; flex-wrap: wrap; gap: 8px; }
+.room-feats span {
+  font-size: 12px; letter-spacing: 0.04em;
+  padding: 6px 12px;
+  background: var(--cream); border-radius: 999px;
+  color: var(--ink-soft);
+}
+.room-foot { display: flex; gap: 12px; align-items: center; margin-top: 8px; }
+.room-foot .btn-arrow { padding: 12px 22px; font-size: 13px; }
+.room-foot .quiet { font-size: 12px; color: var(--ink-soft); letter-spacing: 0.06em; }
+
+/* ============== restaurant ============== */
+.restaurant { background: var(--ink); color: var(--cream); }
+.restaurant .eyebrow { color: #e8c98b; }
+.restaurant .section-head .lead { color: rgba(244,237,224,.7); }
+.rest-grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: 40px; align-items: stretch; }
+.rest-feature {
+  background: var(--ink-soft);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  position: relative;
+  min-height: 560px;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 40px;
+}
+.rest-feature .img-bg {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background:
+    linear-gradient(180deg, transparent 30%, rgba(31,22,20,.85) 100%),
+    radial-gradient(ellipse at 30% 30%, rgba(90,58,38,.4) 0%, transparent 70%);
+}
+.rest-feature .img-bg::after {
+  content: ""; position: absolute; inset: 0;
+  background: radial-gradient(circle at 20% 20%, rgba(232,201,139,.15), transparent 50%);
+}
+.rest-feature .label { position: relative; z-index: 3; }
+.rest-feature h3 { font-size: 44px; font-style: italic; font-weight: 400; color: var(--cream-hi); max-width: 14ch; }
+.rest-feature p { color: rgba(255,255,255,.78); max-width: 40ch; margin-top: 14px; }
+.rest-feature .meta {
+  position: absolute; top: 32px; left: 40px;
+  display: flex; gap: 18px;
+  font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(255,255,255,.75); z-index: 3;
+}
+.rest-side { display: grid; grid-template-rows: auto 1fr; gap: 24px; }
+.rest-card {
+  background: var(--ink-soft);
+  border-radius: var(--r-lg);
+  padding: 36px;
+  border: 1px solid rgba(255,255,255,.08);
+}
+.rest-card h4 { font-family: var(--display); font-size: 28px; color: var(--cream-hi); margin-bottom: 10px; }
+.rest-card p { color: rgba(244,237,224,.7); font-size: 15px; }
+.menu-preview { display: flex; flex-direction: column; gap: 18px; margin-top: 24px; }
+.menu-item {
+  display: grid; grid-template-columns: 1fr auto; gap: 16px;
+  align-items: baseline;
+  padding-bottom: 16px;
+  border-bottom: 1px dashed rgba(255,255,255,.14);
+}
+.menu-item:last-child { border-bottom: none; padding-bottom: 0; }
+.menu-item .name { font-family: var(--display); font-size: 21px; color: var(--cream-hi); }
+.menu-item .desc { font-size: 13px; color: rgba(255,255,255,.6); margin-top: 4px; }
+.menu-item .price { font-family: var(--display); font-size: 22px; color: #e8c98b; }
+.rest-card .btn { margin-top: 28px; }
+.btn-cream { background: var(--cream-hi); color: var(--ink); }
+.btn-cream:hover { background: var(--cream); }
+
+/* ============== activities ============== */
+.activities { background: var(--cream); }
+.act-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.act-card {
+  background: var(--cream-hi);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  padding: 36px 32px;
+  position: relative;
+  transition: transform .3s, border-color .3s;
+  overflow: hidden;
+}
+.act-card:hover { transform: translateY(-3px); border-color: var(--wine); }
+.act-icon {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  background: var(--cream); color: var(--wine);
+  display: grid; place-items: center;
+  margin-bottom: 24px;
+  border: 1px solid var(--line);
+}
+.act-icon svg { width: 26px; height: 26px; stroke: currentColor; fill: none; stroke-width: 1.5; }
+.act-card h4 { font-family: var(--display); font-size: 26px; margin-bottom: 8px; }
+.act-card p { color: var(--ink-soft); font-size: 14px; line-height: 1.6; }
+.act-card .price-tag {
+  position: absolute; top: 32px; right: 32px;
+  font-family: var(--display); font-size: 22px; font-style: italic;
+  color: var(--wine);
+}
+.act-map {
+  margin-top: 40px;
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  background: var(--ink);
+  color: var(--cream);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+}
+.act-map .cell { padding: 32px 28px; border-right: 1px solid rgba(255,255,255,.08); display: flex; flex-direction: column; gap: 6px; }
+.act-map .cell:last-child { border-right: none; }
+.act-map .place { font-family: var(--display); font-size: 24px; color: var(--cream-hi); }
+.act-map .dist { font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: #e8c98b; }
+
+/* ============== eco ============== */
+.eco { background: var(--moss-deep); color: var(--cream-hi); position: relative; overflow: hidden; }
+.eco::before {
+  content: ""; position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 20%, rgba(120,150,100,.5), transparent 60%),
+    radial-gradient(ellipse 60% 40% at 90% 90%, rgba(60,90,75,.6), transparent 60%);
+  pointer-events: none;
+}
+.eco .wrap { position: relative; z-index: 1; }
+.eco .eyebrow { color: #c4d8a8; }
+.eco h2 { color: var(--cream-hi); font-style: italic; }
+.eco-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+.eco-bullets { display: grid; gap: 18px; }
+.eco-bullets li {
+  list-style: none;
+  display: grid; grid-template-columns: 28px 1fr;
+  gap: 16px; padding: 18px 0;
+  border-top: 1px solid rgba(255,255,255,.12);
+}
+.eco-bullets li:last-child { border-bottom: 1px solid rgba(255,255,255,.12); }
+.eco-bullets .n { font-family: var(--display); font-size: 22px; color: #c4d8a8; font-style: italic; }
+.eco-bullets h5 { font-family: var(--display); font-size: 22px; font-weight: 400; margin: 0 0 4px; }
+.eco-bullets p { font-size: 14px; color: rgba(255,255,255,.75); }
+.eco-visual {
+  aspect-ratio: 4/5;
+  border-radius: var(--r-lg);
+  background: linear-gradient(135deg, #5e7a4a 0%, #2e4a2a 100%);
+  position: relative; overflow: hidden;
+}
+.eco-visual::after {
+  content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: linear-gradient(180deg, rgba(54,78,47,.2), rgba(31,22,20,.4));
+}
+.eco-badge {
+  position: absolute; bottom: 28px; left: 28px; right: 28px;
+  background: rgba(255,252,245,.95);
+  color: var(--moss-deep);
+  padding: 20px 24px;
+  border-radius: var(--r-md);
+  display: flex; gap: 16px; align-items: center;
+  z-index: 2;
+}
+.eco-badge .pin { font-family: var(--display); font-size: 32px; color: var(--moss); font-style: italic; }
+.eco-badge .txt { line-height: 1.3; }
+.eco-badge .txt strong { display: block; font-family: var(--display); font-size: 20px; font-weight: 500; }
+.eco-badge .txt span { font-size: 12px; color: var(--moss-deep); opacity: .7; }
+
+/* ============== gallery ============== */
+.gallery { background: var(--cream-soft); }
+.gallery-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+  grid-auto-rows: 200px;
+}
+.g-item {
+  position: relative; overflow: hidden;
+  border-radius: var(--r-md);
+  cursor: pointer;
+  background: linear-gradient(135deg, #8a7a5a, #5a4a36);
+  transition: transform .3s;
+}
+.g-item:hover { transform: scale(1.015); }
+.g-item.tall { grid-row: span 2; }
+.g-item.wide { grid-column: span 2; }
+.g-item .label {
+  position: absolute; bottom: 16px; left: 16px;
+  font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--cream-hi);
+  background: rgba(31,22,20,.5);
+  padding: 6px 10px; border-radius: 999px;
+  backdrop-filter: blur(6px);
+  z-index: 2;
+}
+.g-item.g-1 { background: linear-gradient(135deg, #9a8568, #4a3a2a); }
+.g-item.g-2 { background: linear-gradient(135deg, #5a7a5a, #2e4a2a); }
+.g-item.g-3 { background: linear-gradient(135deg, #b89578, #6a4a2a); }
+.g-item.g-4 { background: linear-gradient(135deg, #7a6a8a, #3a2a4a); }
+.g-item.g-5 { background: linear-gradient(135deg, #c8a878, #7a5a3a); }
+.g-item.g-6 { background: linear-gradient(135deg, #6a8a78, #2a4a3a); }
+.g-item.g-7 { background: linear-gradient(135deg, #9a3a3a, #4a1a1a); }
+
+/* lightbox */
+.lightbox {
+  position: fixed; inset: 0; z-index: 100;
+  background: rgba(31,22,20,.92);
+  display: none;
+  align-items: center; justify-content: center;
+  padding: 60px;
+}
+.lightbox.open { display: flex; }
+.lightbox .lb-content {
+  max-width: 1100px; width: 100%; aspect-ratio: 16/10;
+  border-radius: var(--r-lg);
+  background: linear-gradient(135deg, #8a7a5a, #5a4a36);
+  position: relative;
+  display: grid; place-items: center;
+  color: var(--cream-hi);
+  font-family: var(--display); font-size: 32px; font-style: italic;
+  overflow: hidden;
+}
+.lightbox .lb-close {
+  position: absolute; top: 30px; right: 30px;
+  width: 48px; height: 48px; border-radius: 50%;
+  background: var(--cream-hi); color: var(--ink);
+  font-size: 22px;
+  display: grid; place-items: center;
+}
+.lightbox .lb-nav {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: 56px; height: 56px; border-radius: 50%;
+  background: rgba(255,252,245,.15); color: var(--cream-hi);
+  display: grid; place-items: center;
+  font-size: 22px;
+  border: 1px solid rgba(255,252,245,.3);
+}
+.lightbox .lb-prev { left: 30px; }
+.lightbox .lb-next { right: 30px; }
+
+/* ============== reviews ============== */
+.reviews { background: var(--cream-hi); }
+.review-track {
+  display: flex; gap: 24px;
+  overflow-x: auto; scroll-snap-type: x mandatory;
+  padding-bottom: 24px; margin: 0 -32px; padding-left: 32px; padding-right: 32px;
+  scrollbar-width: thin;
+}
+.review-track::-webkit-scrollbar { height: 6px; }
+.review-track::-webkit-scrollbar-thumb { background: var(--line-strong); border-radius: 3px; }
+.review-card {
+  flex: 0 0 420px; scroll-snap-align: start;
+  background: var(--cream-soft);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  padding: 36px 32px;
+  display: flex; flex-direction: column; gap: 18px;
+}
+.review-card .stars { color: var(--wine); letter-spacing: 4px; font-size: 16px; }
+.review-card blockquote {
+  margin: 0; font-family: var(--display); font-size: 24px;
+  line-height: 1.35; color: var(--ink);
+  font-style: italic;
+}
+.review-foot { display: flex; align-items: center; gap: 14px; margin-top: auto; padding-top: 18px; border-top: 1px solid var(--line); }
+.review-foot .avatar {
+  width: 44px; height: 44px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--sand), var(--sand-deep));
+  display: grid; place-items: center;
+  font-family: var(--display); color: var(--cream-hi); font-size: 18px;
+}
+.review-foot .who { line-height: 1.2; }
+.review-foot .who .name { font-weight: 600; font-size: 14px; }
+.review-foot .who .meta { font-size: 12px; color: var(--ink-soft); margin-top: 2px; }
+.reviews-stats {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 8px; margin-top: 60px; padding-top: 60px;
+  border-top: 1px solid var(--line);
+}
+.reviews-stats .stat { padding: 0 20px; border-right: 1px solid var(--line); }
+.reviews-stats .stat:last-child { border-right: none; }
+.reviews-stats .num { font-family: var(--display); font-size: 56px; font-style: italic; color: var(--wine); line-height: 1; }
+.reviews-stats .lbl { font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-soft); margin-top: 8px; }
+
+/* ============== contacts ============== */
+.contacts { background: var(--ink); color: var(--cream); }
+.contacts h2 { color: var(--cream-hi); }
+.contacts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
+.contact-info { display: grid; gap: 32px; }
+.contact-row {
+  display: grid; grid-template-columns: 32px 1fr;
+  gap: 18px; align-items: start;
+  padding: 18px 0;
+  border-top: 1px solid rgba(255,255,255,.12);
+}
+.contact-row:last-child { border-bottom: 1px solid rgba(255,255,255,.12); }
+.contact-row .lbl { font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: #e8c98b; margin-bottom: 4px; }
+.contact-row .val { font-family: var(--display); font-size: 22px; color: var(--cream-hi); }
+.contact-row .val a:hover { color: #e8c98b; }
+.contact-row .ico { color: #e8c98b; font-style: italic; font-family: var(--display); font-size: 18px; line-height: 1.6; }
+.contact-actions { display: flex; gap: 12px; margin-top: 8px; }
+.contact-actions .btn { padding: 12px 18px; font-size: 12px; }
+.contact-actions .btn-wa { background: #25D366; color: #062c12; }
+.map-frame {
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  position: relative;
+  background:
+    linear-gradient(180deg, transparent 50%, rgba(31,22,20,.4) 100%),
+    radial-gradient(ellipse 60% 60% at 50% 50%, #3a4a3e 0%, #1f2a25 100%);
+  min-height: 480px;
+  border: 1px solid rgba(255,255,255,.08);
+}
+.map-frame svg {
+  position: absolute; inset: 0; width: 100%; height: 100%; opacity: .35;
+}
+.map-pin {
+  position: absolute; top: 45%; left: 50%; transform: translate(-50%, -100%);
+  display: flex; flex-direction: column; align-items: center;
+}
+.map-pin .ping {
+  width: 14px; height: 14px; border-radius: 50%;
+  background: var(--wine);
+  box-shadow: 0 0 0 8px rgba(158,42,43,.3), 0 0 0 16px rgba(158,42,43,.15);
+  animation: pulse 2s ease-out infinite;
+}
+@keyframes pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(158,42,43,.5), 0 0 0 0 rgba(158,42,43,.3); }
+  100% { box-shadow: 0 0 0 16px rgba(158,42,43,0), 0 0 0 32px rgba(158,42,43,0); }
+}
+.map-pin .lbl {
+  margin-top: 12px;
+  background: var(--cream-hi); color: var(--ink);
+  padding: 8px 14px; border-radius: 999px;
+  font-size: 12px; letter-spacing: 0.12em; font-weight: 600;
+}
+
+/* ============== FAQ ============== */
+.faq { background: var(--cream-soft); }
+.faq-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 80px; align-items: start; }
+.faq-side { position: sticky; top: 120px; }
+.faq-side h2 { max-width: 14ch; }
+.faq-side p { color: var(--ink-soft); font-size: 17px; margin-top: 20px; max-width: 38ch; }
+.faq-side .contact-link {
+  margin-top: 28px;
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 14px; color: var(--wine); font-weight: 600;
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid var(--wine);
+  padding-bottom: 4px;
+}
+.faq-list { display: flex; flex-direction: column; gap: 4px; }
+.faq-item { border-bottom: 1px solid var(--line); padding: 4px 0; }
+.faq-q {
+  width: 100%;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 24px 8px;
+  text-align: left;
+  font-family: var(--display);
+  font-size: 24px; color: var(--ink);
+  transition: color .2s;
+}
+.faq-q:hover { color: var(--wine); }
+.faq-q .ico {
+  width: 32px; height: 32px; border-radius: 50%;
+  border: 1px solid var(--line-strong);
+  display: grid; place-items: center;
+  font-size: 18px;
+  transition: background .2s, color .2s, border-color .2s, transform .3s;
+  flex-shrink: 0; margin-left: 16px;
+}
+.faq-item.open .faq-q .ico { background: var(--wine); color: var(--cream-hi); border-color: var(--wine); transform: rotate(45deg); }
+.faq-a { max-height: 0; overflow: hidden; transition: max-height .4s ease; }
+.faq-item.open .faq-a { max-height: 400px; }
+.faq-a-inner { padding: 0 8px 28px; color: var(--ink-soft); font-size: 16px; line-height: 1.6; max-width: 60ch; }
+
+/* ============== footer ============== */
+.footer { background: var(--ink); color: var(--cream); padding: 80px 0 32px; }
+.footer-top {
+  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 60px; padding-bottom: 60px;
+  border-bottom: 1px solid rgba(255,255,255,.12);
+}
+.footer-brand h3 { font-family: var(--display); font-size: 36px; font-style: italic; color: var(--cream-hi); margin-bottom: 12px; }
+.footer-brand p { color: rgba(244,237,224,.65); font-size: 14px; max-width: 32ch; }
+.footer-col h5 { font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: #e8c98b; margin: 0 0 18px; font-family: var(--body); font-weight: 600; }
+.footer-col a { display: block; padding: 6px 0; color: rgba(244,237,224,.8); font-size: 14px; transition: color .2s; }
+.footer-col a:hover { color: var(--cream-hi); }
+.footer-bottom {
+  margin-top: 32px;
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 12px; color: rgba(244,237,224,.5); letter-spacing: 0.06em;
+}
+
+/* ============== booking modal ============== */
+.modal-backdrop {
+  position: fixed; inset: 0; z-index: 110;
+  background: rgba(31,22,20,.6);
+  backdrop-filter: blur(6px);
+  display: none; align-items: center; justify-content: center;
+  padding: 40px;
+}
+.modal-backdrop.open { display: flex; }
+.modal {
+  background: var(--cream-hi);
+  border-radius: var(--r-xl);
+  width: 100%; max-width: 920px;
+  overflow: hidden;
+  display: grid; grid-template-columns: 320px 1fr;
+  min-height: 580px;
+  box-shadow: var(--shadow-lift);
+  position: relative;
+}
+.modal-close {
+  position: absolute; top: 20px; right: 20px;
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--cream); color: var(--ink);
+  display: grid; place-items: center; font-size: 18px;
+  z-index: 5;
+}
+.modal-aside {
+  background: var(--ink); color: var(--cream);
+  padding: 40px 36px;
+  display: flex; flex-direction: column;
+  background-image:
+    linear-gradient(180deg, rgba(31,22,20,.85), rgba(31,22,20,.95)),
+    linear-gradient(135deg, #5a3a26 0%, #2a1810 100%);
+}
+.modal-aside h4 { font-family: var(--display); font-size: 28px; font-style: italic; color: var(--cream-hi); margin-bottom: 10px; }
+.modal-aside p { color: rgba(244,237,224,.7); font-size: 14px; line-height: 1.5; }
+.modal-steps { margin-top: auto; display: flex; flex-direction: column; gap: 18px; }
+.step {
+  display: grid; grid-template-columns: 28px 1fr; gap: 14px;
+  align-items: center; font-size: 13px;
+  color: rgba(244,237,224,.5); transition: color .2s;
+}
+.step.active { color: var(--cream-hi); }
+.step.done { color: rgba(232,201,139,.9); }
+.step .num {
+  width: 28px; height: 28px; border-radius: 50%;
+  border: 1px solid currentColor;
+  display: grid; place-items: center;
+  font-family: var(--display); font-size: 14px;
+}
+.step.active .num { background: #e8c98b; color: var(--ink); border-color: #e8c98b; }
+.modal-body { padding: 48px 44px; display: flex; flex-direction: column; }
+.modal-body h3 { font-family: var(--display); font-size: 32px; font-style: italic; margin-bottom: 8px; }
+.modal-body .sub { color: var(--ink-soft); font-size: 14px; margin-bottom: 28px; }
+.field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 18px; }
+.field label { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-soft); }
+.field input, .field select {
+  padding: 14px 16px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-md);
+  font: inherit; font-size: 15px; color: var(--ink);
+  background: var(--cream-soft);
+  outline: none;
+  transition: border-color .2s, background .2s;
+}
+.field input:focus, .field select:focus { border-color: var(--wine); background: var(--cream-hi); }
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.room-pick { display: flex; flex-direction: column; gap: 12px; }
+.room-pick label {
+  display: grid; grid-template-columns: 1fr auto;
+  align-items: center; gap: 16px;
+  padding: 18px 22px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-md);
+  cursor: pointer;
+  transition: border-color .2s, background .2s;
+}
+.room-pick label:hover { border-color: var(--wine); }
+.room-pick input { display: none; }
+.room-pick input:checked + .room-pick-inner { color: var(--wine); }
+.room-pick label:has(input:checked) { border-color: var(--wine); background: rgba(158,42,43,.04); }
+.room-pick .rp-name { font-family: var(--display); font-size: 22px; }
+.room-pick .rp-meta { font-size: 12px; color: var(--ink-soft); margin-top: 2px; letter-spacing: 0.04em; }
+.room-pick .rp-price { text-align: right; font-family: var(--display); font-size: 22px; color: var(--wine); }
+.room-pick .rp-price small { display: block; font-size: 10px; letter-spacing: 0.16em; color: var(--ink-soft); text-transform: uppercase; font-family: var(--body); }
+.summary { background: var(--cream-soft); border-radius: var(--r-md); padding: 20px 24px; margin-bottom: 24px; }
+.summary-row { display: flex; justify-content: space-between; padding: 8px 0; font-size: 14px; }
+.summary-row.total { border-top: 1px dashed var(--line-strong); margin-top: 8px; padding-top: 16px; font-family: var(--display); font-size: 22px; color: var(--wine); }
+.pay-methods { display: flex; gap: 10px; margin-top: 8px; }
+.pay-methods .pm {
+  flex: 1; padding: 14px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-md);
+  text-align: center; font-size: 12px; font-weight: 600; letter-spacing: 0.06em;
+  cursor: pointer; transition: border-color .2s, background .2s;
+}
+.pay-methods .pm:hover, .pay-methods .pm.selected { border-color: var(--wine); background: rgba(158,42,43,.04); color: var(--wine); }
+.modal-foot { display: flex; justify-content: space-between; margin-top: auto; padding-top: 24px; }
+.modal-foot .btn { padding: 14px 28px; }
+.modal-foot .btn-back { color: var(--ink-soft); }
+.success-state { text-align: center; padding: 40px 20px; }
+.success-state .check {
+  width: 72px; height: 72px; border-radius: 50%;
+  background: var(--moss); color: var(--cream-hi);
+  display: grid; place-items: center; margin: 0 auto 24px;
+  font-size: 32px;
+}
+.success-state h3 { font-size: 36px; margin-bottom: 12px; }
+.success-state p { color: var(--ink-soft); max-width: 38ch; margin: 0 auto 28px; }
+
+/* ============== real photo helper ============== */
+.real-img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover; display: block; z-index: 0;
+}
+
+/* ============== misc ============== */
+::selection { background: var(--wine); color: var(--cream-hi); }
+
+/* ============== responsive ============== */
+@media (max-width: 960px) {
+  section { padding: 80px 0; }
+  .wrap { padding: 0 20px; }
+  .nav { padding: 14px 20px; }
+  .nav-links { display: none; }
+  .section-head { grid-template-columns: 1fr; gap: 24px; }
+  .booking-bar { grid-template-columns: 1fr; padding: 14px; }
+  .booking-field { border-right: none; border-bottom: 1px solid var(--line); padding: 12px 16px; }
+  .booking-field:last-of-type { border-bottom: none; }
+  .rooms-grid, .rest-grid, .eco-grid, .contacts-grid, .faq-grid { grid-template-columns: 1fr; }
+  .act-grid { grid-template-columns: 1fr; }
+  .act-map { grid-template-columns: 1fr 1fr; }
+  .gallery-grid { grid-template-columns: 1fr 1fr; grid-auto-rows: 160px; }
+  .reviews-stats { grid-template-columns: 1fr 1fr; gap: 32px; }
+  .reviews-stats .stat { border-right: none; }
+  .footer-top { grid-template-columns: 1fr 1fr; gap: 32px; }
+  .modal { grid-template-columns: 1fr; }
+  .modal-aside { padding: 28px; }
+  .modal-body { padding: 28px; }
+  h1 { font-size: 56px; }
+  h2 { font-size: 40px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<nav class="nav" id="nav">
+  <a class="nav-brand" href="#top">
+    <span class="brand-mark">D</span>
+    <span class="brand-text">
+      <span class="name">Hotel Dolgow</span>
+      <span class="sub">Wendland · since 1978</span>
+    </span>
+  </a>
+  <div class="nav-links">
+    <a href="#rooms">Zimmer</a>
+    <a href="#restaurant">Restaurant</a>
+    <a href="#activities">Aktivitäten</a>
+    <a href="#eco">Natur</a>
+    <a href="#gallery">Galerie</a>
+    <a href="#contacts">Kontakt</a>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px">
+    <button id="lang-toggle" onclick="toggleLang()" style="
+      font-family:var(--body);font-size:12px;font-weight:600;letter-spacing:0.14em;
+      padding:8px 16px;border-radius:999px;border:1px solid currentColor;
+      cursor:pointer;background:none;color:inherit;opacity:.85;
+      transition:opacity .2s,background .2s,color .2s;
+      display:flex;align-items:center;gap:6px;
+    ">🌐 <span id="lang-label">EN</span></button>
+    <button class="nav-cta" data-open-booking>Buchen</button>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header class="hero" id="top">
+  <div class="hero-bg">
+    <img class="real-img" src="https://images.unsplash.com/photo-1532274402911-5a369e4c4bb5?w=1920&q=80&auto=format&fit=crop" alt="Blick ins Elbtal — Hotel Dolgow" loading="eager">
+    <div class="hero-overlay"></div>
+  </div>
+  <div class="hero-content">
+    <div>
+      <span class="hero-eyebrow"><span class="dot"></span>Wendland · Niedersachsen · since 1978</span>
+      <h1>Stille der Elbe,<br><span class="accent">Geschmack des Wendlands.</span></h1>
+      <p class="hero-sub">Familienhotel im Herzen des UNESCO-Biosphärenreservats Elbtalaue. Ruhige Zimmer, hausgemachte Küche, Fahrräder und Boote – alles, damit Sie wirklich durchatmen können.</p>
+      <div class="hero-actions">
+        <button class="btn btn-primary btn-arrow" data-open-booking>Zimmer buchen</button>
+        <a class="btn btn-ghost" href="#rooms">Zimmer ansehen</a>
+      </div>
+    </div>
+    <div class="hero-bottom">
+      <div class="hero-perks">
+        <span class="perk">Kostenloser Parkplatz</span>
+        <span class="perk">Restaurant &amp; Frühstück</span>
+        <span class="perk">Fahrradverleih</span>
+        <span class="perk">3 Min. zum Fluss</span>
+        <span class="perk">Haustiere willkommen</span>
+      </div>
+      <div class="hero-meta">
+        Ab heute<strong>60 € / Nacht</strong>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ BOOKING BAR ============ -->
+<div class="wrap">
+  <form class="booking-bar" id="bookingBar">
+    <div class="booking-field">
+      <label>Anreise</label>
+      <input type="date" name="checkin" value="2026-06-14">
+    </div>
+    <div class="booking-field">
+      <label>Abreise</label>
+      <input type="date" name="checkout" value="2026-06-17">
+    </div>
+    <div class="booking-field">
+      <label>Gäste</label>
+      <select name="guests">
+        <option>1 Gast</option>
+        <option selected>2 Gäste</option>
+        <option>3 Gäste</option>
+        <option>4 Gäste</option>
+      </select>
+    </div>
+    <div class="booking-field">
+      <label>Zimmer</label>
+      <select name="room">
+        <option>Beliebig</option>
+        <option>Einzelzimmer</option>
+        <option selected>Doppelzimmer</option>
+        <option>Doppel mit Garten</option>
+      </select>
+    </div>
+    <button type="button" class="btn btn-primary btn-arrow" data-open-booking>Prüfen</button>
+  </form>
+</div>
+
+<!-- ============ ROOMS ============ -->
+<section id="rooms">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">Unsere Zimmer</span>
+        <h2 style="margin-top:18px">Schlicht, warm, wie zuhause.</h2>
+      </div>
+      <p class="lead">Alle Zimmer mit eigenem Bad, WC, Fernseher und kostenlosem WLAN. Morgenkaffee und Ausblick inklusive.</p>
+    </div>
+
+    <div class="rooms-grid">
+      <article class="room-card">
+        <div class="room-img">
+          <span class="room-tag">Einzelzimmer</span>
+          <img class="real-img" src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&q=80&auto=format&fit=crop" alt="Einzelzimmer — Hotel Dolgow" loading="lazy">
+        </div>
+        <div class="room-body">
+          <div class="room-head">
+            <h3 class="room-name">Einzelzimmer</h3>
+            <div class="room-price">
+              <span class="from">ab</span>
+              <span class="val">60 €</span>
+              <span class="per">pro Nacht</span>
+            </div>
+          </div>
+          <p class="room-desc">Gemütliches Zimmer für einen Gast. Weiches Bett 120 cm, Schreibtisch am Fenster, Morgensonne.</p>
+          <div class="room-feats">
+            <span>14 m²</span><span>Dusche / WC</span><span>TV</span><span>Wi-Fi</span><span>Frühstück 10 €</span>
+          </div>
+          <div class="room-foot">
+            <button class="btn btn-dark btn-arrow" data-open-booking>Buchen</button>
+            <span class="quiet">5 Zimmer · 3 diese Woche frei</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="room-card">
+        <div class="room-img">
+          <span class="room-tag">Doppelzimmer</span>
+          <img class="real-img" src="https://images.unsplash.com/photo-1590490360182-c33d57733427?w=800&q=80&auto=format&fit=crop" alt="Doppelzimmer — Hotel Dolgow" loading="lazy">
+        </div>
+        <div class="room-body">
+          <div class="room-head">
+            <h3 class="room-name">Doppelzimmer</h3>
+            <div class="room-price">
+              <span class="from">ab</span>
+              <span class="val">70 €</span>
+              <span class="per">pro Nacht</span>
+            </div>
+          </div>
+          <p class="room-desc">Geräumiges Zimmer für zwei mit 160 cm Doppelbett, extra Sessel und Blick in den alten Garten.</p>
+          <div class="room-feats">
+            <span>22 m²</span><span>Dusche / WC</span><span>TV</span><span>Wi-Fi</span><span>Wasserkocher</span><span>Frühstück 10 €</span>
+          </div>
+          <div class="room-foot">
+            <button class="btn btn-dark btn-arrow" data-open-booking>Buchen</button>
+            <span class="quiet">7 Zimmer · 4 diese Woche frei</span>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <div style="display:flex;justify-content:center;margin-top:48px">
+      <a href="#gallery" class="btn btn-outline btn-arrow">Alle Fotos ansehen</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ RESTAURANT ============ -->
+<section class="restaurant" id="restaurant">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">Restaurant &amp; Frühstück</span>
+        <h2 style="margin-top:18px;color:var(--cream-hi)">Was wir servieren, wächst nebenan.</h2>
+      </div>
+      <p class="lead">Küche aus lokalen Produkten des Elbtals, italienischer Koch, offene Terrasse mit Wasserblick. Frühstück täglich ab 7:00.</p>
+    </div>
+
+    <div class="rest-grid">
+      <div class="rest-feature">
+        <img class="real-img" src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=900&q=80&auto=format&fit=crop" alt="Restaurant Hotel Dolgow — lokale Küche" loading="lazy">
+        <div class="img-bg"></div>
+        <div class="meta">
+          <span>Fr · Mi · Ab</span>
+          <span>Terrasse 40 Plätze</span>
+          <span>Lokale Küche</span>
+        </div>
+        <div class="label">
+          <h3>„Alles wie bei Oma – nur mit Wein aus der Toskana."</h3>
+          <p>Der italienische Koch Matteo kocht, was er morgens auf dem Markt gefunden hat. Die Speisekarte wechselt wöchentlich.</p>
+        </div>
+      </div>
+
+      <div class="rest-side">
+        <div class="rest-card">
+          <h4>Frühstück „Wendland-Art"</h4>
+          <p>Von 7:00 bis 10:30. Frisches Brot aus der örtlichen Bäckerei, hausgemachter Käse, Honig vom Nachbarn, Eier von den Hühnern hinterm Zaun.</p>
+          <div style="margin-top:18px;display:flex;gap:12px;align-items:baseline">
+            <span style="font-family:var(--display);font-style:italic;font-size:48px;color:#e8c98b;line-height:1">10 €</span>
+            <span style="font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.6)">pro Person</span>
+          </div>
+        </div>
+        <div class="rest-card">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:4px">
+            <h4 style="margin-bottom:0">Heute im Menü</h4>
+            <img src="logo-restaurant.png" alt="Rossini BuonGusto" style="height:72px;width:auto;flex-shrink:0;background:rgba(255,255,255,0.92);border-radius:50%;padding:6px">
+          </div>
+          <div class="menu-preview">
+            <div class="menu-item">
+              <div>
+                <div class="name">Tagliatelle al ragù</div>
+                <div class="desc">Hausgemachte Pasta, Lamm vom Hof Klennow, 4 Stunden</div>
+              </div>
+              <div class="price">18 €</div>
+            </div>
+            <div class="menu-item">
+              <div>
+                <div class="name">Forelle aus der Elbe</div>
+                <div class="desc">Frische Elbe-Forelle, Grill, Kartoffeln mit Dill</div>
+              </div>
+              <div class="price">22 €</div>
+            </div>
+            <div class="menu-item">
+              <div>
+                <div class="name">Tiramisù della casa</div>
+                <div class="desc">Matteos Rezept, Mascarpone, Morgenkaffee</div>
+              </div>
+              <div class="price">8 €</div>
+            </div>
+          </div>
+          <a class="btn btn-cream btn-arrow" href="#" onclick="event.preventDefault()">Vollständige Speisekarte (PDF)</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ACTIVITIES ============ -->
+<section class="activities" id="activities">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">Aktivitäten in der Umgebung</span>
+        <h2 style="margin-top:18px">Fahrrad, Boot, Pferd – oder einfach die Hängematte.</h2>
+      </div>
+      <p class="lead">Das Wendland ist 1170 km² Biosphärenreservat, 240 km Radwege, Stille und Wasser. So leben wir das.</p>
+    </div>
+
+    <div class="act-grid">
+      <div class="act-card">
+        <div class="act-icon"><svg viewBox="0 0 24 24"><circle cx="6" cy="17" r="4"></circle><circle cx="18" cy="17" r="4"></circle><path d="M6 17l4-9h4l-3 9M14 8h3l2 4"></path></svg></div>
+        <h4>Fahrradverleih</h4>
+        <p>Moderne Hybridräder, Kinderräder, E-Bikes. Streckenkarte an der Rezeption. Sichere Unterstellung auf dem Gelände.</p>
+        <div class="price-tag">5 €/Tag</div>
+      </div>
+      <div class="act-card">
+        <div class="act-icon"><svg viewBox="0 0 24 24"><path d="M2 20c2 0 3-1 4-1s2 1 4 1 3-1 4-1 2 1 4 1 3-1 4-1"></path><path d="M4 16l1-9h14l1 9"></path><path d="M9 7V4h6v3"></path></svg></div>
+        <h4>Bootstouren</h4>
+        <p>Auf der stillen Elbe, mit Führer, zu wilden Stränden. 2 oder 4 Stunden. Wir nehmen Thermoskanne, Decken und Stille mit.</p>
+        <div class="price-tag">ab 25 €</div>
+      </div>
+      <div class="act-card">
+        <div class="act-icon"><svg viewBox="0 0 24 24"><path d="M5 21V11l3-4 3 3 4-4 4 5v10"></path><path d="M9 21v-5h6v5"></path></svg></div>
+        <h4>Reitertouren</h4>
+        <p>Partnerhof 10 Minuten entfernt. Für Anfänger und Erfahrene. Routen durch Wald und Ufer.</p>
+        <div class="price-tag">ab 35 €</div>
+      </div>
+      <div class="act-card">
+        <div class="act-icon"><svg viewBox="0 0 24 24"><path d="M3 12c4 0 6-3 9-3s6 3 9 3"></path><path d="M3 12c4 0 6 3 9 3s6-3 9-3"></path><circle cx="17" cy="9" r="1"></circle></svg></div>
+        <h4>Angeln</h4>
+        <p>Lizenzen und Ausrüstung – wir helfen bei der Beschaffung. Die besten Plätze im Morgengrauen. Wir grillen Ihren Fang.</p>
+        <div class="price-tag">15 €/Tag</div>
+      </div>
+      <div class="act-card">
+        <div class="act-icon"><svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V8l4-3 6 4 4-2v14"></path><path d="M9 21v-6h6v6"></path></svg></div>
+        <h4>Wandern &amp; Natur</h4>
+        <p>5 markierte Routen von 3 bis 18 km. Alte Eichen, Wiesenblumen, Aussichtstürme im Moor.</p>
+        <div class="price-tag">kostenlos</div>
+      </div>
+      <div class="act-card">
+        <div class="act-icon"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"></rect><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"></path><circle cx="12" cy="13" r="3"></circle></svg></div>
+        <h4>Naturbeobachtung</h4>
+        <p>Störche, Biber, Kraniche, Luchse. Ferngläser und Führer inklusive. Beste Saison – Mai und September.</p>
+        <div class="price-tag">ab 12 €</div>
+      </div>
+    </div>
+
+    <div class="act-map">
+      <div class="cell"><span class="dist">3 Min. zu Fuß</span><span class="place">Elbe</span></div>
+      <div class="cell"><span class="dist">5 Min. zu Fuß</span><span class="place">Dolgowsee</span></div>
+      <div class="cell"><span class="dist">10 Min. Fahrt</span><span class="place">Biosphärenreservat</span></div>
+      <div class="cell"><span class="dist">2 Stunden</span><span class="place">Hamburg / Berlin</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ECO ============ -->
+<section class="eco" id="eco">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">Öko-Urlaub</span>
+        <h2 style="margin-top:18px">Im Wendland kann man noch die Stille sehen.</h2>
+      </div>
+      <p class="lead" style="color:rgba(255,255,255,.75)">UNESCO-Biosphärenreservat, Wiesen mit 200 Blumenarten, die größte Storchenpopulation Deutschlands. Die Natur hier ist keine Dekoration, sie ist Nachbar.</p>
+    </div>
+
+    <div class="eco-grid">
+      <ul class="eco-bullets">
+        <li>
+          <span class="n">01</span>
+          <div>
+            <h5>Elbtalaue – UNESCO-Schutzgebiet</h5>
+            <p>1170 km² unberührte Auenlandschaft. Wiesen, Dünen, Auenwälder, seltene Vögel. Wildnis drei Minuten zu Fuß.</p>
+          </div>
+        </li>
+        <li>
+          <span class="n">02</span>
+          <div>
+            <h5>240 km Radwege</h5>
+            <p>Die Route entlang der Elbe ist eine der schönsten Europas. Wir geben Karte, Thermoskanne und kümmern uns um die Reifen.</p>
+          </div>
+        </li>
+        <li>
+          <span class="n">03</span>
+          <div>
+            <h5>Lokale Flora und Fauna</h5>
+            <p>Biber, Störche, Kraniche, Seeadler, seltene Orchideen. Naturführer auf Anfrage.</p>
+          </div>
+        </li>
+        <li>
+          <span class="n">04</span>
+          <div>
+            <h5>Zertifizierte Ökowege</h5>
+            <p>5 markierte Pfade. Keine Autos, kein Lärm. Nur Ihre Schritte und der Wind im Weidengebüsch.</p>
+          </div>
+        </li>
+      </ul>
+
+      <div class="eco-visual">
+        <img class="real-img" src="https://images.unsplash.com/photo-1476231682828-37e571bc172f?w=800&q=80&auto=format&fit=crop" alt="Natur des Wendlands – UNESCO-Schutzgebiet" loading="lazy">
+        <div class="eco-badge">
+          <span class="pin">★</span>
+          <div class="txt">
+            <strong>UNESCO Biosphere Reserve</strong>
+            <span>Niedersächsische Elbtalaue · seit 2002</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ GALLERY ============ -->
+<section class="gallery" id="gallery">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">Galerie</span>
+        <h2 style="margin-top:18px">Sehen Sie, wie es wirklich aussieht.</h2>
+      </div>
+      <p class="lead">Kein Photoshop, keine Stockfotos. Alles, was Sie hier sehen, gehört uns.</p>
+    </div>
+
+    <div class="gallery-grid">
+      <div class="g-item g-1 wide tall" data-lb="Hotel – Hauptfassade">
+        <img class="real-img" src="https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=900&q=80&auto=format&fit=crop" alt="Fassade Hotel Dolgow" loading="lazy">
+        <span class="label">Fassade</span>
+      </div>
+      <div class="g-item g-2" data-lb="Garten und Terrasse">
+        <img class="real-img" src="https://images.unsplash.com/photo-1462275646964-a0e3386b89fa?w=600&q=80&auto=format&fit=crop" alt="Garten Hotel Dolgow" loading="lazy">
+        <span class="label">Garten</span>
+      </div>
+      <div class="g-item g-3" data-lb="Doppelzimmer">
+        <img class="real-img" src="https://images.unsplash.com/photo-1505693314120-0d443867891c?w=600&q=80&auto=format&fit=crop" alt="Zimmer Hotel Dolgow" loading="lazy">
+        <span class="label">Zimmer</span>
+      </div>
+      <div class="g-item g-4 wide" data-lb="Restaurant, Abendlicht">
+        <img class="real-img" src="https://images.unsplash.com/photo-1424847651672-bf20a4b0982b?w=900&q=80&auto=format&fit=crop" alt="Restaurant Hotel Dolgow" loading="lazy">
+        <span class="label">Restaurant</span>
+      </div>
+      <div class="g-item g-5 tall" data-lb="Frühstück vom eigenen Hof">
+        <img class="real-img" src="https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?w=600&q=80&auto=format&fit=crop" alt="Frühstück Hotel Dolgow" loading="lazy">
+        <span class="label">Frühstück</span>
+      </div>
+      <div class="g-item g-6" data-lb="Fahrräder am Fluss">
+        <img class="real-img" src="https://images.unsplash.com/photo-1571333250630-f0230c320b6d?w=600&q=80&auto=format&fit=crop" alt="Fahrräder Hotel Dolgow" loading="lazy">
+        <span class="label">Fahrräder</span>
+      </div>
+      <div class="g-item g-7" data-lb="Storch im Hof">
+        <img class="real-img" src="https://images.unsplash.com/photo-1504608524841-42fe6f032b4b?w=600&q=80&auto=format&fit=crop" alt="Natur Wendland" loading="lazy">
+        <span class="label">Natur</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ REVIEWS ============ -->
+<section class="reviews" id="reviews">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">Was die Gäste sagen</span>
+        <h2 style="margin-top:18px">4,8 von 5 – und das nur wegen des echten Frühstücks.</h2>
+      </div>
+      <p class="lead">Wir sammeln Bewertungen von Google, Booking und HRS. Ungefiltert und unmoderiert. Problem gefunden – sagen Sie es uns, wir beheben es.</p>
+    </div>
+
+    <div class="review-track">
+      <article class="review-card">
+        <div class="stars">★★★★★</div>
+        <blockquote>„Ein sehr ruhiger Ort zum Erholen. Aufgewacht vom Storch, nicht von Autos. Wir kommen sicher wieder."</blockquote>
+        <div class="review-foot">
+          <div class="avatar">A</div>
+          <div class="who"><div class="name">Annika &amp; Lars</div><div class="meta">Hamburg · Booking · Mai 2026</div></div>
+        </div>
+      </article>
+      <article class="review-card">
+        <div class="stars">★★★★★</div>
+        <blockquote>„Das Frühstück ist der beste Grund zu bleiben. Brot aus der Bäckerei, Honig vom Nachbarn, Kaffee wie in Italien."</blockquote>
+        <div class="review-foot">
+          <div class="avatar">M</div>
+          <div class="who"><div class="name">Maria K.</div><div class="meta">Berlin · Google · April 2026</div></div>
+        </div>
+      </article>
+      <article class="review-card">
+        <div class="stars">★★★★★</div>
+        <blockquote>„Die Gastgeber wissen, wo die Forelle beißt – das ist unbezahlbar. Wir hatten drei Enkelkinder dabei – alle glücklich."</blockquote>
+        <div class="review-foot">
+          <div class="avatar">H</div>
+          <div class="who"><div class="name">Helmut &amp; Renate</div><div class="meta">Hannover · HRS · März 2026</div></div>
+        </div>
+      </article>
+      <article class="review-card">
+        <div class="stars">★★★★☆</div>
+        <blockquote>„Die Fahrräder sind ein Muss. 60 km entlang der Elbe gefahren und kein einziges Auto gesehen. Magie."</blockquote>
+        <div class="review-foot">
+          <div class="avatar">T</div>
+          <div class="who"><div class="name">Thomas R.</div><div class="meta">Bremen · Google · März 2026</div></div>
+        </div>
+      </article>
+      <article class="review-card">
+        <div class="stars">★★★★★</div>
+        <blockquote>„Wir hatten unseren Hund dabei – willkommen wie Familie. Ein ganzes Feld direkt nebenan. Danke!"</blockquote>
+        <div class="review-foot">
+          <div class="avatar">S</div>
+          <div class="who"><div class="name">Sabine W.</div><div class="meta">Wolfsburg · Booking · Februar 2026</div></div>
+        </div>
+      </article>
+    </div>
+
+    <div class="reviews-stats">
+      <div class="stat"><div class="num">4.8</div><div class="lbl">Durchschnittsbewertung</div></div>
+      <div class="stat"><div class="num">312</div><div class="lbl">Google-Bewertungen</div></div>
+      <div class="stat"><div class="num">94%</div><div class="lbl">Würden wiederkommen</div></div>
+      <div class="stat"><div class="num">28</div><div class="lbl">Jahre zusammen</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACTS ============ -->
+<section class="contacts" id="contacts">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow" style="color:#e8c98b">Uns finden</span>
+        <h2 style="margin-top:18px">Dolgow 14, 29490 Neu Darchau.</h2>
+      </div>
+      <p class="lead" style="color:rgba(244,237,224,.7)">5 Minuten Fahrt von der Fähre. 90 Min. von Hamburg, 2 Std. von Berlin. Fragen Sie uns – wir zeigen Ihnen die schönste Route.</p>
+    </div>
+
+    <div class="contacts-grid">
+      <div class="contact-info">
+        <div class="contact-row">
+          <span class="ico">✦</span>
+          <div>
+            <div class="lbl">Adresse</div>
+            <div class="val">Dorfstraße 14<br>29490 Neu Darchau, Wendland</div>
+          </div>
+        </div>
+        <div class="contact-row">
+          <span class="ico">☏</span>
+          <div>
+            <div class="lbl">Telefon</div>
+            <div class="val"><a href="tel:+4958532399">+49 5853 2399</a></div>
+            <div class="contact-actions">
+              <a class="btn btn-cream" href="tel:+4958532399">Anrufen</a>
+              <a class="btn btn-wa" href="#" onclick="event.preventDefault()">WhatsApp</a>
+            </div>
+          </div>
+        </div>
+        <div class="contact-row">
+          <span class="ico">✉</span>
+          <div>
+            <div class="lbl">E-Mail</div>
+            <div class="val"><a href="mailto:welcome@hotel-dolgow.de">welcome@hotel-dolgow.de</a></div>
+          </div>
+        </div>
+        <div class="contact-row">
+          <span class="ico">⌚</span>
+          <div>
+            <div class="lbl">Rezeption</div>
+            <div class="val">Mo–So · 7:00 – 22:00</div>
+          </div>
+        </div>
+        <div class="contact-row">
+          <span class="ico">◐</span>
+          <div>
+            <div class="lbl">Check-in / Check-out</div>
+            <div class="val">ab 15:00 · bis 11:00</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="map-frame">
+        <svg viewBox="0 0 400 400" preserveAspectRatio="none">
+          <defs>
+            <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+              <path d="M40 0H0V40" fill="none" stroke="rgba(255,252,245,.15)" stroke-width="1"/>
+            </pattern>
+          </defs>
+          <rect width="400" height="400" fill="url(#grid)"/>
+          <path d="M0 280 Q 100 240, 200 260 T 400 220" stroke="rgba(180,200,220,.4)" stroke-width="40" fill="none" stroke-linecap="round"/>
+          <path d="M0 280 Q 100 240, 200 260 T 400 220" stroke="rgba(180,200,220,.6)" stroke-width="2" fill="none"/>
+          <path d="M0 180 L400 200" stroke="rgba(255,252,245,.3)" stroke-width="2"/>
+          <path d="M200 0 L210 400" stroke="rgba(255,252,245,.3)" stroke-width="2"/>
+          <text x="20" y="160" fill="rgba(255,252,245,.5)" font-size="11" font-family="Manrope">L 252</text>
+          <text x="240" y="370" fill="rgba(255,252,245,.5)" font-size="11" font-family="Manrope">Elbe →</text>
+          <text x="30" y="50" fill="rgba(255,252,245,.4)" font-size="13" font-family="Cormorant Garamond" font-style="italic">Neu Darchau</text>
+          <text x="250" y="100" fill="rgba(255,252,245,.4)" font-size="13" font-family="Cormorant Garamond" font-style="italic">Klennow</text>
+        </svg>
+        <div class="map-pin">
+          <span class="ping"></span>
+          <span class="lbl">HOTEL DOLGOW</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="faq" id="faq">
+  <div class="wrap">
+    <div class="faq-grid">
+      <div class="faq-side">
+        <span class="eyebrow">Häufige Fragen</span>
+        <h2 style="margin-top:18px">Was am häufigsten gefragt wird.</h2>
+        <p>Keine Antwort gefunden? Schreiben Sie uns auf WhatsApp – wir antworten innerhalb einer Stunde in der Geschäftszeit.</p>
+        <a href="#contacts" class="contact-link">Hotel kontaktieren →</a>
+      </div>
+
+      <div class="faq-list">
+        <div class="faq-item">
+          <button class="faq-q">Sind Haustiere erlaubt?<span class="ico">+</span></button>
+          <div class="faq-a"><div class="faq-a-inner">Ja, wir nehmen Hunde und Katzen. Aufpreis 8 € pro Tag für die Reinigung. Auf dem Gelände gibt es ein großes Feld für Spaziergänge und eine Wasserschale am Eingang. Bitte im Voraus mitteilen.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">Gibt es einen Parkplatz?<span class="ico">+</span></button>
+          <div class="faq-a"><div class="faq-a-inner">Ja, kostenloser geschlossener Parkplatz für 18 Autos. Separater Fahrrad- und E-Bike-Stellplatz (mit Ladesteckdosen).</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">Wann ist Check-in und Check-out?<span class="ico">+</span></button>
+          <div class="faq-a"><div class="faq-a-inner">Standard-Check-in ab 15:00, Check-out bis 11:00. Frühe Anreise oder spätes Auschecken – nach Absprache, meistens kostenlos.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">Gibt es WLAN?<span class="ico">+</span></button>
+          <div class="faq-a"><div class="faq-a-inner">Ja, kostenloses Glasfaser-WLAN in allen Zimmern, im Restaurant und auf der Terrasse. 200 Mbit/s, stabil für Videokonferenzen.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">Kann ich meine Buchung stornieren?<span class="ico">+</span></button>
+          <div class="faq-a"><div class="faq-a-inner">Kostenlose Stornierung bis 48 Stunden vor der Ankunft. Später – 30 % der ersten Nacht. Anzahlung bei Buchung – 20 %.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">Was tun bei Regen?<span class="ico">+</span></button>
+          <div class="faq-a"><div class="faq-a-inner">Wir haben eine Bibliothek, Brettspiele, einen Kamin mit Radkarten und ein Restaurant mit dem besten Tiramisu im Umkreis von 50 km. Die Zeit vergeht wie im Flug.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">Wie komme ich ohne Auto zu Ihnen?<span class="ico">+</span></button>
+          <div class="faq-a"><div class="faq-a-inner">Nächster Bahnhof – Hitzacker (15 Min. Transfer, 20 €). Oder die Fähre von Darchau nach Neu Darchau – fährt alle 20 Min. Von Hamburg: Zug RE2 + unser Transfer.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q">Nehmen Sie Gruppen auf?<span class="ico">+</span></button>
+          <div class="faq-a"><div class="faq-a-inner">Ja, bis zu 24 Gäste. Sonderangebote für Familien, Radgruppen, Firmenveranstaltungen und Hochzeiten. Kontaktieren Sie uns – wir schnüren ein Paket.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <h3>Hotel Dolgow</h3>
+        <p>Familienhotel im Herzen des Wendlands. Stille, Fluss, hausgemachte Küche – seit 1978.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Hotel</h5>
+        <a href="#rooms">Zimmer</a>
+        <a href="#restaurant">Restaurant</a>
+        <a href="#activities">Aktivitäten</a>
+        <a href="#gallery">Galerie</a>
+      </div>
+      <div class="footer-col">
+        <h5>Informationen</h5>
+        <a href="#faq">FAQ</a>
+        <a href="#contacts">Kontakt</a>
+        <a href="#" onclick="event.preventDefault()">Datenschutz</a>
+        <a href="#" onclick="event.preventDefault()">Imprint · AGB</a>
+      </div>
+      <div class="footer-col">
+        <h5>Newsletter</h5>
+        <p style="color:rgba(244,237,224,.7);font-size:13px;margin-bottom:12px">Saisonangebote, Routen, Naturfotos. Kein Spam.</p>
+        <form style="display:flex;gap:6px" onsubmit="event.preventDefault();this.querySelector('button').textContent='✓ Fertig'">
+          <input type="email" placeholder="email" style="flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);border-radius:999px;padding:12px 16px;color:var(--cream-hi);font:inherit;font-size:13px;outline:none">
+          <button type="submit" style="background:#e8c98b;color:var(--ink);border-radius:999px;padding:0 18px;font-weight:600;font-size:13px">→</button>
+        </form>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Hotel Dolgow · Family-run since 1978</span>
+      <span>Made with ♥ in Wendland</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ LIGHTBOX ============ -->
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" aria-label="Schließen">×</button>
+  <button class="lb-nav lb-prev" aria-label="Zurück">‹</button>
+  <button class="lb-nav lb-next" aria-label="Weiter">›</button>
+  <div class="lb-content" id="lbContent">— Foto —</div>
+</div>
+
+<!-- ============ BOOKING MODAL ============ -->
+<div class="modal-backdrop" id="bookingModal">
+  <div class="modal">
+    <button class="modal-close" aria-label="Schließen">×</button>
+    <aside class="modal-aside">
+      <h4>Buchung<br>Hotel Dolgow</h4>
+      <p>3 Schritte, ohne unnötige Fragen. Anzahlung 20 %, Rest bei Ankunft.</p>
+      <div class="modal-steps">
+        <div class="step active" data-step="1"><span class="num">1</span><span>Daten &amp; Zimmer</span></div>
+        <div class="step" data-step="2"><span class="num">2</span><span>Ihre Daten</span></div>
+        <div class="step" data-step="3"><span class="num">3</span><span>Anzahlung</span></div>
+      </div>
+    </aside>
+    <div class="modal-body">
+      <!-- step 1 -->
+      <div class="step-panel" data-panel="1">
+        <h3>Wann und wo möchten Sie wohnen?</h3>
+        <p class="sub">Bestpreisgarantie bei Direktbuchung.</p>
+        <div class="field-row">
+          <div class="field"><label>Anreise</label><input type="date" value="2026-06-14" id="m-checkin"></div>
+          <div class="field"><label>Abreise</label><input type="date" value="2026-06-17" id="m-checkout"></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>Gäste</label>
+            <select id="m-guests"><option>1</option><option selected>2</option><option>3</option><option>4</option></select>
+          </div>
+          <div class="field"><label>Frühstück</label>
+            <select id="m-bf"><option>Ja (+10 € / Person)</option><option>Nein</option></select>
+          </div>
+        </div>
+        <div class="field"><label>Zimmertyp</label></div>
+        <div class="room-pick">
+          <label>
+            <input type="radio" name="room" value="single" data-price="60">
+            <span class="room-pick-inner"><span class="rp-name">Einzelzimmer</span><div class="rp-meta">14 m² · 1 Gast · TV · WLAN</div></span>
+            <span class="rp-price">60 €<small>pro Nacht</small></span>
+          </label>
+          <label>
+            <input type="radio" name="room" value="double" data-price="70" checked>
+            <span class="room-pick-inner"><span class="rp-name">Doppelzimmer</span><div class="rp-meta">22 m² · bis 2 Gäste · TV · WLAN</div></span>
+            <span class="rp-price">70 €<small>pro Nacht</small></span>
+          </label>
+          <label>
+            <input type="radio" name="room" value="double-plus" data-price="92">
+            <span class="room-pick-inner"><span class="rp-name">Doppel mit Garten</span><div class="rp-meta">26 m² · bis 2 Gäste · Gartenblick · Terrasse</div></span>
+            <span class="rp-price">92 €<small>pro Nacht</small></span>
+          </label>
+        </div>
+        <div class="modal-foot">
+          <span></span>
+          <button class="btn btn-primary btn-arrow" data-next="2">Weiter</button>
+        </div>
+      </div>
+
+      <!-- step 2 -->
+      <div class="step-panel" data-panel="2" style="display:none">
+        <h3>Erzählen Sie uns von sich.</h3>
+        <p class="sub">Nur das Nötigste.</p>
+        <div class="field-row">
+          <div class="field"><label>Vorname</label><input type="text" placeholder="Anna"></div>
+          <div class="field"><label>Nachname</label><input type="text" placeholder="Schmidt"></div>
+        </div>
+        <div class="field"><label>Email</label><input type="email" placeholder="you@example.com"></div>
+        <div class="field"><label>Telefon</label><input type="tel" placeholder="+49 …"></div>
+        <div class="field"><label>Wünsche (optional)</label><input type="text" placeholder="Zweites Kissen, Kinderbett, Etage …"></div>
+        <div class="modal-foot">
+          <button class="btn btn-back" data-back="1">← Zurück</button>
+          <button class="btn btn-primary btn-arrow" data-next="3">Zur Zahlung</button>
+        </div>
+      </div>
+
+      <!-- step 3 -->
+      <div class="step-panel" data-panel="3" style="display:none">
+        <h3>Anzahlung 20 %, Rest bei Ankunft.</h3>
+        <p class="sub">Kostenlose Stornierung bis 48 Stunden.</p>
+        <div class="summary" id="summary">
+          <div class="summary-row"><span>Doppelzimmer × 3 Nächte</span><span>210 €</span></div>
+          <div class="summary-row"><span>Frühstück × 2 Pers. × 3</span><span>60 €</span></div>
+          <div class="summary-row"><span>Kurtaxe</span><span>9 €</span></div>
+          <div class="summary-row total"><span>Gesamt</span><span>279 €</span></div>
+          <div class="summary-row" style="font-size:13px;color:var(--ink-soft)"><span>Anzahlung heute (20 %)</span><span>56 €</span></div>
+        </div>
+        <div class="field"><label>Zahlungsmethode</label></div>
+        <div class="pay-methods">
+          <div class="pm selected">Karte</div>
+          <div class="pm">PayPal</div>
+          <div class="pm">Apple Pay</div>
+          <div class="pm">Google Pay</div>
+        </div>
+        <div class="modal-foot">
+          <button class="btn btn-back" data-back="2">← Zurück</button>
+          <button class="btn btn-primary btn-arrow" data-confirm>Bestätigen &amp; Zahlen</button>
+        </div>
+      </div>
+
+      <!-- success -->
+      <div class="step-panel" data-panel="success" style="display:none">
+        <div class="success-state">
+          <div class="check">✓</div>
+          <h3>Buchung angenommen!</h3>
+          <p>Wir senden Ihnen eine Bestätigung per E-Mail. Bis bald in Dolgow – wir halten den besten Platz auf der Terrasse für Sie frei.</p>
+          <button class="btn btn-dark" data-close-modal>Fertig</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============ LANGUAGE SWITCHER ============ */
+const TRANSLATIONS = {
+  de: {
+    // nav
+    '>Zimmer<': '>Zimmer<',
+    '>Restaurant<': '>Restaurant<',
+    '>Aktivitäten<': '>Aktivitäten<',
+    '>Natur<': '>Natur<',
+    '>Galerie<': '>Galerie<',
+    '>Kontakt<': '>Kontakt<',
+  },
+  en: {}
+};
+
+// Full DE→EN text node map
+const DE_TO_EN = {
+  // nav
+  "Zimmer": { nav: "Rooms" },
+  "Aktivitäten": { nav: "Activities" },
+  "Natur": { nav: "Nature" },
+  "Galerie": { nav: "Gallery" },
+  "Kontakt": { nav: "Contact" },
+  "Buchen": { nav: "Book Now" },
+  // hero
+  "Stille der Elbe,": "The Elbe's Silence,",
+  "Geschmack des Wendlands.": "the Taste of Wendland.",
+  "Familienhotel im Herzen des UNESCO-Biosphärenreservats Elbtalaue. Ruhige Zimmer, hausgemachte Küche, Fahrräder und Boote – alles, damit Sie wirklich durchatmen können.": "Family hotel in the heart of the UNESCO Biosphere Reserve Elbe Valley. Quiet rooms, home cooking, bikes and boats – everything you need to truly unwind.",
+  "Zimmer buchen": "Book a Room",
+  "Zimmer ansehen": "View Rooms",
+  "Kostenloser Parkplatz": "Free Parking",
+  "Restaurant & Frühstück": "Restaurant & Breakfast",
+  "Fahrradverleih": "Bike Rental",
+  "3 Min. zum Fluss": "3 min to the river",
+  "Haustiere willkommen": "Pets welcome",
+  "Ab heute": "From today",
+  // booking bar
+  "Anreise": "Check-in",
+  "Abreise": "Check-out",
+  "Prüfen": "Check",
+  // rooms
+  "Unsere Zimmer": "Our Rooms",
+  "Schlicht, warm, wie zuhause.": "Simple, warm, homely.",
+  "Alle Zimmer mit eigenem Bad, WC, Fernseher und kostenlosem WLAN. Morgenkaffee und Ausblick inklusive.": "All rooms with private shower, WC, TV and free Wi-Fi. Morning coffee and a view included.",
+  "ab": "from",
+  "pro Nacht": "per night",
+  "Gemütliches Zimmer für einen Gast. Weiches Bett 120 cm, Schreibtisch am Fenster, Morgensonne.": "Cozy room for one guest. Soft 120 cm bed, desk by the window, morning sun.",
+  "Frühstück 10 €": "Breakfast 10 €",
+  "Dusche / WC": "Shower / WC",
+  "5 Zimmer · 3 diese Woche frei": "5 rooms · 3 available this week",
+  "Prostorier Zimmer für zwei mit 160 cm Doppelbett, extra Sessel und Blick in den alten Garten.": "Spacious room for two with a 160 cm double bed, armchair and view of the old garden.",
+  "Geräumiges Zimmer für zwei mit 160 cm Doppelbett, extra Sessel und Blick in den alten Garten.": "Spacious room for two with a 160 cm double bed, armchair and view of the old garden.",
+  "Wasserkocher": "Kettle",
+  "7 Zimmer · 4 diese Woche frei": "7 rooms · 4 available this week",
+  "✓ Fertig": "✓ Done",
+  "Alle Fotos ansehen": "View all photos",
+  // restaurant
+  "Was wir servieren, wächst nebenan.": "What we serve grows right next door.",
+  "Küche aus lokalen Produkten des Elbtals, italienischer Koch, offene Terrasse mit Wasserblick. Frühstück täglich ab 7:00.": "Kitchen using local Elbe Valley produce, Italian chef, open terrace with water views. Breakfast every morning from 7:00.",
+  "Fr · Mi · Ab": "Br · Lu · Di",
+  "Terrasse 40 Plätze": "Terrace 40 seats",
+  "Lokale Küche": "Local cuisine",
+  '„Alles wie bei Oma – nur mit Wein aus der Toskana."': "Everything like grandma's – just with wine from Tuscany.",
+  "Der italienische Koch Matteo kocht, was er morgens auf dem Markt gefunden hat. Die Speisekarte wechselt wöchentlich.": "Italian chef Matteo cooks what he found at the market that morning. The menu changes weekly.",
+  'Frühstück „Wendland-Art"': 'Breakfast "Wendland Style"',
+  "Von 7:00 bis 10:30. Frisches Brot aus der örtlichen Bäckerei, hausgemachter Käse, Honig vom Nachbarn, Eier von den Hühnern hinterm Zaun.": "From 7:00 to 10:30. Fresh bread from the local bakery, homemade cheese, honey from the neighbour, eggs from the chickens next door.",
+  "pro Person": "per person",
+  "Heute im Menü": "Today's Menu",
+  "Hausgemachte Pasta, Lamm vom Hof Klennow, 4 Stunden": "Homemade pasta, lamb from Klennow farm, 4 hours",
+  "Frische Elbe-Forelle, Grill, Kartoffeln mit Dill": "Fresh river trout, grilled, potatoes with dill",
+  "Matteos Rezept, Mascarpone, Morgenkaffee": "Matteo's recipe, mascarpone, morning coffee",
+  "Vollständige Speisekarte (PDF)": "Full Menu (PDF)",
+  // activities
+  "Aktivitäten in der Umgebung": "Things to Do Nearby",
+  "Fahrrad, Boot, Pferd – oder einfach die Hängematte.": "Bike, boat, horse – or just a hammock.",
+  "Das Wendland ist 1170 km² Biosphärenreservat, 240 km Radwege, Stille und Wasser. So leben wir das.": "Wendland is 1,170 km² biosphere reserve, 240 km of cycle paths, silence and water. Here's how we make the most of it.",
+  "Bootstouren": "Boat Trips",
+  "Auf der stillen Elbe, mit Führer, zu wilden Stränden. 2 oder 4 Stunden. Wir nehmen Thermoskanne, Decken und Stille mit.": "On the quiet Elbe, with a guide, to wild beaches. 2 or 4 hours. We bring a thermos, blankets and silence.",
+  "ab 25 €": "from 25 €",
+  "Reitertouren": "Horse Riding",
+  "Partnerhof 10 Minuten entfernt. Für Anfänger und Erfahrene. Routen durch Wald und Ufer.": "Partner farm 10 minutes away. For beginners and experienced riders. Routes through forest and riverbank.",
+  "ab 35 €": "from 35 €",
+  "Angeln": "Fishing",
+  "Lizenzen und Ausrüstung – wir helfen bei der Beschaffung. Die besten Plätze im Morgengrauen. Wir grillen Ihren Fang.": "Permits and equipment – we help arrange them. Best spots at dawn. We'll grill your catch.",
+  "15 €/Tag": "15 €/day",
+  "Wandern & Natur": "Hiking & Nature",
+  "5 markierte Routen von 3 bis 18 km. Alte Eichen, Wiesenblumen, Aussichtstürme im Moor.": "5 marked routes from 3 to 18 km. Ancient oaks, meadow flowers, observation towers on the marshes.",
+  "kostenlos": "free",
+  "Naturbeobachtung": "Wildlife Watching",
+  "Störche, Biber, Kraniche, Luchse. Ferngläser und Führer inklusive. Beste Saison – Mai und September.": "Storks, beavers, cranes, lynxes. Binoculars and a guide included. Best season – May and September.",
+  "ab 12 €": "from 12 €",
+  "3 Min. zu Fuß": "3 min walk",
+  "5 Min. zu Fuß": "5 min walk",
+  "10 Min. Fahrt": "10 min drive",
+  "2 Stunden": "2 hours",
+  // eco
+  "Öko-Urlaub": "Eco-Holiday",
+  "Im Wendland kann man noch die Stille sehen.": "In Wendland you can still see the silence.",
+  "UNESCO-Biosphärenreservat, Wiesen mit 200 Blumenarten, die größte Storchenpopulation Deutschlands. Die Natur hier ist keine Dekoration, sie ist Nachbar.": "UNESCO Biosphere Reserve, meadows with 200 flower species, the largest stork population in Germany. Nature here is not a backdrop – it's a neighbour.",
+  "Elbtalaue – UNESCO-Schutzgebiet": "Elbe Valley – UNESCO Reserve",
+  "1170 km² unberührte Auenlandschaft. Wiesen, Dünen, Auenwälder, seltene Vögel. Wildnis drei Minuten zu Fuß.": "1,170 km² of untouched floodplain. Meadows, dunes, riparian forests, rare birds. Wilderness three minutes on foot.",
+  "240 km Radwege": "240 km of Cycle Paths",
+  "Die Route entlang der Elbe ist eine der schönsten Europas. Wir geben Karte, Thermoskanne und kümmern uns um die Reifen.": "The route along the Elbe is one of the most beautiful in Europe. We provide a map, thermos and look after the tyres.",
+  "Lokale Flora und Fauna": "Local Flora and Fauna",
+  "Biber, Störche, Kraniche, Seeadler, seltene Orchideen. Naturführer auf Anfrage.": "Beavers, storks, cranes, white-tailed eagles, rare orchids. Nature guide on request.",
+  "Zertifizierte Ökowege": "Certified Eco-Trails",
+  "5 markierte Pfade. Keine Autos, kein Lärm. Nur Ihre Schritte und der Wind im Weidengebüsch.": "5 marked trails. No cars, no noise. Just your footsteps and the wind in the willows.",
+  "Niedersächsische Elbtalaue · seit 2002": "Niedersächsische Elbtalaue · since 2002",
+  // gallery
+  "Sehen Sie, wie es wirklich aussieht.": "See what it really looks like.",
+  "Kein Photoshop, keine Stockfotos. Alles, was Sie hier sehen, gehört uns.": "No photoshop, no stock images. Everything you see here is ours.",
+  "Fassade": "Facade",
+  "Garten": "Garden",
+  "Zimmer": "Room",
+  "Frühstück": "Breakfast",
+  "Fahrräder": "Bikes",
+  "Natur": "Nature",
+  // reviews
+  "Was die Gäste sagen": "What Guests Say",
+  "4,8 von 5 – und das nur wegen des echten Frühstücks.": "4.8 out of 5 – and just for the real breakfast.",
+  "Wir sammeln Bewertungen von Google, Booking und HRS. Ungefiltert und unmoderiert. Problem gefunden – sagen Sie es uns, wir beheben es.": "We collect reviews from Google, Booking and HRS. Unfiltered and unmoderated. Found a problem – tell us and we'll fix it.",
+  "Durchschnittsbewertung": "Average Rating",
+  "Google-Bewertungen": "Google Reviews",
+  "Würden wiederkommen": "Would come again",
+  "Jahre zusammen": "Years together",
+  // contacts
+  "Uns finden": "Find Us",
+  "5 Minuten Fahrt von der Fähre. 90 Min. von Hamburg, 2 Std. von Berlin. Fragen Sie uns – wir zeigen Ihnen die schönste Route.": "5 minutes from the ferry crossing. 90 min from Hamburg, 2 hours from Berlin. Ask us – we'll show you the most scenic route.",
+  "Adresse": "Address",
+  "Telefon": "Phone",
+  "Anrufen": "Call",
+  "Rezeption": "Reception",
+  "Mo–So · 7:00 – 22:00": "Mon–Sun · 7:00 – 22:00",
+  "ab 15:00 · bis 11:00": "from 15:00 · until 11:00",
+  // faq
+  "Häufige Fragen": "FAQ",
+  "Was am häufigsten gefragt wird.": "What People Ask Most.",
+  "Keine Antwort gefunden? Schreiben Sie uns auf WhatsApp – wir antworten innerhalb einer Stunde in der Geschäftszeit.": "Didn't find an answer? Write to us on WhatsApp – we reply within an hour during business hours.",
+  "Hotel kontaktieren →": "Contact the hotel →",
+  // footer
+  "Familienhotel im Herzen des Wendlands. Stille, Fluss, hausgemachte Küche – seit 1978.": "Family hotel in the heart of Wendland. Silence, river, home cooking – since 1978.",
+  "Informationen": "Information",
+  "Datenschutz": "Privacy",
+  "Newsletter": "Newsletter",
+  "Saisonangebote, Routen, Naturfotos. Kein Spam.": "Seasonal offers, routes, nature photos. No spam.",
+  // modal
+  "Buchung": "Booking",
+  "3 Schritte, ohne unnötige Fragen. Anzahlung 20 %, Rest bei Ankunft.": "3 steps, no fuss. 20% deposit, the rest on arrival.",
+  "Daten & Zimmer": "Dates & Room",
+  "Ihre Daten": "Your Details",
+  "Anzahlung": "Deposit Payment",
+  "Wann und wo möchten Sie wohnen?": "When and where would you like to stay?",
+  "Bestpreisgarantie bei Direktbuchung.": "Best price guarantee when booking direct.",
+  "Frühstück": "Breakfast",
+  "Ja (+10 € / Person)": "Yes (+10 € / person)",
+  "Nein": "No",
+  "Zimmertyp": "Room Type",
+  "pro Nacht": "per night",
+  "Weiter": "Next",
+  "Erzählen Sie uns von sich.": "Tell us about yourself.",
+  "Nur das Nötigste.": "Just the essentials.",
+  "Vorname": "First Name",
+  "Nachname": "Last Name",
+  "Wünsche (optional)": "Special Requests (optional)",
+  "Zur Zahlung": "Proceed to Payment",
+  "Anzahlung 20 %, Rest bei Ankunft.": "20% deposit, the rest on arrival.",
+  "Kostenlose Stornierung bis 48 Stunden.": "Free cancellation up to 48 hours.",
+  "Zahlungsmethode": "Payment Method",
+  "Karte": "Card",
+  "Bestätigen & Zahlen": "Confirm & Pay",
+  "Buchung angenommen!": "Booking confirmed!",
+  "Wir senden Ihnen eine Bestätigung per E-Mail. Bis bald in Dolgow – wir halten den besten Platz auf der Terrasse für Sie frei.": "We'll send a confirmation to your email within a few minutes. See you in Dolgow – we're saving the best spot on the terrace for you.",
+  "Fertig": "Done",
+  "Zurück": "Back",
+};
+
+// Build reverse (EN→DE) map
+const EN_TO_DE = {};
+Object.entries(DE_TO_EN).forEach(([de, en]) => {
+  const enVal = typeof en === 'object' ? Object.values(en)[0] : en;
+  const deVal = typeof de === 'string' ? de : de;
+  EN_TO_DE[enVal] = deVal;
+});
+
+let currentLang = 'de';
+
+function getAllTextNodes(root) {
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null);
+  const nodes = [];
+  let n;
+  while ((n = walker.nextNode())) {
+    if (n.parentElement && ['SCRIPT','STYLE'].includes(n.parentElement.tagName)) continue;
+    if (n.textContent.trim()) nodes.push(n);
+  }
+  return nodes;
+}
+
+function translatePage(toLang) {
+  const map = toLang === 'en' ? DE_TO_EN : EN_TO_DE;
+  const nodes = getAllTextNodes(document.body);
+  nodes.forEach(node => {
+    const txt = node.textContent;
+    const trimmed = txt.trim();
+    // Direct match
+    if (map[trimmed] !== undefined) {
+      const val = map[trimmed];
+      const translated = typeof val === 'object' ? Object.values(val)[0] : val;
+      node.textContent = node.textContent.replace(trimmed, translated);
+    }
+  });
+  // Also handle placeholders
+  document.querySelectorAll('[placeholder]').forEach(el => {
+    const ph = el.getAttribute('placeholder');
+    if (map[ph]) el.setAttribute('placeholder', typeof map[ph] === 'object' ? Object.values(map[ph])[0] : map[ph]);
+  });
+  document.documentElement.lang = toLang;
+}
+
+function toggleLang() {
+  if (currentLang === 'de') {
+    translatePage('en');
+    currentLang = 'en';
+    document.getElementById('lang-label').textContent = 'DE';
+  } else {
+    translatePage('de');
+    currentLang = 'de';
+    document.getElementById('lang-label').textContent = 'EN';
+  }
+}
+</script>
+
+<script>
+/* nav scroll */
+const nav = document.getElementById('nav');
+const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 60);
+window.addEventListener('scroll', onScroll, {passive:true}); onScroll();
+
+/* smooth anchors */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const id = a.getAttribute('href');
+    if (id.length < 2) return;
+    const el = document.querySelector(id);
+    if (!el) return;
+    e.preventDefault();
+    window.scrollTo({top: el.getBoundingClientRect().top + window.scrollY - 70, behavior:'smooth'});
+  });
+});
+
+/* FAQ */
+document.querySelectorAll('.faq-item').forEach(item => {
+  const q = item.querySelector('.faq-q');
+  q.addEventListener('click', () => {
+    const open = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(o => o.classList.remove('open'));
+    if (!open) item.classList.add('open');
+  });
+});
+
+/* Lightbox */
+const lb = document.getElementById('lightbox');
+const lbContent = document.getElementById('lbContent');
+const gItems = [...document.querySelectorAll('.g-item')];
+let lbIdx = 0;
+function openLb(i) {
+  lbIdx = (i + gItems.length) % gItems.length;
+  const item = gItems[lbIdx];
+  const img = item.querySelector('img.real-img');
+  lbContent.innerHTML = '';
+  if (img && img.src) {
+    const clone = document.createElement('img');
+    clone.src = img.src;
+    clone.style.cssText = 'width:100%;height:100%;object-fit:cover;border-radius:inherit;position:absolute;inset:0';
+    lbContent.appendChild(clone);
+  } else {
+    lbContent.textContent = item.dataset.lb || '— Foto —';
+  }
+  lb.classList.add('open');
+}
+gItems.forEach((it, i) => it.addEventListener('click', () => openLb(i)));
+lb.querySelector('.lb-close').addEventListener('click', () => lb.classList.remove('open'));
+lb.querySelector('.lb-prev').addEventListener('click', () => openLb(lbIdx - 1));
+lb.querySelector('.lb-next').addEventListener('click', () => openLb(lbIdx + 1));
+lb.addEventListener('click', e => { if (e.target === lb) lb.classList.remove('open'); });
+document.addEventListener('keydown', e => {
+  if (!lb.classList.contains('open')) return;
+  if (e.key === 'Escape') lb.classList.remove('open');
+  if (e.key === 'ArrowLeft') openLb(lbIdx - 1);
+  if (e.key === 'ArrowRight') openLb(lbIdx + 1);
+});
+
+/* Booking modal */
+const modal = document.getElementById('bookingModal');
+function openModal() { modal.classList.add('open'); setStep(1); document.body.style.overflow = 'hidden'; }
+function closeModal() { modal.classList.remove('open'); document.body.style.overflow = ''; }
+document.querySelectorAll('[data-open-booking]').forEach(b => b.addEventListener('click', openModal));
+document.querySelectorAll('[data-close-modal], .modal-close').forEach(b => b.addEventListener('click', closeModal));
+modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+
+function setStep(n) {
+  document.querySelectorAll('.step').forEach(s => {
+    const num = parseInt(s.dataset.step);
+    s.classList.toggle('active', num === n);
+    s.classList.toggle('done', num < n);
+  });
+  document.querySelectorAll('.step-panel').forEach(p => {
+    p.style.display = (p.dataset.panel == n) ? '' : 'none';
+  });
+  if (n === 3) updateSummary();
+}
+document.querySelectorAll('[data-next]').forEach(b => b.addEventListener('click', () => setStep(parseInt(b.dataset.next))));
+document.querySelectorAll('[data-back]').forEach(b => b.addEventListener('click', () => setStep(parseInt(b.dataset.back))));
+document.querySelector('[data-confirm]').addEventListener('click', () => {
+  document.querySelectorAll('.step-panel').forEach(p => p.style.display = 'none');
+  document.querySelector('[data-panel="success"]').style.display = '';
+  document.querySelectorAll('.step').forEach(s => { s.classList.remove('active'); s.classList.add('done'); });
+});
+
+function nightsBetween(a, b) {
+  const d = (new Date(b) - new Date(a)) / 86400000;
+  return Math.max(1, Math.round(d));
+}
+function updateSummary() {
+  const ci = document.getElementById('m-checkin').value;
+  const co = document.getElementById('m-checkout').value;
+  const nights = nightsBetween(ci, co);
+  const guests = parseInt(document.getElementById('m-guests').value);
+  const bfYes = document.getElementById('m-bf').value.startsWith('Ja') || document.getElementById('m-bf').value.startsWith('Yes');
+  const roomEl = document.querySelector('input[name="room"]:checked');
+  const price = parseInt(roomEl.dataset.price);
+  const roomName = roomEl.parentElement.querySelector('.rp-name').textContent;
+  const roomTotal = price * nights;
+  const bfTotal = bfYes ? 10 * guests * nights : 0;
+  const tax = 3 * nights;
+  const total = roomTotal + bfTotal + tax;
+  const deposit = Math.round(total * 0.2);
+  document.getElementById('summary').innerHTML = `
+    <div class="summary-row"><span>${roomName} × ${nights} ${nights===1?(currentLang==='en'?'night':'Nacht'):(currentLang==='en'?'nights':'Nächte')}</span><span>${roomTotal} €</span></div>
+    ${bfYes ? `<div class="summary-row"><span>${currentLang==='en'?'Breakfast':'Frühstück'} × ${guests} × ${nights}</span><span>${bfTotal} €</span></div>` : ''}
+    <div class="summary-row"><span>${currentLang==='en'?'Tourist tax':'Kurtaxe'}</span><span>${tax} €</span></div>
+    <div class="summary-row total"><span>${currentLang==='en'?'Total':'Gesamt'}</span><span>${total} €</span></div>
+    <div class="summary-row" style="font-size:13px;color:var(--ink-soft)"><span>${currentLang==='en'?'Deposit today (20%)':'Anzahlung heute (20 %)'}</span><span>${deposit} €</span></div>`;
+}
+
+document.querySelectorAll('.pay-methods .pm').forEach(pm => pm.addEventListener('click', () => {
+  document.querySelectorAll('.pay-methods .pm').forEach(o => o.classList.remove('selected'));
+  pm.classList.add('selected');
+}));
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
+});
+</script>
+
+</body>
+</html>
