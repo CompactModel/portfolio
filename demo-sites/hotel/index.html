@@ -40,6 +40,7 @@
 
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
+html { overflow-x: hidden; }
 body {
   font-family: var(--body);
   font-size: 16px;
@@ -803,14 +804,16 @@ section { padding: 120px 0; position: relative; }
   .wrap { padding: 0 20px; }
   .nav { padding: 14px 20px; }
   .nav-links { display: none; }
+  .nav-burger { display: flex; }
   .section-head { grid-template-columns: 1fr; gap: 24px; }
-  .booking-bar { grid-template-columns: 1fr; padding: 14px; }
+  .booking-bar { grid-template-columns: 1fr; padding: 14px; margin-top: 0; }
   .booking-field { border-right: none; border-bottom: 1px solid var(--line); padding: 12px 16px; }
   .booking-field:last-of-type { border-bottom: none; }
   .rooms-grid, .rest-grid, .eco-grid, .contacts-grid, .faq-grid { grid-template-columns: 1fr; }
   .act-grid { grid-template-columns: 1fr; }
   .act-map { grid-template-columns: 1fr 1fr; }
   .gallery-grid { grid-template-columns: 1fr 1fr; grid-auto-rows: 160px; }
+  .review-track { margin: 0 -20px; padding-left: 20px; padding-right: 20px; }
   .reviews-stats { grid-template-columns: 1fr 1fr; gap: 32px; }
   .reviews-stats .stat { border-right: none; }
   .footer-top { grid-template-columns: 1fr 1fr; gap: 32px; }
@@ -819,6 +822,179 @@ section { padding: 120px 0; position: relative; }
   .modal-body { padding: 28px; }
   h1 { font-size: 56px; }
   h2 { font-size: 40px; }
+}
+
+/* ============== burger button ============== */
+.nav-burger {
+  display: none;
+  flex-direction: column; justify-content: center; align-items: center;
+  gap: 5px; padding: 8px; border-radius: 8px;
+  width: 40px; height: 40px;
+  cursor: pointer; background: none; border: none;
+  color: inherit;
+  transition: background .2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.nav-burger span {
+  display: block; width: 22px; height: 2px;
+  background: currentColor; border-radius: 2px;
+  transition: transform .3s, opacity .3s;
+}
+.nav-burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-burger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.nav-burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* ============== mobile menu ============== */
+.mobile-menu {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 48;
+  background: var(--cream-hi);
+  display: flex; flex-direction: column;
+  padding: 80px 28px 40px;
+  transform: translateX(100%);
+  transition: transform .35s cubic-bezier(.25,.46,.45,.94);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.mobile-menu.open { transform: translateX(0); }
+.mobile-menu a {
+  font-family: var(--display);
+  font-size: 38px; font-weight: 400; font-style: italic;
+  color: var(--ink); padding: 18px 0;
+  border-bottom: 1px solid var(--line);
+  display: block;
+  transition: color .2s, padding-left .25s;
+}
+.mobile-menu a:hover { color: var(--wine); padding-left: 8px; }
+.mobile-menu .mm-book {
+  margin-top: 36px;
+  display: block; width: 100%;
+  padding: 18px; border-radius: 999px;
+  background: var(--wine); color: var(--cream-hi);
+  font-family: var(--body); font-size: 15px;
+  font-weight: 600; letter-spacing: 0.08em;
+  text-align: center; border: none; cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.mobile-menu .mm-lang {
+  margin-top: 12px;
+  display: block; width: 100%;
+  padding: 14px; border-radius: 999px;
+  border: 1px solid var(--line-strong); background: none;
+  font-family: var(--body); font-size: 14px;
+  font-weight: 600; letter-spacing: 0.1em;
+  color: var(--ink); text-align: center; cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ============== phone (≤ 640px) ============== */
+@media (max-width: 640px) {
+  #navCtaDesktop { display: none; }
+  section { padding: 56px 0; }
+  .wrap { padding: 0 16px; }
+  h1 { font-size: 36px; line-height: 1.08; }
+  h2 { font-size: 28px; }
+  h3 { font-size: 22px; }
+  p { overflow-wrap: break-word; }
+
+  /* eyebrow — менший letter-spacing щоб не виходив за межі */
+  .eyebrow { letter-spacing: 0.14em; font-size: 11px; }
+  .eyebrow::before { width: 18px; }
+  .section-head .lead { font-size: 15px; }
+
+  /* hero */
+  .hero { min-height: 100svh; }
+  .hero-content { padding: 80px 16px 32px; }
+  .hero-eyebrow { font-size: 10px; letter-spacing: 0.14em; }
+  .hero-sub { font-size: 15px; max-width: 100%; }
+  .hero-actions { flex-direction: column; gap: 10px; }
+  .hero-actions .btn { width: 100%; justify-content: center; padding: 16px 20px; }
+  .hero-bottom { grid-template-columns: 1fr; gap: 12px; padding-top: 24px; }
+  .hero-meta { text-align: left; }
+  .hero-perks { gap: 10px 16px; }
+  .hero-perks .perk { font-size: 12px; }
+
+  /* booking bar */
+  .booking-bar { margin: 16px 0 0; border-radius: var(--r-md); }
+  .booking-bar .btn-primary { width: 100%; justify-content: center; }
+
+  /* section-head */
+  .section-head { margin-bottom: 40px; }
+
+  /* rooms */
+  .room-body { padding: 18px 18px 22px; }
+  .room-head { flex-direction: column; gap: 2px; }
+  .room-price { text-align: left; }
+  .room-name { font-size: 26px; }
+  .room-foot { flex-wrap: wrap; }
+  .room-feats span { font-size: 11px; padding: 5px 10px; }
+
+  /* restaurant */
+  .rest-feature { min-height: 300px; padding: 20px 20px 24px; }
+  .rest-feature .meta { left: 20px; top: 20px; gap: 10px; font-size: 10px; flex-wrap: wrap; max-width: calc(100% - 40px); }
+  .rest-feature h3 { font-size: 24px; }
+  .rest-card { padding: 22px 18px; }
+  .menu-item .name { font-size: 18px; }
+
+  /* activities */
+  .act-map { grid-template-columns: 1fr 1fr; }
+  .act-map .cell { padding: 18px 14px; }
+  .act-map .place { font-size: 18px; overflow-wrap: break-word; }
+  .act-map .dist { font-size: 10px; }
+  .act-card { padding: 22px 18px; }
+  .act-card h4 { font-size: 22px; }
+
+  /* eco */
+  .eco-bullets .n { font-size: 18px; }
+  .eco-bullets h5 { font-size: 19px; }
+
+  /* gallery */
+  .gallery-grid { grid-template-columns: 1fr; grid-auto-rows: 200px; }
+  .g-item.wide { grid-column: span 1; }
+  .g-item.tall { grid-row: span 1; }
+
+  /* reviews */
+  .review-track { margin: 0 -16px; padding-left: 16px; padding-right: 16px; }
+  .review-card { flex: 0 0 82vw; padding: 22px 18px; }
+  .review-card blockquote { font-size: 19px; }
+  .reviews-stats { grid-template-columns: 1fr 1fr; gap: 24px; }
+  .reviews-stats .num { font-size: 38px; }
+  .reviews-stats .stat { padding: 0 8px; }
+
+  /* contacts */
+  .map-frame { min-height: 260px; }
+  .contact-actions { flex-wrap: wrap; }
+  .contact-actions .btn { padding: 10px 14px; font-size: 12px; }
+  .contact-row .val { font-size: 18px; word-break: break-all; }
+  .contact-row .val a { word-break: break-all; }
+
+  /* faq */
+  .faq-q { font-size: 18px; padding: 18px 4px; }
+  .faq-q .ico { width: 28px; height: 28px; font-size: 16px; }
+  .faq-side { position: static; }
+
+  /* footer */
+  .footer-top { grid-template-columns: 1fr; gap: 24px; }
+  .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+  .footer-brand h3 { font-size: 28px; }
+
+  /* modal — slide up from bottom */
+  .modal-backdrop { padding: 0; align-items: flex-end; }
+  .modal {
+    border-radius: var(--r-xl) var(--r-xl) 0 0;
+    max-height: 94svh; overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .modal-aside { display: none; }
+  .modal-body { padding: 24px 18px 32px; }
+  .modal-body h3 { font-size: 24px; }
+  .field-row { grid-template-columns: 1fr; gap: 0; }
+  .room-pick label { padding: 14px 16px; }
+  .room-pick .rp-name { font-size: 17px; }
+  .room-pick .rp-price { font-size: 17px; }
+  .pay-methods { flex-wrap: wrap; }
+  .pay-methods .pm { flex: 1 1 40%; font-size: 11px; }
+  .summary-row.total { font-size: 18px; }
 }
 </style>
 </head>
@@ -849,9 +1025,24 @@ section { padding: 120px 0; position: relative; }
       transition:opacity .2s,background .2s,color .2s;
       display:flex;align-items:center;gap:6px;
     ">🌐 <span id="lang-label">EN</span></button>
-    <button class="nav-cta" data-open-booking>Buchen</button>
+    <button class="nav-cta" data-open-booking id="navCtaDesktop">Buchen</button>
+    <button class="nav-burger" id="navBurger" aria-label="Menü öffnen">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </nav>
+
+<!-- ============ MOBILE MENU ============ -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#rooms" class="mm-nav-link">Zimmer</a>
+  <a href="#restaurant" class="mm-nav-link">Restaurant</a>
+  <a href="#activities" class="mm-nav-link">Aktivitäten</a>
+  <a href="#eco" class="mm-nav-link">Natur</a>
+  <a href="#gallery" class="mm-nav-link">Galerie</a>
+  <a href="#contacts" class="mm-nav-link">Kontakt</a>
+  <button class="mm-book" id="mmBookBtn">Zimmer buchen</button>
+  <button class="mm-lang" onclick="toggleLang();document.getElementById('mmLangLabel').textContent=document.getElementById('lang-label').textContent">🌐 <span id="mmLangLabel">EN</span></button>
+</div>
 
 <!-- ============ HERO ============ -->
 <header class="hero" id="top">
@@ -1913,6 +2104,42 @@ document.querySelectorAll('.pay-methods .pm').forEach(pm => pm.addEventListener(
 
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
+});
+</script>
+
+<script>
+/* ============ MOBILE MENU ============ */
+const burger = document.getElementById('navBurger');
+const mobileMenu = document.getElementById('mobileMenu');
+
+function openMobileMenu() {
+  burger.classList.add('open');
+  burger.setAttribute('aria-label', 'Menü schließen');
+  mobileMenu.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeMobileMenu() {
+  burger.classList.remove('open');
+  burger.setAttribute('aria-label', 'Menü öffnen');
+  mobileMenu.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+burger.addEventListener('click', () => {
+  mobileMenu.classList.contains('open') ? closeMobileMenu() : openMobileMenu();
+});
+
+document.querySelectorAll('.mm-nav-link').forEach(a => {
+  a.addEventListener('click', () => { closeMobileMenu(); });
+});
+
+document.getElementById('mmBookBtn').addEventListener('click', () => {
+  closeMobileMenu();
+  openModal();
+});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && mobileMenu.classList.contains('open')) closeMobileMenu();
 });
 </script>
 
