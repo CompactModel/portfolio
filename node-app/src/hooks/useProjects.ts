@@ -4,8 +4,8 @@ import { getProjects, getStaticData } from '../services/api';
 import { STATIC_PROJECTS } from '../data/projects';
 
 function mergeWithStatic(apiProjects: Project[], staticProjects: Project[]): Project[] {
-  const ids = new Set(apiProjects.map(p => p.id));
-  const missing = staticProjects.filter(p => !ids.has(p.id));
+  const links = new Set(apiProjects.map(p => p.link));
+  const missing = staticProjects.filter(p => !links.has(p.link));
   return [...apiProjects, ...missing];
 }
 
